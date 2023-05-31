@@ -1,0 +1,35 @@
+{
+  "name": "noise-server",
+  "version": "1.0.0",
+  "description": "A server for noise audio streaming platform",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dxAugust/Noise-Server.git"
+  },
+  "keywords": [
+    "server",
+    "web",
+    "audiostreaming",
+    "audio"
+  ],
+  "author": "fet1sov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dxAugust/Noise-Server/issues"
+  },
+  "homepage": "https://github.com/dxAugust/Noise-Server#readme",
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "express": "^4.18.2",
+    "express-fileupload": "^1.4.0",
+    "fs": "^0.0.1-security",
+    "http": "^0.0.1-security",
+    "path": "^0.12.7",
+    "sqlite": "^4.2.1",
+    "sqlite3": "^5.1.6"
+  }
+}
