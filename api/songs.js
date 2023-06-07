@@ -18,41 +18,56 @@ router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(fileUpload());
 
+function logMessage(tag, message, type)
+{
+    if (type === 0) { // Info message
+        console.log(`${customConsole.BgGray + customConsole.FgWhite}${tag}${customConsole.BgBlack + customConsole.FgGray} ${message}`);
+    } else if (type === 1) { // Success message
+        console.log(`${customConsole.BgGreen + customConsole.FgWhite}${tag}${customConsole.BgBlack + customConsole.FgGreen} ${message}`);
+    } else if (type === 2) { // Warn message
+        console.log(`${customConsole.BgYellow + customConsole.FgWhite}${tag}${customConsole.BgBlack + customConsole.FgYellow} ${message}`);
+    } else if (type === 3) { // Error message
+        console.log(`${customConsole.BgRed + customConsole.FgWhite}${tag}${customConsole.BgBlack + customConsole.FgRed} ${message}`);
+    }
+}
+
 router.get('/fetch/:songid', function (request, response) {
     if (request.params.songid != "all")
     {
-        const songQuery = `SELECT * FROM song WHERE id='${request.params.songid}'`;
-        customConsole.logMessage(`SQL`, `Query: ${songQuery}`, 0);
+        let songQuery = `SELECT * FROM song WHERE id='${request.params.songid}'`;
+        logMessage(`SQL`, `Query: ${songQuery}`, 0);
         
         db.get(songQuery, function(err, row)
         {
             if (typeof row != "undefined")
             {
-                const rootDir = path.join(__dirname, '..');
-
                 let thumbnail = "";
                 if (fs.existsSync(rootDir + "/public/thumbnails/" + request.params.songid + ".png")) {
                     thumbnail = `/thumbnails/${request.params.songid}.png`;
                 } else if (fs.existsSync(rootDir + "/public/thumbnails/" + request.params.songid + ".gif")) {
                     thumbnail = `/thumbnails/${request.params.songid}.gif`;
-                } else {
-
                 }
 
-                let songData = {
-                    id: row.id,
-                    artist_id: row.artist_id,
-                    name: row.name,
-                    path: `/songs/${row.id}.wav`,
-                    thumbnail_path: thumbnail,
-                    publication_date: row.publication_date,
-                    genre: row.genre,
-                    plays: row.plays
-                };
-
-                response.statusCode = 200;
-                response.send(JSON.stringify(songData));
-                return;
+                db.get(`SELECT * FROM artist WHERE id='${row.artist_id}'`, function(err, artistRow) {
+                    if (typeof artistRow != "undefined")
+                    {
+                        let songData = {
+                            id: row.id,
+                            artist_name: artistRow.username,
+                            name: row.name,
+                            path: `/songs/${row.id}.wav`,
+                            thumbnail_path: thumbnail,
+                            publication_date: row.publication_date,
+                            genre: row.genre,
+                            plays: row.plays,
+                            length: 0,
+                        };
+        
+                        response.statusCode = 200;
+                        response.send(JSON.stringify(songData));
+                        return;
+                    }
+                });
             } else {
                 response.statusCode = 404;
                 response.send(JSON.stringify({ status: "Didn't found this song" }))
@@ -61,17 +76,49 @@ router.get('/fetch/:songid', function (request, response) {
         });
     } else {
         const songQuery = `SELECT * FROM song`;
-        customConsole.logMessage(`SQL`, `Query: ${songQuery}`, 0);
+        logMessage(`SQL`, `Query: ${songQuery}`, 0);
 
         db.all(songQuery, function (err, rows) {
             if (typeof rows != "undefined")
             {
-                let songs = [];
-                songs.push(rows);
-                
-                response.statusCode = 200;
-                response.send(JSON.stringify(songs));
-                return;
+                let songsList = [];
+                for (let i = 0; i < rows.length; i++)
+                {
+                    let thumbnail = "";
+                    if (fs.existsSync(rootDir + "/public/thumbnails/" + rows[i].id + ".png")) {
+                        thumbnail = `/thumbnails/${rows[i].id}.png`;
+                    } else if (fs.existsSync(rootDir + "/public/thumbnails/" + rows[i].id + ".gif")) {
+                        thumbnail = `/thumbnails/${rows[i].id}.gif`;
+                    }
+
+                    db.get(`SELECT * FROM artist WHERE id='${rows[i].artist_id}'`, function(err, artistRow) {
+                        if (typeof artistRow != "undefined")
+                        {
+                            let songData = {
+                                id: rows[i].id,
+                                artist_name: artistRow.username,
+                                name: rows[i].name,
+                                path: `/songs/${rows[i].id}.wav`,
+                                thumbnail_path: thumbnail,
+                                publication_date: rows[i].publication_date,
+                                genre: rows[i].genre,
+                                plays: rows[i].plays,
+                                length: 0,
+                            };
+
+                            songsList.push(songData)
+
+                            if (i === rows.length - 1)
+                            {
+                                response.statusCode = 200;
+                                response.send(JSON.stringify(songsList));
+                                return;
+                            }
+                        } else {
+                            
+                        }
+                    });
+                }
             } else {
                 response.statusCode = 404;
                 response.send(JSON.stringify({ status: "Songs database is empty"}));
@@ -85,22 +132,35 @@ router.get("/play/:songid", function (request, response) {
     if (request.params.songid)
     {
         const songQuery = `SELECT * FROM song WHERE id='${request.params.songid}'`;
-        customConsole.logMessage(`SQL`, `Query: ${songQuery}`, 0);
+        logMessage(`SQL`, `Query: ${songQuery}`, 0);
         
         db.get(songQuery, function(err, row)
         {
             if (typeof row != "undefined")
             {
-                let songData = {
-                    id: row.id,
-                    artist_name: artistRow.name,
-                    name: row.name,
-                    path: `/songs/${row.id}.wav`,
-                    thumbnail_path: thumbnail,
-                    plays: row.plays++
-                };
+                db.get(`SELECT * FROM artist WHERE artist_id='${row.artist_id}'`, function(err, artistRow) {
+                    if (typeof artistRow != "undefined")
+                    {
+                        let songData = {
+                            id: row.id,
+                            artist_name: artistRow.name,
+                            name: row.name,
+                            path: `/songs/${row.id}.wav`,
+                            thumbnail_path: thumbnail,
+                            plays: row.plays++
+                        };
 
-                db.run(`UPDATE song SET plays=${row.plays++} WHERE id='${request.params.songid}'`);
+                        db.run(`UPDATE song SET plays=${row.plays++} WHERE id='${request.params.songid}'`);
+
+                        response.statusCode = 200;
+                        response.send(JSON.stringify(songData));
+                        return;
+                    }
+                });
+            } else {
+                response.statusCode = 404;
+                response.send(JSON.stringify({ status: "Didn't found this song" }));
+                return;
             }
         });
     }
@@ -126,7 +186,7 @@ router.post('/upload', function (request, response) {
                             if (err) {
                                 return console.log(err.message);
                             }
-                            customConsole.logMessage("API", `Proccesing upload a song with ID ${this.lastID}`, 0);
+                            logMessage("API", `Proccesing upload a song with ID ${this.lastID}`, 0);
 
                             let songUploadPath = rootDir + "/public/songs/" + this.lastID + ".wav";
                             let thumbnailUploadPath = "";
@@ -145,18 +205,16 @@ router.post('/upload', function (request, response) {
 
                             try {
                                 songFile.mv(songUploadPath, function (err) {
-                                    customConsole.logMessage("API", `Successfully uploaded songfile (ID: ${this.lastID}) on server`, 3);
+                                    logMessage("API", `Successfully uploaded songfile (ID: ${this.lastID}) on server`, 3);
                                 });
 
                                 thumbnailFile.mv(thumbnailUploadPath, function (err) {
-                                    customConsole.logMessage("API", `Successfully uploaded thumbnail file (ID: ${this.lastID}) on server`, 3);
+                                    logMessage("API", `Successfully uploaded thumbnail file (ID: ${this.lastID}) on server`, 3);
                                 });
                             } catch {
-                                customConsole.logMessage("API", "Failed with upload song on the server", 3);
+                                logMessage("API", "Failed with upload song on the server", 3);
                             }
                         });
-
-
                     }
                 });
             }
