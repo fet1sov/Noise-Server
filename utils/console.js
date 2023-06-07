@@ -44,4 +44,19 @@ let printColoredMessage = function() {
         + message
         + "\x1b[0m");
 };
+
+let logMessage = function(tag, message, type)
+{
+    if (type === 0) { // Info message
+        console.log(`${customConsole.BgGray + customConsole.FgWhite}${tag}${customConsole.BgBlack + customConsole.FgGray} ${message}`);
+    } else if (type === 1) { // Success message
+        console.log(`${customConsole.BgGreen + customConsole.FgWhite}${tag}${customConsole.BgBlack + customConsole.FgGreen} ${message}`);
+    } else if (type === 2) { // Warn message
+        console.log(`${customConsole.BgYellow + customConsole.FgWhite}${tag}${customConsole.BgBlack + customConsole.FgYellow} ${message}`);
+    } else if (type === 3) { // Error message
+        console.log(`${customConsole.BgRed + customConsole.FgWhite}${tag}${customConsole.BgBlack + customConsole.FgRed} ${message}`);
+    }
+}
+
 module.exports.printColoredMessage = printColoredMessage;
+module.exports.logMessage = logMessage;

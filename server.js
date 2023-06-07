@@ -12,10 +12,14 @@ const customConsole = require("./utils/console.js");
 /* API ROUTES */
 const API_ROOT = "/api";
 
+const songsRoute = require("./api/songs.js");
+app.use(API_ROOT + '/songs', songsRoute);
+
 const userRoute = require("./api/user.js");
 app.use(API_ROOT + '/user', userRoute);
 /* ------------ */
 
+app.use(express.static(__dirname + '/public'), router);
 let httpServer = http.createServer(app).listen(serverConfig.port);
 
 if (httpServer.listening)
