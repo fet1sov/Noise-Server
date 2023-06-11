@@ -152,7 +152,7 @@ router.post('/register', function (request, response) {
 
             let passMD5 = crypto.createHash('md5').update(request.body.password).digest('hex');
 
-            consoleLogs.logMessage(`SQL`, query, 1);
+            logMessage(`SQL`, query, 1);
             db.run(`INSERT INTO user VALUES(NULL, '${accessToken}', '${login}', '${passMD5}', '${request.body.email.trim()}', '0', '0')`);
             db.run(`INSERT INTO username VALUES(NULL, '${login}', '0', 'undefined')`);
 

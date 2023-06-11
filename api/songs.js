@@ -55,7 +55,7 @@ router.get('/fetch/:songid', function (request, response) {
                             id: row.id,
                             artist_name: artistRow.username,
                             name: row.name,
-                            path: `/songs/${row.id}.wav`,
+                            path: `/songs/${row.id}.mp3`,
                             thumbnail_path: thumbnail,
                             publication_date: row.publication_date,
                             genre: row.genre,
@@ -98,7 +98,7 @@ router.get('/fetch/:songid', function (request, response) {
                                 id: rows[i].id,
                                 artist_name: artistRow.username,
                                 name: rows[i].name,
-                                path: `/songs/${rows[i].id}.wav`,
+                                path: `/songs/${rows[i].id}.mp3`,
                                 thumbnail_path: thumbnail,
                                 publication_date: rows[i].publication_date,
                                 genre: rows[i].genre,
@@ -106,7 +106,7 @@ router.get('/fetch/:songid', function (request, response) {
                                 length: 0,
                             };
 
-                            songsList.push(songData)
+                            songsList.push(songData);
 
                             if (i === rows.length - 1)
                             {
@@ -145,7 +145,7 @@ router.get("/play/:songid", function (request, response) {
                             id: row.id,
                             artist_name: artistRow.name,
                             name: row.name,
-                            path: `/songs/${row.id}.wav`,
+                            path: `/songs/${row.id}.png`,
                             thumbnail_path: thumbnail,
                             plays: row.plays++
                         };
@@ -188,7 +188,7 @@ router.post('/upload', function (request, response) {
                             }
                             logMessage("API", `Proccesing upload a song with ID ${this.lastID}`, 0);
 
-                            let songUploadPath = rootDir + "/public/songs/" + this.lastID + ".wav";
+                            let songUploadPath = rootDir + "/public/songs/" + this.lastID + ".mp3";
                             let thumbnailUploadPath = "";
 
                             let thumbnailExtension = "";

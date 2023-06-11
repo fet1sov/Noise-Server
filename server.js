@@ -12,6 +12,9 @@ const customConsole = require("./utils/console.js");
 /* API ROUTES */
 const API_ROOT = "/api";
 
+const studioRoute = require("./api/studio.js");
+app.use(API_ROOT + '/studio', studioRoute);
+
 const songsRoute = require("./api/songs.js");
 app.use(API_ROOT + '/songs', songsRoute);
 
