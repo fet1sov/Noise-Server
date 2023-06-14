@@ -16,6 +16,19 @@ const db = new sqlite3.Database('database.db');
 
 const rootDir = path.join(__dirname, '..');
 
+function logMessage(tag, message, type)
+{
+    if (type === 0) { // Info message
+        console.log(`${customConsole.BgGray + customConsole.FgWhite}${tag}${customConsole.BgBlack + customConsole.FgGray} ${message}`);
+    } else if (type === 1) { // Success message
+        console.log(`${customConsole.BgGreen + customConsole.FgWhite}${tag}${customConsole.BgBlack + customConsole.FgGreen} ${message}`);
+    } else if (type === 2) { // Warn message
+        console.log(`${customConsole.BgYellow + customConsole.FgWhite}${tag}${customConsole.BgBlack + customConsole.FgYellow} ${message}`);
+    } else if (type === 3) { // Error message
+        console.log(`${customConsole.BgRed + customConsole.FgWhite}${tag}${customConsole.BgBlack + customConsole.FgRed} ${message}`);
+    }
+}
+
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 router.get('/fetch/id/:artistId', function (request, response) {
@@ -25,6 +38,13 @@ router.get('/fetch/id/:artistId', function (request, response) {
         db.get(query, function(err, row) {
             if (typeof row != "undefined")
             {
+                let bannerURL = "";
+                if (fs.existsSync(rootDir + "/public/banner/" + row.id + ".png")) {
+                    bannerURL = `/banner/${row.id}.png`;
+                } else if (fs.existsSync(rootDir + "/public/banner/" + row.id + ".gif")) {
+                    bannerURL = `/banner/${row.id}.gif`;
+                }
+
                 let artistData = {
                     id: row.id,
                     belong_id: row.belong_id,
@@ -32,6 +52,7 @@ router.get('/fetch/id/:artistId', function (request, response) {
                     description: row.description,
                     location: row.location,
                     genre: row.genre,
+                    banner: bannerURL
                 };
 
                 response.statusCode = 200;
@@ -53,6 +74,13 @@ router.get('/fetch/name/:artistName', function (request, response) {
         db.get(query, function(err, row) {
             if (typeof row != "undefined")
             {
+                let bannerURL = "";
+                if (fs.existsSync(rootDir + "/public/banner/" + row.id + ".png")) {
+                    bannerURL = `/banner/${row.id}.png`;
+                } else if (fs.existsSync(rootDir + "/public/banner/" + row.id + ".gif")) {
+                    bannerURL = `/banner/${row.id}.gif`;
+                }
+
                 let artistData = {
                     id: row.id,
                     belong_id: row.belong_id,
@@ -60,6 +88,7 @@ router.get('/fetch/name/:artistName', function (request, response) {
                     description: row.description,
                     location: row.location,
                     genre: row.genre,
+                    banner: bannerURL
                 };
 
                 response.statusCode = 200;
@@ -68,6 +97,43 @@ router.get('/fetch/name/:artistName', function (request, response) {
             } else {
                 response.statusCode = 404;
                 response.send(JSON.stringify({ status: "Not found by this artistName" }));
+                return;
+            }
+        });
+    }
+});
+
+router.get('/fetch/userid/:userid', function (request, response) {
+    if (request.params.userid)
+    {
+        logMessage("API [ARTIST]", "Got a request fetching by UID: " + request.params.userid, 0)
+        let query = `SELECT * FROM artist WHERE belong_id='${request.params.userid}'`;
+        db.get(query, function(err, row) {
+            if (typeof row != "undefined")
+            {
+                let bannerURL = "";
+                if (fs.existsSync(rootDir + "/public/banner/" + row.id + ".png")) {
+                    bannerURL = `/banner/${row.id}.png`;
+                } else if (fs.existsSync(rootDir + "/public/banner/" + row.id + ".gif")) {
+                    bannerURL = `/banner/${row.id}.gif`;
+                }
+
+                let artistData = {
+                    id: row.id,
+                    belong_id: row.belong_id,
+                    username: row.username,
+                    description: row.description,
+                    location: row.location,
+                    genre: row.genre,
+                    banner: bannerURL
+                };
+
+                response.statusCode = 200;
+                response.send(JSON.stringify(artistData));
+                return;
+            } else {
+                response.statusCode = 404;
+                response.send(JSON.stringify({ status: "Not found artist card by this user id" }));
                 return;
             }
         });

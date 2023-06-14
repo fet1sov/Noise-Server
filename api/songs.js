@@ -62,6 +62,8 @@ router.get('/fetch/:songid', function (request, response) {
                             plays: row.plays,
                             length: 0,
                         };
+
+                        db.run(`UPDATE song SET plays='${row.plays++}' WHERE id='${request.params.songid}'`);
         
                         response.statusCode = 200;
                         response.send(JSON.stringify(songData));
@@ -122,44 +124,6 @@ router.get('/fetch/:songid', function (request, response) {
             } else {
                 response.statusCode = 404;
                 response.send(JSON.stringify({ status: "Songs database is empty"}));
-                return;
-            }
-        });
-    }
-});
-
-router.get("/play/:songid", function (request, response) {
-    if (request.params.songid)
-    {
-        const songQuery = `SELECT * FROM song WHERE id='${request.params.songid}'`;
-        logMessage(`SQL`, `Query: ${songQuery}`, 0);
-        
-        db.get(songQuery, function(err, row)
-        {
-            if (typeof row != "undefined")
-            {
-                db.get(`SELECT * FROM artist WHERE artist_id='${row.artist_id}'`, function(err, artistRow) {
-                    if (typeof artistRow != "undefined")
-                    {
-                        let songData = {
-                            id: row.id,
-                            artist_name: artistRow.name,
-                            name: row.name,
-                            path: `/songs/${row.id}.png`,
-                            thumbnail_path: thumbnail,
-                            plays: row.plays++
-                        };
-
-                        db.run(`UPDATE song SET plays=${row.plays++} WHERE id='${request.params.songid}'`);
-
-                        response.statusCode = 200;
-                        response.send(JSON.stringify(songData));
-                        return;
-                    }
-                });
-            } else {
-                response.statusCode = 404;
-                response.send(JSON.stringify({ status: "Didn't found this song" }));
                 return;
             }
         });
