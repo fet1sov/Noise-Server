@@ -18,8 +18,7 @@ router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(fileUpload());
 
-function logMessage(tag, message, type)
-{
+function logMessage(tag, message, type) {
     if (type === 0) { // Info message
         console.log(`${customConsole.BgGray + customConsole.FgWhite}${tag}${customConsole.BgBlack + customConsole.FgGray} ${message}`);
     } else if (type === 1) { // Success message
@@ -32,15 +31,12 @@ function logMessage(tag, message, type)
 }
 
 router.get('/fetch/:songid', function (request, response) {
-    if (request.params.songid != "all")
-    {
+    if (request.params.songid != "all") {
         let songQuery = `SELECT * FROM song WHERE id='${request.params.songid}'`;
         logMessage(`SQL`, `Query: ${songQuery}`, 0);
-        
-        db.get(songQuery, function(err, row)
-        {
-            if (typeof row != "undefined")
-            {
+
+        db.get(songQuery, function (err, row) {
+            if (typeof row != "undefined") {
                 let thumbnail = "";
                 if (fs.existsSync(rootDir + "/public/thumbnails/" + request.params.songid + ".png")) {
                     thumbnail = `/thumbnails/${request.params.songid}.png`;
@@ -48,9 +44,8 @@ router.get('/fetch/:songid', function (request, response) {
                     thumbnail = `/thumbnails/${request.params.songid}.gif`;
                 }
 
-                db.get(`SELECT * FROM artist WHERE id='${row.artist_id}'`, function(err, artistRow) {
-                    if (typeof artistRow != "undefined")
-                    {
+                db.get(`SELECT * FROM artist WHERE id='${row.artist_id}'`, function (err, artistRow) {
+                    if (typeof artistRow != "undefined") {
                         let songData = {
                             id: row.id,
                             artist_name: artistRow.username,
@@ -64,7 +59,7 @@ router.get('/fetch/:songid', function (request, response) {
                         };
 
                         db.run(`UPDATE song SET plays='${row.plays++}' WHERE id='${request.params.songid}'`);
-        
+
                         response.statusCode = 200;
                         response.send(JSON.stringify(songData));
                         return;
@@ -81,11 +76,9 @@ router.get('/fetch/:songid', function (request, response) {
         logMessage(`SQL`, `Query: ${songQuery}`, 0);
 
         db.all(songQuery, function (err, rows) {
-            if (typeof rows != "undefined")
-            {
+            if (typeof rows != "undefined") {
                 let songsList = [];
-                for (let i = 0; i < rows.length; i++)
-                {
+                for (let i = 0; i < rows.length; i++) {
                     let thumbnail = "";
                     if (fs.existsSync(rootDir + "/public/thumbnails/" + rows[i].id + ".png")) {
                         thumbnail = `/thumbnails/${rows[i].id}.png`;
@@ -93,9 +86,8 @@ router.get('/fetch/:songid', function (request, response) {
                         thumbnail = `/thumbnails/${rows[i].id}.gif`;
                     }
 
-                    db.get(`SELECT * FROM artist WHERE id='${rows[i].artist_id}'`, function(err, artistRow) {
-                        if (typeof artistRow != "undefined")
-                        {
+                    db.get(`SELECT * FROM artist WHERE id='${rows[i].artist_id}'`, function (err, artistRow) {
+                        if (typeof artistRow != "undefined") {
                             let songData = {
                                 id: rows[i].id,
                                 artist_name: artistRow.username,
@@ -110,43 +102,89 @@ router.get('/fetch/:songid', function (request, response) {
 
                             songsList.push(songData);
 
-                            if (i === rows.length - 1)
-                            {
+                            if (i === rows.length - 1) {
                                 response.statusCode = 200;
                                 response.send(JSON.stringify(songsList));
                                 return;
                             }
                         } else {
-                            
+
                         }
                     });
                 }
             } else {
                 response.statusCode = 404;
-                response.send(JSON.stringify({ status: "Songs database is empty"}));
+                response.send(JSON.stringify({ status: "Songs database is empty" }));
                 return;
             }
         });
     }
 });
 
+router.get('/lastsong/:userId', function (request, response) {
+    if (request.params.userId) {
+        let userQuery = `SELECT * FROM artist WHERE belong_id='${request.params.userId}'`;
+        db.get(userQuery, function (err, artistRow) {
+            let query = `SELECT * FROM song WHERE artist_id='${artistRow.id}'`;
+            db.all(query, function (err, rows) {
+                if (rows.length != 0) {
+                    rows.sort(function (a, b) {
+                        return b.publication_date - a.publication_date;
+                    });
+
+                    let thumbnail = "";
+                    if (fs.existsSync(rootDir + "/public/thumbnails/" + rows[0].id + ".png")) {
+                        thumbnail = `/thumbnails/${rows[0].id}.png`;
+                    } else if (fs.existsSync(rootDir + "/public/thumbnails/" + rows[0].id + ".gif")) {
+                        thumbnail = `/thumbnails/${rows[0].id}.gif`;
+                    }
+
+                    db.get(`SELECT * FROM artist WHERE id='${rows[0].artist_id}'`, function (err, artistRow) {
+                        if (typeof artistRow != "undefined") {
+                            let songData = {
+                                id: rows[0].id,
+                                artist_name: artistRow.username,
+                                name: rows[0].name,
+                                path: `/songs/${rows[0].id}.mp3`,
+                                thumbnail_path: thumbnail,
+                                publication_date: rows[0].publication_date,
+                                genre: rows[0].genre,
+                                plays: rows[0].plays,
+                                length: 0,
+                            };
+
+                            response.statusCode = 200;
+                            response.send(JSON.stringify(songData));
+                            return;
+                        }
+                    });
+                } else {
+                    response.send(JSON.stringify({ status: "Didn't found any song from this artist" }));
+                    response.statusCode = 404;
+                    return;
+                }
+            });
+        });
+    } else {
+        response.send(JSON.stringify({ status: "Invalid artistId param" }));
+        response.statusCode = 505;
+        return;
+    }
+});
+
 router.post('/upload', function (request, response) {
-    if (request.body.session_token) 
-    {
-        if (request.files && Object.keys(request.files).length !== 0) 
-        {
+    if (request.body.session_token) {
+        if (request.files && Object.keys(request.files).length !== 0) {
             const thumbnailFile = request.files.thumbnail;
             const songFile = request.files.song;
-            if (thumbnailFile && songFile)
-            {
+            if (thumbnailFile && songFile) {
                 let accessToken = request.body.session_token;
                 let query = `SELECT * FROM users WHERE session_token='${accessToken}'`;
 
-                db.get(query, function(err, row) {
-                    if (typeof row != "undefined")
-                    {
+                db.get(query, function (err, row) {
+                    if (typeof row != "undefined") {
                         let uploadPath = "";
-                        db.run(`INSERT INTO song VALUES (NULL, '${row.id}', '${request.body.songTitle}', ${request.body.length}, '${Date.now()}', '${genre}', '0')`, function(err) {
+                        db.run(`INSERT INTO song VALUES (NULL, '${row.id}', '${request.body.songTitle}', ${request.body.length}, '${Date.now()}', '${genre}', '0')`, function (err) {
                             if (err) {
                                 return console.log(err.message);
                             }
@@ -158,10 +196,9 @@ router.post('/upload', function (request, response) {
                             let thumbnailExtension = "";
                             thumbnailExtension = thumbnailFile.mimetype.split("/")[1];
 
-                            if (thumbnailExtension === "png" 
-                            || thumbnailExtension === "jpeg" 
-                            || thumbnailExtension === "webp")
-                            {
+                            if (thumbnailExtension === "png"
+                                || thumbnailExtension === "jpeg"
+                                || thumbnailExtension === "webp") {
                                 thumbnailUploadPath = rootDir + "/public/thumbnails/" + this.lastID + ".png";
                             } else if (uploadedFileExtension === "gif") {
                                 thumbnailUploadPath = rootDir + "/public/thumbnails/" + this.lastID + ".gif";
