@@ -58,6 +58,7 @@ router.get('/fetch/:songid', function (request, response) {
                             length: 0,
                         };
 
+                        logMessage(`SQL`, `Query: UPDATE song SET plays='${row.plays++}' WHERE id='${request.params.songid}'`, 0);
                         db.run(`UPDATE song SET plays='${row.plays++}' WHERE id='${request.params.songid}'`);
 
                         response.statusCode = 200;
@@ -221,6 +222,39 @@ router.post('/upload', function (request, response) {
             }
         }
     }
+});
+
+router.get('/genrelist/', function (request, response) {
+    logMessage("SQL", "Fetching genre list", 0);
+    db.all('SELECT * FROM genre', function(err, rows)
+    {
+        if (typeof rows != "undefined")
+        {
+            if (rows.length != 0)
+            {
+                let genreList = [];
+                for (let i = 0; i < rows.length; i++)
+                {
+                    let genreData = {
+                        id: rows[i].genre_id,
+                        name: rows[i].name,
+                    };
+                    genreList.push(genreData);
+
+                    if (i === rows.length - 1)
+                    {
+                        response.statusCode = 200;
+                        response.send(JSON.stringify(genreList));
+                        return;
+                    }
+                }
+            }
+        } else {
+            response.statusCode = 404;
+            response.send(JSON.stringify({ status: "Genre list is empty"}));
+            return;
+        }
+    });
 });
 
 module.exports = router;

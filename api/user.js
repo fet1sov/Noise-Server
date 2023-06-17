@@ -154,7 +154,6 @@ router.post('/register', function (request, response) {
 
             logMessage(`SQL`, query, 1);
             db.run(`INSERT INTO user VALUES(NULL, '${accessToken}', '${login}', '${passMD5}', '${request.body.email.trim()}', '0', '0')`);
-            db.run(`INSERT INTO username VALUES(NULL, '${login}', '0', 'undefined')`);
 
             logMessage(`SQL`, `Account has been created`, 1);
 
