@@ -174,18 +174,19 @@ router.get('/lastsong/:userId', function (request, response) {
 });
 
 router.post('/upload', function (request, response) {
+    console.log(request.files);
+
     if (request.body.session_token) {
         if (request.files && Object.keys(request.files).length !== 0) {
             const thumbnailFile = request.files.thumbnail;
             const songFile = request.files.song;
             if (thumbnailFile && songFile) {
                 let accessToken = request.body.session_token;
-                let query = `SELECT * FROM users WHERE session_token='${accessToken}'`;
+                let query = `SELECT * FROM user WHERE session_token='${accessToken}'`;
 
                 db.get(query, function (err, row) {
                     if (typeof row != "undefined") {
-                        let uploadPath = "";
-                        db.run(`INSERT INTO song VALUES (NULL, '${row.id}', '${request.body.songTitle}', ${request.body.length}, '${Date.now()}', '${genre}', '0')`, function (err) {
+                        db.run(`INSERT INTO song VALUES (NULL, '${row.id}', '${request.body.songTitle}', '${request.body.length}', '${Date.now()}', '${request.body.genre_id}', '0')`, function (err) {
                             if (err) {
                                 return console.log(err.message);
                             }
@@ -213,8 +214,15 @@ router.post('/upload', function (request, response) {
                                 thumbnailFile.mv(thumbnailUploadPath, function (err) {
                                     logMessage("API", `Successfully uploaded thumbnail file (ID: ${this.lastID}) on server`, 3);
                                 });
+
+                                response.statusCode = 200;
+                                response.send(JSON.stringify({ status: "Successfully loaded song" }));
+                                return;
                             } catch {
                                 logMessage("API", "Failed with upload song on the server", 3);
+                                response.statusCode = 503;
+                                response.send(JSON.stringify({ status: "Failed to load a song" }));
+                                return;
                             }
                         });
                     }
