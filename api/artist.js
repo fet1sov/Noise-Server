@@ -140,6 +140,38 @@ router.get('/fetch/userid/:userid', function (request, response) {
     }
 });
 
+router.post('/create', function(request, response) {
+    if (request.body.session_token)
+    {
+        let query = `SELECT * FROM user WHERE session_token='${request.body.session_token}'`;
+        db.get(query, function(err, row) {
+            if (typeof row != "undefined")
+            {
+                let selectQuery = `SELECT * FROM artist WHERE belong_id='${row.id}'`;
+                db.get(selectQuery, function(err, artistRow) {
+                    if (typeof artistRow != "undefined")
+                    {
+                        response.statusCode = 503;
+                        response.send(JSON.stringify({ status: "This user already have a artist profile" }));
+                        return;
+                    } else {
+                        let createQuery = `INSERT INTO artist VALUES(NULL, '${row.id}', '${request.body.username}', '${request.body.description}', 'Somewhere', '${request.body.genre_id}')`;
+                        db.run(createQuery);
+
+                        response.statusCode = 200;
+                        response.send(JSON.stringify({ status: "Created artist profile" }));
+                        return;
+                    }
+                });
+            } else {
+                response.statusCode = 404;
+                response.send(JSON.stringify({ status: "User not found" }));
+                return;
+            }
+        });
+    }
+});
+
 router.post('/edit', function (request, response) {
     if (request.body.session_token)
     {
@@ -147,10 +179,14 @@ router.post('/edit', function (request, response) {
         db.get(query, function(err, row) {
             if (typeof row != "undefined")
             {
-                let artistUpdateQuery = "";
-
-
-                db.run(artistUpdateQuery);
+                let selectQuery = `SELECT * FROM artist WHERE belong_id='${row.id}'`;
+                db.get(selectQuery, function(err, artistRow) {
+                    if (typeof artistRow != "undefined")
+                    {
+                        let artistUpdateQuery = ``;
+                        db.run(artistUpdateQuery);
+                    }
+                });
             } else {
                 response.statusCode = 404;
                 response.send(JSON.stringify({ status: "User not found" }));

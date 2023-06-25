@@ -180,47 +180,189 @@ router.post('/upload', function (request, response) {
             const songFile = request.files.song;
             if (thumbnailFile && songFile) {
                 let accessToken = request.body.session_token;
-                let query = `SELECT * FROM users WHERE session_token='${accessToken}'`;
+                let query = `SELECT * FROM user WHERE session_token='${accessToken}'`;
 
                 db.get(query, function (err, row) {
                     if (typeof row != "undefined") {
-                        let uploadPath = "";
-                        db.run(`INSERT INTO song VALUES (NULL, '${row.id}', '${request.body.songTitle}', ${request.body.length}, '${Date.now()}', '${genre}', '0')`, function (err) {
-                            if (err) {
-                                return console.log(err.message);
-                            }
-                            logMessage("API", `Proccesing upload a song with ID ${this.lastID}`, 0);
+                        let artistQuery = `SELECT * FROM artist WHERE belong_id='${row.id}'`;
+                        db.get(artistQuery, function (err, artistRow) {
+                            if (typeof row != "undefined") {
+                                db.run(`INSERT INTO song VALUES (NULL, '${artistRow.id}', '${request.body.song_name}', '${Date.now()}', '${request.body.genre_id}', '0')`, function (err) {
+                                    if (err) {
+                                        return console.log(err.message);
+                                    }
+                                    logMessage("API", `Proccesing upload a song with ID ${this.lastID}`, 0);
+        
+                                    let songUploadPath = rootDir + "/public/songs/" + this.lastID + ".mp3";
+                                    let thumbnailUploadPath = "";
+        
+                                    let thumbnailExtension = "";
+                                    thumbnailExtension = thumbnailFile.mimetype.split("/")[1];
+        
+                                    if (thumbnailExtension === "png"
+                                        || thumbnailExtension === "jpeg"
+                                        || thumbnailExtension === "webp") {
+                                        thumbnailUploadPath = rootDir + "/public/thumbnails/" + this.lastID + ".png";
+                                    } else if (uploadedFileExtension === "gif") {
+                                        thumbnailUploadPath = rootDir + "/public/thumbnails/" + this.lastID + ".gif";
+                                    }
+        
+                                    try {
+                                        songFile.mv(songUploadPath, function (err) {
+                                            logMessage("API", `Successfully uploaded songfile (ID: ${this.lastID}) on server`, 3);
+                                        });
+        
+                                        thumbnailFile.mv(thumbnailUploadPath, function (err) {
+                                            logMessage("API", `Successfully uploaded thumbnail file (ID: ${this.lastID}) on server`, 3);
+                                        });
 
-                            let songUploadPath = rootDir + "/public/songs/" + this.lastID + ".mp3";
-                            let thumbnailUploadPath = "";
-
-                            let thumbnailExtension = "";
-                            thumbnailExtension = thumbnailFile.mimetype.split("/")[1];
-
-                            if (thumbnailExtension === "png"
-                                || thumbnailExtension === "jpeg"
-                                || thumbnailExtension === "webp") {
-                                thumbnailUploadPath = rootDir + "/public/thumbnails/" + this.lastID + ".png";
-                            } else if (uploadedFileExtension === "gif") {
-                                thumbnailUploadPath = rootDir + "/public/thumbnails/" + this.lastID + ".gif";
-                            }
-
-                            try {
-                                songFile.mv(songUploadPath, function (err) {
-                                    logMessage("API", `Successfully uploaded songfile (ID: ${this.lastID}) on server`, 3);
+                                        response.statusCode = 200;
+                                        response.send(JSON.stringify({ status: "Successfully loaded song" }));
+                                        return;
+                                    } catch {
+                                        logMessage("API", "Failed with upload song on the server", 3);
+                                        response.statusCode = 503;
+                                        response.send(JSON.stringify({ status: "Failed to load a song" }));
+                                        return;
+                                    }
                                 });
+                            }
+                        });
+                    } else {
+                        logMessage("API", "Returned 404 HTTP code", 2);
+                        response.statusCode = 404;
+                        response.send(JSON.stringify({ status: "Not found user by session token" }));
+                        return;
+                    }
+                });
+            }
+        }
+    }
+});
 
-                                thumbnailFile.mv(thumbnailUploadPath, function (err) {
-                                    logMessage("API", `Successfully uploaded thumbnail file (ID: ${this.lastID}) on server`, 3);
-                                });
-                            } catch {
-                                logMessage("API", "Failed with upload song on the server", 3);
+router.post('/edit', function (request, response) {
+    if (request.body.session_token && request.body.song_id) {
+        let accessToken = request.body.session_token;
+        let query = `SELECT * FROM user WHERE session_token='${accessToken}'`;
+
+        let thumbnailFile = undefined;
+        let songFile = undefined;
+
+        try {
+            if (typeof request.files.thumbnail != "undefined") {
+                thumbnailFile = request.files.thumbnail;
+            }
+            
+            if (typeof request.files.song != "undefined") {
+                songFile = request.files.song;
+            }
+        } catch {
+
+        }
+
+        db.get(query, function (err, row) {
+            if (typeof row != "undefined") 
+            {
+                let artistQuery = `SELECT * FROM artist WHERE belong_id='${row.id}'`;
+                db.get(artistQuery, function (err, artistRow) 
+                {
+                    if (typeof artistRow != "undefined")
+                    {
+                        let songQuery = `SELECT * FROM song WHERE id='${request.body.song_id}'`;
+                        db.get(artistQuery, function (err, songRow) {
+                            if (typeof songRow != "undefined")
+                            {
+                                logMessage("API [SONG]", `UPDATE song SET name='${request.body.song_name}' genre='${request.body.genre_id}' WHERE id='${request.body.song_id}'`, 3);
+                                db.run(`UPDATE song SET name='${request.body.song_name}', genre='${request.body.genre_id}' WHERE id='${request.body.song_id}'`);
+
+                                if (thumbnailFile)
+                                {
+                                    let thumbnailUploadPath = "";
+        
+                                    let thumbnailExtension = "";
+                                    thumbnailExtension = thumbnailFile.mimetype.split("/")[1];
+        
+                                    if (thumbnailExtension === "png"
+                                        || thumbnailExtension === "jpeg"
+                                        || thumbnailExtension === "webp") {
+                                        thumbnailUploadPath = rootDir + "/public/thumbnails/" + this.lastID + ".png";
+                                    } else if (uploadedFileExtension === "gif") {
+                                        thumbnailUploadPath = rootDir + "/public/thumbnails/" + this.lastID + ".gif";
+                                    }
+
+                                    thumbnailFile.mv(thumbnailUploadPath, function (err) {
+                                        logMessage("API", `Successfully uploaded songfile (ID: ${this.lastID}) on server`, 3);
+                                    });
+                                }
+
+                                if (songFile)
+                                {
+                                    let songUploadPath = rootDir + "/public/songs/" + this.lastID + ".mp3";
+                                    songFile.mv(songUploadPath, function (err) {
+                                        logMessage("API", `Successfully uploaded songfile (ID: ${this.lastID}) on server`, 3);
+                                    });
+                                }
+
+                                response.statusCode = 200;
+                                response.send(JSON.stringify({ status: "Invalid song_id param" }));
+                                return;
                             }
                         });
                     }
                 });
             }
-        }
+        });
+    } else {
+        logMessage("API", "Returned 503 HTTP code", 3);
+        response.statusCode = 503;
+        response.send(JSON.stringify({ status: "Invalid song_id param" }));
+        return;
+    }
+});
+
+router.post('/delete', function (request, response) {
+    if (request.body.session_token && request.body.song_id) {
+        let accessToken = request.body.session_token;
+        let query = `SELECT * FROM user WHERE session_token='${accessToken}'`;
+
+        db.get(query, function (err, row) {
+            if (typeof row != "undefined") 
+            {
+                let artistQuery = `SELECT * FROM artist WHERE belong_id='${row.id}'`;
+                db.get(artistQuery, function (err, artistRow) 
+                {
+                    if (typeof artistRow != "undefined")
+                    {
+                        let songQuery = `SELECT * FROM song WHERE id='${request.body.song_id}'`;
+                        db.get(artistQuery, function (err, songRow) {
+                            if (typeof songRow != "undefined")
+                            {
+                                db.run(`DELETE FROM song WHERE id='${request.body.song_id}'`);
+
+                                let songDeletePath = rootDir + "/public/songs/" + request.body.song_id + ".mp3";
+                                let thumbnailDeletePath1 = rootDir + "/public/thumbnails/" + request.body.song_id + ".png";
+                                let thumbnailDeletePath2 = rootDir + "/public/thumbnails/" + request.body.song_id + ".gif";
+
+                                fs.unlink(songDeletePath, () => {});
+                                fs.unlink(thumbnailDeletePath1, () => {});
+                                fs.unlink(thumbnailDeletePath2, () => {});
+
+                                logMessage("API", "Returned 200 HTTP code", 1);
+                                logMessage("API", `Succesfully deleted song from server (ID: ${request.body.song_id})`, 1);
+                                response.statusCode = 200;
+                                response.send(JSON.stringify({ status: "Successfully deleted" }));
+                                return;
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    } else {
+        logMessage("API", "Returned 503 HTTP code", 3);
+        response.statusCode = 503;
+        response.send(JSON.stringify({ status: "Invalid song_id param" }));
+        return;
     }
 });
 

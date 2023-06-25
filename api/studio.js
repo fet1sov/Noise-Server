@@ -67,16 +67,20 @@ router.get('/songlist/:userId', function (request, response) {
                             });
                         }
                     } else {
-                        response.send(JSON.stringify({ status: "Didn't found any song from this artist" }));
                         response.statusCode = 404;
+                        response.send(JSON.stringify({ status: "Didn't found any song from this artist" }));
                         return;
                     }    
             });
+            } else {
+                response.statusCode = 506;
+                response.send(JSON.stringify({ status: "Artist card doens't exists" }));
+                return;
             }
         });
     } else {
-        response.send(JSON.stringify({ status: "Invalid artistId param" }));
         response.statusCode = 505;
+        response.send(JSON.stringify({ status: "Invalid artistId param" }));
         return;
     }
 });
