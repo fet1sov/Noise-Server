@@ -179,7 +179,7 @@ router.post('/upload', function (request, response) {
             const thumbnailFile = request.files.thumbnail;
             const songFile = request.files.song;
             if (thumbnailFile && songFile) {
-                let accessToken = request.body.session_token;
+                let accessToken = request.body.session_token;lastId
                 let query = `SELECT * FROM user WHERE session_token='${accessToken}'`;
 
                 db.get(query, function (err, row) {
@@ -272,7 +272,7 @@ router.post('/edit', function (request, response) {
                         db.get(artistQuery, function (err, songRow) {
                             if (typeof songRow != "undefined")
                             {
-                                logMessage("API [SONG]", `UPDATE song SET name='${request.body.song_name}' genre='${request.body.genre_id}' WHERE id='${request.body.song_id}'`, 3);
+                                logMessage("API [SONG]", `UPDATE song SET name='${request.body.song_name}', genre='${request.body.genre_id}' WHERE id='${request.body.song_id}'`, 3);
                                 db.run(`UPDATE song SET name='${request.body.song_name}', genre='${request.body.genre_id}' WHERE id='${request.body.song_id}'`);
 
                                 if (thumbnailFile)
