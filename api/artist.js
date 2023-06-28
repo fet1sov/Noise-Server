@@ -31,6 +31,8 @@ function logMessage(tag, message, type)
 
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
+router.use(fileUpload());
+
 router.get('/fetch/id/:artistId', function (request, response) {
     if (request.params.artistId)
     {
@@ -148,6 +150,8 @@ router.post('/edit', function (request, response) {
             if (typeof row != "undefined")
             {
                 let thumbnailFile = undefined;
+                let thumbnailUploadPath = "";
+                let thumbnailExtension = "";
                 try {
                     if (typeof request.files.thumbnail != "undefined") {
                         thumbnailFile = request.files.thumbnail;
@@ -156,55 +160,83 @@ router.post('/edit', function (request, response) {
 
                 }
 
-                let thumbnailUploadPath = "";
-
-                let thumbnailExtension = "";
-                thumbnailExtension = thumbnailFile.mimetype.split("/")[1];
-
-                if (thumbnailExtension === "png"
-                    || thumbnailExtension === "jpeg"
-                    || thumbnailExtension === "webp") {
-                    thumbnailUploadPath = rootDir + "/public/banner/" + artistRow.id + ".png";
-                } else if (uploadedFileExtension === "gif") {
-                    thumbnailUploadPath = rootDir + "/public/banner/" + artistRow.id + ".gif";
-                }
-
                 let selectQuery = `SELECT * FROM artist WHERE belong_id='${row.id}'`;
                 db.get(selectQuery, function(err, artistRow) {
                     if (typeof artistRow != "undefined")
                     {
-                        fs.unlink(thumbnailUploadPath, () => {});
-                        if (typeof thumbnailFile != "undefined")
-                        {
-                            thumbnailFile.mv(thumbnailUploadPath, function (err) {
-                                logMessage("API", `Successfully uploaded thumbnail file (ID: ${artistRow.id}) on server`, 3);
-                            });
-                        }
-
-                        let artistUpdateQuery = `UPDATE artist SET username='${request.body.username}', description='${request.body.description}', genre='${request.body.genre_id}'`;
-                        db.run(artistUpdateQuery);
-
-                        response.statusCode = 200;
-                        response.send(JSON.stringify({ status: "Succesfully edited artist profile" }));
-                        return;
-                    } else {
-                        let createQuery = `INSERT INTO artist VALUES(NULL, '${row.id}', '${request.body.username}', '${request.body.description}', 'Somewhere', '${request.body.genre_id}')`;
-                        db.run(createQuery, function (err) {
-                            if (err) {
-                                return console.log(err.message);
-                            }
-
-                            if (typeof thumbnailFile != "undefined")
+                        let occupyQuery = `SELECT * FROM artist WHERE UPPER(username) LIKE UPPER('${request.body.username}')`;
+                        db.get(occupyQuery, function(err, occupyRow) {
+                            if (typeof occupyRow != "undefined")
                             {
-                                thumbnailFile.mv(thumbnailUploadPath, function (err) {
-                                    logMessage("API", `Successfully uploaded thumbnail file (ID: ${artistRow.id}) on server`, 3);
-                                });
+                                response.statusCode = 504;
+                                response.send(JSON.stringify({ status: "Name already occupied" }));
+                                return;
+                            } else {
+                                fs.unlink(thumbnailUploadPath, () => {});
+                                if (typeof thumbnailFile != "undefined")
+                                {
+                                    thumbnailExtension = thumbnailFile.mimetype.split("/")[1];
+                                    if (thumbnailExtension === "png"
+                                        || thumbnailExtension === "jpeg"
+                                        || thumbnailExtension === "webp") {
+                                        thumbnailUploadPath = rootDir + "/public/banner/" + artistRow.id + ".png";
+                                    } else if (uploadedFileExtension === "gif") {
+                                        thumbnailUploadPath = rootDir + "/public/banner/" + artistRow.id + ".gif";
+                                    }
+
+                                    thumbnailFile.mv(thumbnailUploadPath, function (err) {
+                                        logMessage("API", `Successfully uploaded thumbnail file (ID: ${artistRow.id}) on server`, 3);
+                                    });
+                                }
+
+                                logMessage("SQL", `UPDATE artist SET username='${request.body.username}', description='${request.body.description}', genre='${request.body.genre_id}'`, 2);
+                                let artistUpdateQuery = `UPDATE artist SET username='${request.body.username}', description='${request.body.description}', genre='${request.body.genre_id}' WHERE id='${artistRow.id}'`;
+                                db.run(artistUpdateQuery);
+
+                                response.statusCode = 200;
+                                response.send(JSON.stringify({ status: "Succesfully edited artist profile" }));
+                                return;
                             }
                         });
+                    } else {
+                        let occupyQuery = `SELECT * FROM artist WHERE UPPER(username) LIKE UPPER('${request.body.username}')`;
+                        db.get(occupyQuery, function(err, occupyRow) {
+                            if (typeof occupyRow != "undefined")
+                            {
+                                response.statusCode = 504;
+                                response.send(JSON.stringify({ status: "Name already occupied" }));
+                                return;
+                            } else {
+                                let createQuery = `INSERT INTO artist VALUES(NULL, '${row.id}', '${request.body.username}', '${request.body.description}', 'Somewhere', '${request.body.genre_id}')`;
+                                db.run(createQuery, function (err) {
+                                    if (err) {
+                                        return console.log(err.message);
+                                    }
 
-                        response.statusCode = 200;
-                        response.send(JSON.stringify({ status: "Created artist profile" }));
-                        return;
+                                    if (typeof thumbnailFile != "undefined")
+                                    {
+                                        thumbnailExtension = thumbnailFile.mimetype.split("/")[1];
+                                        if (thumbnailExtension === "png"
+                                            || thumbnailExtension === "jpeg"
+                                            || thumbnailExtension === "webp") {
+                                            thumbnailUploadPath = rootDir + "/public/banner/" + artistRow.id + ".png";
+                                        } else if (uploadedFileExtension === "gif") {
+                                            thumbnailUploadPath = rootDir + "/public/banner/" + artistRow.id + ".gif";
+                                        }
+
+                                        thumbnailFile.mv(thumbnailUploadPath, function (err) {
+                                            logMessage("API", `Successfully uploaded thumbnail file (ID: ${artistRow.id}) on server`, 3);
+                                        });
+                                    }
+                                });
+
+                                logMessage("SQL", `INSERT INTO artist VALUES(NULL, '${row.id}', '${request.body.username}', '${request.body.description}', 'Somewhere', '${request.body.genre_id}')`, 2);
+
+                                response.statusCode = 200;
+                                response.send(JSON.stringify({ status: "Created artist profile" }));
+                                return;
+                            }
+                        });
                     }
                 });
             } else {
