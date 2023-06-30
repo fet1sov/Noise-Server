@@ -445,7 +445,7 @@ router.get('/search/:term', function (request, response) {
                     }
                 } else {
                     response.statusCode = 404;
-                    response.send(JSON.stringify({ status: "Songs database is empty" }));
+                    response.send(JSON.stringify({ status: "Nothing found" }));
                     return;
                 }
             });

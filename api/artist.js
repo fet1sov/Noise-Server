@@ -108,7 +108,7 @@ router.get('/fetch/name/:artistName', function (request, response) {
 router.get('/fetch/userid/:userid', function (request, response) {
     if (request.params.userid)
     {
-        logMessage("API [ARTIST]", "Got a request fetching by UID: " + request.params.userid, 0)
+        logMessage("API [ARTIST]", "Got a request fetching by UID: " + request.params.userid, 0);
         let query = `SELECT * FROM artist WHERE belong_id='${request.params.userid}'`;
         db.get(query, function(err, row) {
             if (typeof row != "undefined")
@@ -168,9 +168,37 @@ router.post('/edit', function (request, response) {
                         db.get(occupyQuery, function(err, occupyRow) {
                             if (typeof occupyRow != "undefined")
                             {
-                                response.statusCode = 504;
-                                response.send(JSON.stringify({ status: "Name already occupied" }));
-                                return;
+                                if (occupyRow.id != artistRow.id)
+                                {
+                                    response.statusCode = 504;
+                                    response.send(JSON.stringify({ status: "Name already occupied" }));
+                                    return;
+                                } else {
+                                    fs.unlink(thumbnailUploadPath, () => {});
+                                    if (typeof thumbnailFile != "undefined")
+                                    {
+                                        thumbnailExtension = thumbnailFile.mimetype.split("/")[1];
+                                        if (thumbnailExtension === "png"
+                                            || thumbnailExtension === "jpeg"
+                                            || thumbnailExtension === "webp") {
+                                            thumbnailUploadPath = rootDir + "/public/banner/" + artistRow.id + ".png";
+                                        } else if (uploadedFileExtension === "gif") {
+                                            thumbnailUploadPath = rootDir + "/public/banner/" + artistRow.id + ".gif";
+                                        }
+
+                                        thumbnailFile.mv(thumbnailUploadPath, function (err) {
+                                            logMessage("API", `Successfully uploaded thumbnail file (ID: ${artistRow.id}) on server`, 3);
+                                        });
+                                    }
+
+                                    logMessage("SQL", `UPDATE artist SET username='${request.body.username}', description='${request.body.description}', genre='${request.body.genre_id}'`, 2);
+                                    let artistUpdateQuery = `UPDATE artist SET username='${request.body.username}', description='${request.body.description}', genre='${request.body.genre_id}' WHERE id='${artistRow.id}'`;
+                                    db.run(artistUpdateQuery);
+
+                                    response.statusCode = 200;
+                                    response.send(JSON.stringify({ status: "Succesfully edited artist profile" }));
+                                    return;
+                                }
                             } else {
                                 fs.unlink(thumbnailUploadPath, () => {});
                                 if (typeof thumbnailFile != "undefined")
@@ -219,13 +247,13 @@ router.post('/edit', function (request, response) {
                                         if (thumbnailExtension === "png"
                                             || thumbnailExtension === "jpeg"
                                             || thumbnailExtension === "webp") {
-                                            thumbnailUploadPath = rootDir + "/public/banner/" + artistRow.id + ".png";
+                                            thumbnailUploadPath = rootDir + "/public/banner/" + this.lastID + ".png";
                                         } else if (uploadedFileExtension === "gif") {
-                                            thumbnailUploadPath = rootDir + "/public/banner/" + artistRow.id + ".gif";
+                                            thumbnailUploadPath = rootDir + "/public/banner/" + this.lastID + ".gif";
                                         }
 
                                         thumbnailFile.mv(thumbnailUploadPath, function (err) {
-                                            logMessage("API", `Successfully uploaded thumbnail file (ID: ${artistRow.id}) on server`, 3);
+                                            logMessage("API", `Successfully uploaded thumbnail file (ID: ${this.lastID}) on server`, 3);
                                         });
                                     }
                                 });

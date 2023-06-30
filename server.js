@@ -23,6 +23,9 @@ app.use(API_ROOT + '/songs', songsRoute);
 
 const userRoute = require("./api/user.js");
 app.use(API_ROOT + '/user', userRoute);
+
+const playlistRoute = require("./api/playlist.js");
+app.use(API_ROOT + '/playlist', playlistRoute);
 /* ------------ */
 
 app.use(express.static(__dirname + '/public'), router);
