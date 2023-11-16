@@ -1,0 +1,28 @@
+:root {
+    --primary-color: #000000;
+    --secondary-color: #171717;
+
+    --primary-text-color: #FFFFFF;
+    --secondary-text-color: #6e6e6e;
+
+    --accent-color: #08ec00;
+    --accent-color-hover: #08ec00;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../fonts/Montserrat-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+ul {
+    list-style: none;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+
+    color: var(--accent-color);
+    background-color: var(--primary-color);
+}

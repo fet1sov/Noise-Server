@@ -30,35 +30,18 @@ app.use(API_ROOT + '/user', userRoute);
 const playlistRoute = require("./api/playlist.js");
 app.use(API_ROOT + '/playlist', playlistRoute);
 
-const pageRoute = require("./pages.js");
-app.use('/', pageRoute);
-/* ------------ */
-
 app.use(express.static(__dirname + '/public'), router);
+app.use(express.static(__dirname + '/views/public'), router);
+
+if (serverConfig.web)
+{
+    const pageRoute = require("./pages.js");
+    app.use('/', pageRoute);
+}
+
+/* ------------ */
 app.set('view engine', 'ejs');
 let httpServer = http.createServer(app).listen(serverConfig.port);
-
-
-let publicdir = __dirname + '/web';
-
-app.use(function (req, res, next) {
-    if (req.path.indexOf('.') === -1) {
-        let file = publicdir + req.path + '.html';
-        fs.exists(file, function (exists) {
-            if (exists)
-                req.url += '.html';
-            next();
-        });
-    }
-    else
-        next();
-});
-app.use(express.static(publicdir), router);
-
-app.get('*', function (request, response) {
-    response.statusCode = 404;
-    response.sendFile("404.html", { root: path.join(__dirname, '/web') });
-});
 
 if (httpServer.listening)
 {
