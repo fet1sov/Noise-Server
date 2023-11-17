@@ -7,8 +7,40 @@
 
     <%- include('elems/styles.ejs', {}); %>
 
+    <link rel="stylesheet" href="styles/index.css"/>
+
 </head>
 <body>
-    <%- include('elems/header.ejs', {}); %>
+    <%- include('elems/header.ejs', { isIndex: true }); %>
+
+    <main>
+        <div class="welcome-block">
+            <div class="description-block">
+                <div class="welcome-text">
+                    <%- locale.welcome_message %> <div class="brand-name-text">Noise</div>
+                </div>
+                <div class="description-text">
+                    <%- locale.welcome_description %>
+                </div>
+            </div>
+
+            <div class="equalizer-block">
+                <div class="equalizer">
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                  </div>
+            </div>
+        </div>
+    </main>
 </body>
 </html>

@@ -1,12 +1,15 @@
 :root {
-    --primary-color: #000000;
+    --primary-color: #101010;
     --secondary-color: #171717;
 
     --primary-text-color: #FFFFFF;
     --secondary-text-color: #6e6e6e;
 
-    --accent-color: #08ec00;
-    --accent-color-hover: #08ec00;
+    --accent-color: #0023ec;
+    --accent-color-hover: #1800ec;
+
+    --big-font-size: 48px;
+    --small-font-size: 32px;
 }
 
 @font-face {
@@ -25,4 +28,27 @@ body {
 
     color: var(--accent-color);
     background-color: var(--primary-color);
+}
+
+.main-nav-list {
+    background-color: var(--secondary-color);
+    font-weight: bold;
+
+    padding: 5px;
+
+    display: flex;
+    justify-content: space-between;
+    vertical-align: middle;
+    align-items: center;
+}
+
+.small-logo {
+    width: 64px;
+    height: 64px;
+
+    fill: var(--accent-color);
+}
+
+.small-logo:hover {
+    fill: var(--accent-color-hover);
 }

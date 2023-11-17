@@ -1,5 +1,27 @@
 <nav>
     <ul class="main-nav-list">
-        <li class="main-nav-item"><a>TEST</a></li>
+        <% if(isIndex) { %>
+            <li class="main-nav-item">
+                <a>
+                    <svg class="small-logo" fill="#000000" width="800px" height="800px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M26 17l-3 3-3-3-3 3-3-3-3 3-6-6 3-3 3 3 3-3 3 3 3-3 6 6z"></path>
+                    </svg>
+                </a>
+            </li>
+        <% } else { %>
+            <li class="main-nav-item">
+                <a href="../../">
+                    <svg class="small-logo" fill="#000000" width="800px" height="800px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M26 17l-3 3-3-3-3 3-3-3-3 3-6-6 3-3 3 3 3-3 3 3 3-3 6 6z"></path>
+                    </svg>
+                </a>
+            </li>
+        <% } %>
+
+        <li class="main-nav-item">
+            <a href="../signin">
+                <%= locale.auth_button %>
+            </a>
+        </li>
     </ul>
 </nav>
