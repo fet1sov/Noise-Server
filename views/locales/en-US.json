@@ -1,5 +1,15 @@
 {
     "auth_button" : "Join",
     "welcome_message" : "Welcome to the ",
-    "welcome_description" : "Audio-streaming platform for listening the music in high quality :)"
+    "welcome_description" : "Audio-streaming platform for listening the music in high quality. Listen in app or directly from your browser",
+    "download_button" : "Install",
+
+
+    "username_label" : "Username",
+    "email_label" : "E-mail address",
+    "password_label" : "Password",
+
+
+    "error_404" : "404 NOT FOUND",
+    "comeback_button" : "Comeback"
 }

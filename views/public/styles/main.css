@@ -32,6 +32,7 @@ body {
 
 .main-nav-list {
     background-color: var(--secondary-color);
+
     font-weight: bold;
 
     padding: 5px;
@@ -51,4 +52,35 @@ body {
 
 .small-logo:hover {
     fill: var(--accent-color-hover);
+}
+
+.big-logo {
+    width: 128px;
+    height: 128px;
+
+    fill: var(--accent-color);
+}
+
+.big-logo:hover {
+    fill: var(--accent-color-hover);
+}
+
+.button {
+    padding: 15px;
+    border-radius: 25px;
+    background-color: var(--accent-color);
+    color: var(--primary-text-color);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@keyframes opacityOn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }

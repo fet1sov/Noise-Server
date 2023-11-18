@@ -1,0 +1,24 @@
+.error-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    animation: opacityOn 3s normal;
+}
+
+.small-icon {
+
+    width: 128px;
+    height: 128px;
+
+    margin-bottom: 2%;
+
+    fill: var(--accent-color);
+}
+
+.error-text {
+    font-size: var(--small-font-size);
+    font-weight: bold;
+    color: var(--primary-text-color)
+}

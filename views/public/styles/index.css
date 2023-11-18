@@ -1,7 +1,11 @@
 main {
     display: flex;
     justify-content: center;
-    margin-top: 5%;
+    margin-top: 10%;
+}
+
+.welcome-main-block {
+    animation: opacityOn 3s normal;
 }
 
 .welcome-block {
@@ -19,13 +23,15 @@ main {
     align-items: end;
 
     color: var(--primary-text-color);
-    font-size: var(--small-font-size)
+    font-size: var(--small-font-size);
 }
 
 .brand-name-text {
     color: var(--accent-color);
     font-size: var(--big-font-size);
     font-weight: bolder;
+
+    text-shadow: var(--accent-color) 0 0 10px;
 }
 
 .description-text {
@@ -33,9 +39,13 @@ main {
 }
 
 .equalizer-block {
-    display: flex;
-    margin-left: 10px;
-    align-items: center;
+  display: flex;
+  margin-left: 10px;
+  align-items: center;
+}
+
+.small-icon {
+  fill: var(--primary-text-color);
 }
 
 .equalizer {
