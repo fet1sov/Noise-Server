@@ -11,6 +11,8 @@ main {
 .welcome-block {
     display: flex;
     flex-direction: row;
+
+    margin-bottom: 5%;
 }
 
 .description-block {
@@ -38,75 +40,15 @@ main {
     color: var(--secondary-text-color);
 }
 
-.equalizer-block {
-  display: flex;
-  margin-left: 10px;
-  align-items: center;
-}
-
 .small-icon {
   fill: var(--primary-text-color);
 }
 
-.equalizer {
-    font-size: 0;
-  }
-  .equalizer i {
-    background-color: var(--primary-text-color);
-    content: '';
-    display: inline-block;
-    height: 40px;
-    width: 5px;
-    margin: 0 3px;
-    animation: move-up-and-down 0.3s infinite alternate;
-    transform-origin: bottom left;
-  }
-  i:nth-of-type(1) {
-    animation-delay: 0.3s;
-  }
-  i:nth-of-type(2) {
-    animation-delay: 0.1s;
-  }
-  i:nth-of-type(3) {
-    animation-delay: 0.2s;
-  }
-  i:nth-of-type(4) {
-    animation-delay: 0.1s;
-  }
-  i:nth-of-type(5) {
-    animation-delay: 0.2s;
-  }
-  i:nth-of-type(6) {
-    animation-delay: 0.2s;
-  }
-  i:nth-of-type(7) {
-    animation-delay: 0.1s;
-  }
-  i:nth-of-type(8) {
-    animation-delay: 0.2s;
-  }
-  i:nth-of-type(9) {
-    animation-delay: 0.2s;
-  }
-  i:nth-of-type(10) {
-    animation-delay: 0.1s;
-  }
-  i:nth-of-type(11) {
-    animation-delay: 0.3s;
-  }
-  i:nth-of-type(12) {
-    animation-delay: 0.2s;
-  }
-  @keyframes move-up-and-down {
-    0% {
-      opacity: 0.3;
-      transform: scaleY(0.05);
-    }
-    100% {
-      opacity: 1;
-      transform: scaleY(1);
-    }
-  }
+.welcome-buttons {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: row;
+}
 
 @media (max-width: 600px) {
     .equalizer {
@@ -115,5 +57,14 @@ main {
 
     .welcome-text {
         align-items: center;
+    }
+
+    #open-in-browser {
+      display: none;
+    }
+
+    .welcome-buttons {
+        justify-content: center;
+        flex-direction: column;
     }
 }

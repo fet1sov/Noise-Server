@@ -1,15 +1,30 @@
 {
     "auth_button" : "Войти",
+
+    
     "welcome_message" : "Добро пожаловать в ",
     "welcome_description" : "Аудио-стриминговая платформа для прослушивания музыки в высоком качестве. Слушайте в нашем приложении или же прямо из браузера",
-    "download_button" : "Установить",
+    "welcome_download_button" : "Установить",
+    "welcome_web_button" : "Открыть в браузере",
 
 
+    "auth_login" : "Авторизация",
+    "auth_register" : "Регистрация",
     "username_label" : "Имя пользователя",
     "email_label" : "Электронная почта",
     "password_label" : "Пароль",
+    "enter_button" : "Войти",
+
+    "auth_first_time" : "Впервые у нас?",
+    "auth_create_account" : "Создать аккаунт",
+    "auth_already_have" : "Уже есть аккаунт?",
+
+
+    "artist" : "Исполнитель",
+    "artist_song_list" : "Список треков",
 
 
     "error_404" : "404 НЕ ТУДА",
+    "error_404_description" : "Эта страница не найдена :(",
     "comeback_button" : "Вернуться"
 }

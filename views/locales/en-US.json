@@ -1,15 +1,30 @@
 {
     "auth_button" : "Join",
+
+
     "welcome_message" : "Welcome to the ",
     "welcome_description" : "Audio-streaming platform for listening the music in high quality. Listen in app or directly from your browser",
-    "download_button" : "Install",
+    "welcome_download_button" : "Install",
+    "welcome_web_button" : "Open in browser",
 
 
+    "auth_login" : "Log In",
+    "auth_register" : "Register",
     "username_label" : "Username",
     "email_label" : "E-mail address",
     "password_label" : "Password",
+    "enter_button" : "Enter",
+
+    "auth_first_time" : "First time?",
+    "auth_create_account" : "Create account",
+    "auth_already_have" : "Already have a account?",
+
+
+    "artist" : "Artist",
+    "artist_song_list" : "List of tracks",
 
 
     "error_404" : "404 NOT FOUND",
+    "error_404_description" : "This page is not found",
     "comeback_button" : "Comeback"
 }

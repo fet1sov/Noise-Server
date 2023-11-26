@@ -7,16 +7,16 @@
 
     <%- include('elems/styles.ejs', {}); %>
 
-    <link rel="stylesheet" href="styles/pages/signin.css"/>
+    <link rel="stylesheet" href="styles/pages/signup.css"/>
 
-    <script src="scripts/signin.js"></script>
+    <script src="scripts/signup.js"></script>
 
 </head>
 <body>
     <main>
-        <div class="login-form">
+        <div class="register-form">
             <div class="name-label">
-                <%- locale.auth_login %>
+                <%- locale.auth_register %>
             </div>
 
             <div>
@@ -24,6 +24,16 @@
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM15 9C15 10.6569 13.6569 12 12 12C10.3431 12 9 10.6569 9 9C9 7.34315 10.3431 6 12 6C13.6569 6 15 7.34315 15 9ZM12 20.5C13.784 20.5 15.4397 19.9504 16.8069 19.0112C17.4108 18.5964 17.6688 17.8062 17.3178 17.1632C16.59 15.8303 15.0902 15 11.9999 15C8.90969 15 7.40997 15.8302 6.68214 17.1632C6.33105 17.8062 6.5891 18.5963 7.19296 19.0111C8.56018 19.9503 10.2159 20.5 12 20.5Z" fill="#FFFFFF"/>
                 </svg>
                 <input type="text" name="username" id="username" placeholder="<%- locale.username_label %>" class="text-box">
+            </div>
+
+            <div>
+                <svg fill="#FFFFFF" class="vertically-center" width="32px" height="32px" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="0" fill="none" width="20" height="20"/>
+                    <g>
+                    <path d="M3.87 4h13.25C18.37 4 19 4.59 19 5.79v8.42c0 1.19-.63 1.79-1.88 1.79H3.87c-1.25 0-1.88-.6-1.88-1.79V5.79c0-1.2.63-1.79 1.88-1.79zm6.62 8.6l6.74-5.53c.24-.2.43-.66.13-1.07-.29-.41-.82-.42-1.17-.17l-5.7 3.86L4.8 5.83c-.35-.25-.88-.24-1.17.17-.3.41-.11.87.13 1.07z"/>
+                    </g>    
+                </svg>
+                <input type="email" name="email" id="email" placeholder="<%- locale.email_label %>" class="text-box">
             </div>
 
             <div>
@@ -36,10 +46,10 @@
                 <input type="password" name="password" id="password" placeholder="<%- locale.password_label %>" class="text-box">
             </div>
 
-            <button id="signin-button" style="border-radius: 5px;" class="button"><%- locale.enter_button %></button>
+            <button id="signup-button" style="border-radius: 5px;" class="button"><%- locale.enter_button %></button>
             <div class="create-account-label">
-                <%- locale.auth_first_time %>
-                <a href="../signup" class="create-account"><%- locale.auth_create_account %></a>
+                <%- locale.auth_already_have %>
+                <a href="../signin" class="create-account"><%- locale.enter_button %></a>
             </div>
             
         </div>

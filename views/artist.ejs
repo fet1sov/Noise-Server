@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%- artistData.username %> | <%- title %></title>
+
+    <%- include('elems/styles.ejs', {}); %>
+
+    <link rel="stylesheet" href="../styles/pages/artist.css"/>
+
+</head>
+<%- `<body style="background-image: url('../banner/${artistData.id}.png')">` %>
+    <%- include('elems/header.ejs', { isIndex: false }); %>
+
+    <main>
+        <div id="artist-info" class="artist-info-block">
+            <div class="artist-label"><%- locale.artist %></div>
+
+            <div class="artist-name"><%- artistData.username %></div>
+            <div class="artist-description"><%- artistData.description %></div>
+        </div>
+
+        <div class="artist-songs-list">
+            <ul class="song-list">
+                <%- locale.artist_song_list %>
+
+                <% artistData.songsList.forEach(song => { %>
+                    <%- `<li class="song-list-item"><div class="vertically-center-flex"><img class="song-img" src="../thumbnails/${song.id}.png" alt="${song.name}">${song.name}</div><div class="song-small-info">${song.plays}</div></li>` %>
+                <% }); %>
+            </ul>
+        </div>
+    </main>
+</body>

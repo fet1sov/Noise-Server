@@ -1,0 +1,66 @@
+html, body, .container {
+    width: 100%;
+
+    position: relative;
+    overflow: hidden;
+}
+
+main {
+    display: -webkit-flexbox;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    justify-content: center;
+
+    height: 100vh;
+}
+
+input {
+    color: var(--primary-text-color);
+
+    border-radius: 5px;
+    padding: 15px;
+    background-color: var(--text-box-color);
+
+    margin-bottom: 20px;
+}
+
+.register-form {
+    background-color: var(--form-color);
+    padding: 64px;
+
+    border-radius: 10px;
+
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.name-label {
+    color: var(--primary-text-color);
+    font-size: var(--small-font-size);
+    font-weight: bold;
+    margin-bottom: 5%;
+    text-align: center;
+}
+
+.create-account-label {
+    user-select: none;
+    margin-top: 10px;
+    color: var(--primary-text-color);
+    text-align: center;
+}
+
+.create-account {
+    color: var(--secondary-text-color);
+}
+
+@media (max-width: 600px) {
+    .vertically-center {
+        display: none;
+    }
+}

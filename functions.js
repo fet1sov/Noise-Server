@@ -1,5 +1,13 @@
-const fs = require('fs');
 const geoip = require('geoip-lite');
+
+const sqlite3 = require('sqlite3').verbose();
+const db = new sqlite3.Database('database.db');
+
+
+const path = require('path');
+const fs = require('fs');
+
+const rootDir = path.join(__dirname, '..');
 
 exports.getLocaleByIP = (ip) => {
     var region = geoip.lookup(ip);
@@ -18,3 +26,39 @@ exports.getLocaleByIP = (ip) => {
 
     return localeJSON;
 };
+
+async function getArtistDataById(artist_id) {
+    return new Promise(function(resolve, reject)
+    {
+        db.get(`SELECT * FROM artist WHERE id='${artist_id}'`, function(err, row) {
+            if (typeof row != "undefined")
+            {
+                db.all(`SELECT * FROM song WHERE artist_id='${artist_id}'`, function(err, rows) {
+                    let bannerURL = "";
+                    if (fs.existsSync(rootDir + "/public/banner/" + row.id + ".png")) {
+                        bannerURL = `/banner/${row.id}.png`;
+                    } else if (fs.existsSync(rootDir + "/public/banner/" + row.id + ".gif")) {
+                        bannerURL = `/banner/${row.id}.gif`;
+                    }
+
+                    let artistData = {
+                        id: row.id,
+                        belong_id: row.belong_id,
+                        username: row.username,
+                        description: row.description,
+                        location: row.location,
+                        genre: row.genre,
+                        banner: bannerURL,
+                        songsList: rows
+                    };
+
+                    resolve(artistData);
+                });
+            } else {
+                resolve(null);
+            }
+        });
+    });
+};
+
+module.exports.getArtistDataById = getArtistDataById;
