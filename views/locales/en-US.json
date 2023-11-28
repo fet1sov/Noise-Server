@@ -13,6 +13,7 @@
     "username_label" : "Username",
     "email_label" : "E-mail address",
     "password_label" : "Password",
+    "repeat_password_label" : "Repeat a password",
     "enter_button" : "Enter",
 
     "auth_first_time" : "First time?",
@@ -22,6 +23,13 @@
 
     "artist" : "Artist",
     "artist_song_list" : "List of tracks",
+    "artist_not_songs_found" : "This haven't uploaded something yet",
+    
+
+    "studio_stats" : "Statistics",
+    "studio_stats_plays" : "Plays",
+    "studio_stats_amount" : "Soundtracks",
+    "studio_stats_listening" : "Listening",
 
 
     "error_404" : "404 NOT FOUND",

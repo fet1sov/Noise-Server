@@ -22,13 +22,19 @@
         </div>
 
         <div class="artist-songs-list">
-            <ul class="song-list">
-                <%- locale.artist_song_list %>
+            <% if (artistData.songsList.length !== 0) { %>
+                <ul class="song-list">
+                    <%- locale.artist_song_list %>
 
-                <% artistData.songsList.forEach(song => { %>
-                    <%- `<li class="song-list-item"><div class="vertically-center-flex"><img class="song-img" src="../thumbnails/${song.id}.png" alt="${song.name}">${song.name}</div><div class="song-small-info">${song.plays}</div></li>` %>
-                <% }); %>
-            </ul>
+                    <% artistData.songsList.forEach(song => { %>
+                        <%- `<li class="song-list-item"><div class="vertically-center-flex"><img class="song-img" src="../thumbnails/${song.id}.png" alt="${song.name}">${song.name}</div><div class="song-small-info">${song.plays}</div></li>` %>
+                    <% }); %>
+                </ul>
+            <% } else { %>
+                <div class="not-found"><%- locale.artist_not_songs_found %></div>
+            <% } %>
         </div>
     </main>
+
+    <%- include('elems/player.ejs', {}); %>
 </body>

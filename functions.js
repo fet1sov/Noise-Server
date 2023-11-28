@@ -33,7 +33,7 @@ async function getArtistDataById(artist_id) {
         db.get(`SELECT * FROM artist WHERE id='${artist_id}'`, function(err, row) {
             if (typeof row != "undefined")
             {
-                db.all(`SELECT * FROM song WHERE artist_id='${artist_id}'`, function(err, rows) {
+                db.all(`SELECT * FROM song WHERE artist_id='${artist_id}' ORDER BY plays DESC`, function(err, rows) {
                     let bannerURL = "";
                     if (fs.existsSync(rootDir + "/public/banner/" + row.id + ".png")) {
                         bannerURL = `/banner/${row.id}.png`;

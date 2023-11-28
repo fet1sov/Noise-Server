@@ -59,6 +59,17 @@ router.get('/artist/:artist_id', function (request, response) {
     });    
 });
 
+// Studio pages
+router.get('/studio/:section?', function (request, response) {
+    response.status(200);
+
+    response.render('studio', {
+        title: 'Noise',
+        locale: getLocaleByIP(request.socket.remoteAddress),
+        section: request.params.section,
+    });
+});
+
 // 404 HTTP Error
 router.get('*', function (request, response) {
     response.status(404);
