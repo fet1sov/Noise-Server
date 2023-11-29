@@ -5,7 +5,7 @@ main {
 }
 
 .welcome-main-block {
-    animation: opacityOn 3s normal;
+    animation: appearAnimation-Y 2s both;
 }
 
 .welcome-block {
@@ -48,6 +48,8 @@ main {
   display: flex;
   justify-content: space-evenly;
   flex-direction: row;
+
+  animation: appearAnimationY 2s both;
 }
 
 @media (max-width: 600px) {

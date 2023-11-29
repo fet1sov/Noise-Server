@@ -20,6 +20,13 @@
     "auth_create_account" : "Create account",
     "auth_already_have" : "Already have a account?",
 
+    "register_error_login_less" : "Username must be more than 3 symbols",
+    "register_error_login_more" : "Username must be more than 30 symbols",
+    "register_error_login_latin" : "Username should contains only latin symbols",
+    "register_error_login_occupied" : "Username is already occupied",
+
+    "auth_error_wrong_password" : "Wrong password",
+    "auth_error_not_found" : "Account not found",
 
     "artist" : "Artist",
     "artist_song_list" : "List of tracks",

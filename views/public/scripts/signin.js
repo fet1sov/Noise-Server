@@ -2,12 +2,6 @@ window.addEventListener("DOMContentLoaded", onDomContentLoaded);
 
 function onDomContentLoaded()
 {
-    var signInButton = document.getElementById("signin-button");
-
-    signInButton.addEventListener("click", () => {
-        
-    });
-
     const cards = document.querySelector(".login-form");
     const range = 40;
 

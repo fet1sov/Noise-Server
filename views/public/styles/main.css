@@ -192,6 +192,17 @@ body {
     align-items: center;
 }
 
+.form-error-text {
+  margin: 0 auto;
+
+  text-align: center;
+
+  color: red;
+
+  max-width: 200px;
+  overflow-wrap: break-word;
+}
+
 .equalizer {
     font-size: 0;
   }

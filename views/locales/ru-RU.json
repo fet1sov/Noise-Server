@@ -20,6 +20,13 @@
     "auth_create_account" : "Создать аккаунт",
     "auth_already_have" : "Уже есть аккаунт?",
 
+    "register_error_login_less" : "Имя пользователя должно быть больше 3-х символов",
+    "register_error_login_more" : "Имя пользователя должно быть меньше 30-ти символов",
+    "register_error_login_latin" : "Имя пользователя должно содержать только латинские символы",
+    "register_error_login_occupied" : "Имя пользователя занято",
+
+    "auth_error_wrong_password" : "Неверный пароль",
+    "auth_error_not_found" : "Аккаунт не найден",
 
     "artist" : "Исполнитель",
     "artist_song_list" : "Список треков",

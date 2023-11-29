@@ -2,12 +2,6 @@ window.addEventListener("DOMContentLoaded", onDomContentLoaded);
 
 function onDomContentLoaded()
 {
-    var signUpButton = document.getElementById("signup-button");
-
-    signUpButton.addEventListener("click", () => {
-        
-    });
-
     const cards = document.querySelector(".register-form");
     const range = 40;
 
