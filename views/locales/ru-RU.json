@@ -40,7 +40,7 @@
     "studio_stats_plays" : "Прослушивания",
     "studio_stats_amount" : "Композиций",
     "studio_stats_listening" : "Сейчас слушают",
-    
+    "studio_content_notracks" : "Вы ещё не загрузили не одной композиции :(",
 
     "error_404" : "404 НЕ ТУДА",
     "error_404_description" : "Эта страница не найдена :(",

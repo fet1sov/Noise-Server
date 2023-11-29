@@ -74,13 +74,35 @@
             <div class="studio-block transparent">
                 <div class="label label-box">
                     <div><%- locale.artist_song_list %></div> 
-                    <div>
-                        
-                    </div> 
                 </div>
+
                 <hr>
 
-                <div></div>
+                    <ul class="studio-songs-list">
+                        <% if(artistData.songsList) { %>
+                            <% artistData.songsList.forEach(song=> { %>
+                                <li data-id="<%- song.id %>">
+                                    <div class="small-information">
+
+                                        <input type="radio" name="song" data-id="<%- song.id %>">
+
+                                        <img src="../thumbnails/<%- song.id %>.png">
+                                        <div>
+                                            <%- song.name %>
+                                        </div>
+                                    </div>
+                        
+                                    <div class="small-info">
+                                        <%- song.plays %>
+                                    </div>
+                                </li>
+                            <% }); %>
+                        <% } else { %>
+                            <div class="error-text-info">
+                                <%- locale.studio_content_notracks %>
+                            </div>
+                        <% } %>
+                    </ul>
             </div>
         </main>
     <% } %>

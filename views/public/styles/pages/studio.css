@@ -43,6 +43,7 @@ hr {
 }
 
 .main-studio {
+    width: 100%;
     margin: 10%;
 
     color: var(--primary-text-color);
@@ -158,6 +159,55 @@ hr {
 
     animation: opacityOn 1s both;
     animation-delay: 1s;
+}
+
+.studio-songs-list {
+    margin-top: 15px;
+    color: var(--primary-text-color);
+    background-color: var(--secondary-color);
+
+    width: 100%;
+
+    border-radius: 10px;
+}
+
+.studio-songs-list li {
+    display: flex;
+    justify-content: space-between;
+
+    align-items: center;
+
+    user-select: none;
+
+    padding: 20px;
+
+    animation: appearAnimation-Y 1s both;
+
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.studio-songs-list img {
+    width: 64px;
+    height: 64px;
+
+    margin-right: 10px;
+
+    border-radius: 10px;
+}
+
+.small-information {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.error-text-info {
+    color: var(--secondary-text-color);
+}
+
+.small-info {
+    color: var(--secondary-text-color);
 }
 
 @media (max-width: 800px) {

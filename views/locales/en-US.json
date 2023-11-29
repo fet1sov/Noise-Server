@@ -41,6 +41,7 @@
     "studio_stats_plays" : "Plays",
     "studio_stats_amount" : "Soundtracks",
     "studio_stats_listening" : "Listening",
+    "studio_content_notracks" : "No songs yet :(",
 
 
     "error_404" : "404 NOT FOUND",
