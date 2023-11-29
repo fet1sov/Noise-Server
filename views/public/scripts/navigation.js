@@ -1,3 +1,20 @@
+window.addEventListener("DOMContentLoaded", () => {
+    const mainUserNav = document.getElementById("main-user");
+    const profileMenu = document.getElementById("profile-menu");
+
+    if (mainUserNav)
+    {
+        mainUserNav.addEventListener("click", () => {
+            if (profileMenu.style.display === "none")
+            {
+                profileMenu.style.display = "flex";
+            } else {
+                profileMenu.style.display = "none";
+            }
+        });
+    }
+});
+
 window.addEventListener("scroll", () => {
 
     const mainNavigation = document.getElementById("main-nav");

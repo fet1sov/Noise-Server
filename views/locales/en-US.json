@@ -33,6 +33,10 @@
     "artist_not_songs_found" : "This haven't uploaded something yet",
     
 
+    "profile_menu_studio" : "Studio",
+    "profile_menu_logout" : "Log out",
+
+
     "studio_stats" : "Statistics",
     "studio_stats_plays" : "Plays",
     "studio_stats_amount" : "Soundtracks",

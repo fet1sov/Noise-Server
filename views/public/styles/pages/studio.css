@@ -172,6 +172,8 @@ hr {
 
     .studio-navigation-bar {
         width: 100%;
+        display: block;
+
         position: fixed;
         bottom: 0;
 
@@ -190,5 +192,7 @@ hr {
 
     .stats-block {
         margin-left: 10px;
+
+        margin-bottom: 80px;
     }
 }

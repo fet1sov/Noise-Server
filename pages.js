@@ -5,27 +5,43 @@ const fileUpload = require("express-fileupload");
 const router = express.Router(),
       bodyParser = require('body-parser');
 
+const session = require('express-session');
+
 const path = require('path');
 const { getLocaleByIP, getArtistDataById, authUser } = require('./functions');
+const cookieParser = require('cookie-parser');
 
+router.use(cookieParser());
 router.use(bodyParser.urlencoded({ extended: false}));
+
+router.use(session({
+    secret: 'secretKey',
+    resave: true,
+    saveUninitialized: true,
+}));
 
 // index
 router.get('/', function (request, response) {
     response.status(200);
     response.render('index', {
         title: 'Noise',
-        locale: getLocaleByIP(request.socket.remoteAddress)
+        locale: getLocaleByIP(request.socket.remoteAddress),
+        userData: request.session.user ? request.session.user.data : null
     });
 });
 
 // Sign In
 router.get('/signin', function (request, response) {
-    response.status(200);
-    response.render('signin', {
-        title: 'Noise',
-        locale: getLocaleByIP(request.socket.remoteAddress)
-    });
+    if (!request.session.user)
+    {
+        response.status(200);
+        response.render('signin', {
+            title: 'Noise',
+            locale: getLocaleByIP(request.socket.remoteAddress)
+        });
+    } else {
+        response.redirect("../");
+    }
 });
 router.post('/signin', function(request, response) {
     authUser(request.body.username, request.body.password).then(
@@ -40,13 +56,7 @@ router.post('/signin', function(request, response) {
                         errorData: 400
                     });
                 } else {
-                    app.use(session({
-                        secret: result.data.session_token,
-                        resave: false,
-                        saveUninitialized: true,
-                        cookie: { }
-                    }));
-
+                    request.session.user = result;
                     response.redirect("../");
                 }
             } else {
@@ -62,11 +72,16 @@ router.post('/signin', function(request, response) {
 
 // Sign Up
 router.get('/signup', function (request, response) {
-    response.status(200);
-    response.render('signup', {
-        title: 'Noise',
-        locale: getLocaleByIP(request.socket.remoteAddress)
-    });
+    if (!request.session.user)
+    {
+        response.status(200);
+        response.render('signup', {
+            title: 'Noise',
+            locale: getLocaleByIP(request.socket.remoteAddress)
+        });
+    } else {
+        response.redirect("../");
+    }
 });
 
 // Artist
@@ -82,7 +97,8 @@ router.get('/artist/:artist_id', function (request, response) {
             response.render('artist', {
                 title: 'Noise',
                 locale: getLocaleByIP(request.socket.remoteAddress),
-                artistData: result
+                userData: request.session.user ? request.session.user.data : null,
+                artistData: result,
             });
         } else {
             response.status(404);
@@ -94,15 +110,38 @@ router.get('/artist/:artist_id', function (request, response) {
     });    
 });
 
+// Log out
+router.get('/logout', function (request, response) {
+    if (!request.session.user)
+    {
+        response.redirect("../");
+    } else {
+        request.session.user = null;
+        response.redirect("../");
+    }
+});
+
 // Studio pages
 router.get('/studio/:section?', function (request, response) {
-    response.status(200);
-
-    response.render('studio', {
-        title: 'Noise',
-        locale: getLocaleByIP(request.socket.remoteAddress),
-        section: request.params.section,
-    });
+    if (request.session.user)
+    {
+        getArtistDataById(request.session.user.data.id).then(function(result) {
+            if(result)
+            {
+                response.status(200);
+                response.render('studio', {
+                    title: 'Noise',
+                    locale: getLocaleByIP(request.socket.remoteAddress),
+                    artistData: result,
+                    section: request.params.section,
+                });
+            } else {
+                
+            }
+        });
+    } else {
+        response.redirect("../");
+    }
 });
 
 // 404 HTTP Error

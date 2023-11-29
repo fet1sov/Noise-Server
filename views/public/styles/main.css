@@ -48,6 +48,8 @@ body {
     vertical-align: middle;
     align-items: center;
 
+    height: 78px;
+
     position: fixed;
     top: 0;
     left: 0;
@@ -203,6 +205,99 @@ body {
   overflow-wrap: break-word;
 }
 
+.main-user {
+  display: flex;
+  align-items: center;
+
+  user-select: none;
+}
+
+.main-user-name {
+  color: var(--primary-text-color);
+  font-weight: bold;
+}
+
+.main-user-avatar {
+  width: 48px;
+  height: 48px;
+
+  margin: 5px;
+
+  background-size: 100% 100%;
+
+  border-radius: 10px;
+}
+
+.main-user-arrow {
+  margin: 5px;
+}
+
+.main-user-menu-button {
+  width: 32px;
+  height: 32px;
+
+  transition: 1s all;
+}
+
+.main-user:hover .main-user-menu-button {
+  transform: rotate(180deg);
+}
+
+.main-user-menu-button path {
+  fill: var(--primary-text-color);
+}
+
+.profile-menu {
+  position: absolute;
+  z-index: 99999;
+
+  animation: appearAnimation-Y 1s both;
+
+  border-radius: 0 0 20px 20px;
+
+  top: 78px;
+  right: 0;
+
+  background-color: var(--secondary-color-glass);
+  width: 135px;
+  height: 100px;
+
+  display: flex;
+  justify-content: center;
+}
+
+.profile-a {
+  display: flex; 
+  align-items: center;
+}
+
+.profile-menu-item {
+  margin-top: 10px;
+
+  color: var(--primary-text-color);
+  transition: 1s all;
+}
+
+.profile-menu-item:hover a:hover {
+  transition: 1s all;
+  color: var(--accent-color);
+}
+
+.profile-menu-item svg {
+  width: 32px;
+  height: 32px;
+  fill: var(--primary-text-color);
+}
+
+.profile-menu-item:hover path {
+  transition: 1s all;
+  fill: var(--accent-color);
+}
+
+.profile-menu-item a:visited {
+  color: var(--primary-text-color);
+}
+
 .equalizer {
     font-size: 0;
   }
@@ -321,7 +416,11 @@ body {
 }
 
 @media (max-width: 600px) {
+    main {
+      margin-top: 80px;
+    }
+
     .main-nav-list {
-        background-color: var(--secondary-color);
+      background-color: var(--secondary-color);
     }
 }

@@ -28,6 +28,9 @@
     "auth_error_wrong_password" : "Неверный пароль",
     "auth_error_not_found" : "Аккаунт не найден",
 
+    "profile_menu_studio" : "Студия",
+    "profile_menu_logout" : "Выйти",
+
     "artist" : "Исполнитель",
     "artist_song_list" : "Список треков",
     "artist_not_songs_found" : "Исполнитель не загрузил не одного трека",
