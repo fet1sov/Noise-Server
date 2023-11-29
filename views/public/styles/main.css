@@ -159,6 +159,32 @@ body {
   height: 48px;
 }
 
+.song-play {
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.song-play-button {
+  position: absolute;
+  transition: 1s all;
+  opacity: 0;
+}
+
+.song-play > img {
+  transition: 1s all;
+}
+
+.song-play:hover > img {
+  transition: 1s all;
+  opacity: 0.3;
+}
+
+.song-play:hover > .song-play-button {
+  opacity: 1;
+}
 
 .equalizer-block {
     display: flex;

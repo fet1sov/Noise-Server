@@ -111,6 +111,13 @@ hr {
     animation: appearAnimation-Y 2s both;
 }
 
+.label-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    vertical-align: middle;
+}
+
 .sub-label {
     color: var(--primary-text-color);
     font-size: var(--tiny-font-size);
