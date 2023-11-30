@@ -1,0 +1,106 @@
+body {
+    height: 100vh;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    vertical-align: middle;
+    align-items: center;
+
+    height: 100%;
+}
+
+.create-card-form {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+
+    padding: 20px;
+    background-color: var(--form-color);
+    border-radius: 10px;
+
+    animation: appearAnimation-Y 1s both;
+}
+
+.create-message {
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    vertical-align: middle;
+    align-items: center;
+    flex-direction: column;
+}
+
+.opactiyOn {
+    animation: opacityOn 3s both;
+}
+
+.title-message {
+    color: var(--primary-text-color);
+    font-size: var(--small-font-size);
+    font-weight: bold;
+
+    animation: appearAnimationY 1s both;
+    animation-delay: 0.3s;
+
+    text-align: center;
+}
+
+.description-message {
+    text-align: center;
+    max-width: 500px;
+    color: var(--secondary-text-color);
+    font-size: var(--tiny-font-size);
+
+    animation: appearAnimationX 2s both;
+    animation-delay: 0.3s;
+}
+
+.white {
+    color: var(--primary-text-color);
+    
+    animation: appearAnimationX 2s both;
+    animation-delay: 1.3s;
+}
+
+.green {
+    background-color: #06911d;
+
+    margin-top: 20px;
+
+    animation: appearAnimation-Y 2s both;
+    animation-delay: 1s;
+    box-shadow: 0 0 40px #06911d;
+}
+
+.green:hover {
+    background-color: #05a11f;
+    box-shadow: 0 0 40px #05a11f;
+}
+
+input {
+    color: var(--primary-text-color);
+    margin-top: 20px;
+
+    border-radius: 10px;
+    padding: 10px;
+
+    width: 100%;
+    background-color: var(--text-box-color);
+}
+
+textarea {
+    color: var(--primary-text-color);
+    margin-top: 20px;
+
+    border-radius: 10px;
+    padding: 10px;
+
+    width: 100%;
+    background-color: var(--text-box-color);
+
+    height: auto;
+    resize: vertical;
+}

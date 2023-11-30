@@ -58,6 +58,78 @@ async function authUser(username, password) {
 
 module.exports.authUser = authUser;
 
+async function registerUser(username, email, password, repeatPassword) {
+    return new Promise(function(resolve, reject)
+    {
+        userData = {
+            errorData: 200
+        };
+
+        if (password != repeatPassword)
+        {
+            userData.errorData = 406;
+            resolve(userData);
+            return;
+        }
+
+        if (username.length < 3)
+        {
+            userData.errorData = 401;
+            resolve(userData);
+            return;
+        }
+
+        if (username.length > 40)
+        {
+            userData.errorData = 402;
+            resolve(userData);
+            return;
+        }
+
+        if (!(/^[A-Za-z0-9]*$/.test(username))) 
+        {
+            userData.errorData = 403;
+            resolve(userData);
+            return;
+        }
+
+        db.get(`SELECT * FROM user WHERE UPPER(login) LIKE UPPER('${username}')`, function (err, row) {
+            if (typeof row != "undefined") {
+                userData.errorData = 404;
+                resolve(userData);
+                return;
+            } else {
+                db.get(`SELECT * FROM user WHERE UPPER(email) LIKE UPPER('${email}')`, function(err, row)
+                {
+                    if (typeof row != "undefined")
+                    {
+                        userData.errorData = 405;
+                        resolve(userData);
+                        return;
+                    } else {
+                        let accessToken = '';
+
+                        let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                        let charactersLength = characters.length;
+                        for (let i = 0; i < 33; i++) {
+                            accessToken += characters.charAt(Math.floor(Math.random() * charactersLength));
+                        }
+
+                        let passMD5 = crypto.createHash('md5').update(password).digest('hex');
+
+                        db.run(`INSERT INTO user VALUES(NULL, '${accessToken}', '${username}', '${passMD5}', '${email.trim()}', '0', '0')`);                       
+                        resolve(userData);
+                        return;
+                    }
+                });
+            }
+        });
+
+    });
+};
+
+module.exports.registerUser = registerUser;
+
 async function getArtistDataById(artist_id) {
     return new Promise(function(resolve, reject)
     {

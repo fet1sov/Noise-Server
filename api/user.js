@@ -109,7 +109,7 @@ router.post('/register', function (request, response) {
     let email = request.body.email.trim();
     let passMD5 = crypto.createHash('md5').update(request.body.password).digest('hex');
 
-    if (login.length > 30) {
+    if (login.length > 40) {
         logMessage(`API [USER]`, `Returned 501 HTTP code. (Login should less than 30 symbols)`, 3);
 
         response.statusCode = 501;

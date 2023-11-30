@@ -90,6 +90,9 @@ body {
 .button {
     padding: 15px;
     border-radius: 25px;
+
+    transition: 1s all;
+
     background-color: var(--accent-color);
     color: var(--primary-text-color);
 
@@ -98,6 +101,10 @@ body {
     align-items: center;
 
     user-select: none;
+}
+
+.button:hover {
+  background-color: var(--accent-color-hover);
 }
 
 .neutral {

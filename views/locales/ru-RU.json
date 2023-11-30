@@ -14,6 +14,7 @@
     "email_label" : "Электронная почта",
     "password_label" : "Пароль",
     "repeat_password_label" : "Повторите пароль",
+    "create_button" : "Создать",
     "enter_button" : "Войти",
 
     "auth_first_time" : "Впервые у нас?",
@@ -24,6 +25,8 @@
     "register_error_login_more" : "Имя пользователя должно быть меньше 30-ти символов",
     "register_error_login_latin" : "Имя пользователя должно содержать только латинские символы",
     "register_error_login_occupied" : "Имя пользователя занято",
+    "register_error_email_occupied" : "Почта уже используется",
+    "register_error_repeat_password" : "Пароли не совпадают",
 
     "auth_error_wrong_password" : "Неверный пароль",
     "auth_error_not_found" : "Аккаунт не найден",
@@ -35,12 +38,20 @@
     "artist_song_list" : "Список треков",
     "artist_not_songs_found" : "Исполнитель не загрузил не одного трека",
 
-
     "studio_stats" : "Статистика",
     "studio_stats_plays" : "Прослушивания",
     "studio_stats_amount" : "Композиций",
     "studio_stats_listening" : "Сейчас слушают",
     "studio_content_notracks" : "Вы ещё не загрузили не одной композиции :(",
+
+    "studio_createcard_title" : "Поделись своим творчеством",
+    "studio_createcard_description" : "Создай карточку исполнителя на Noise и начни делиться своим твочеством уже сейчас. Присоединись к нашему сообществу авторов в сфере музыки",
+    "studio_createcard_createcard" : "Создать карточку исполнителя",
+    "studio_createcard_comeback": "Создать позже",
+    "studio_createcard_createform_title" : "Создание карточки",
+
+    "studio_createcard_createform_username" : "Псевдоним исполнителя",
+    "studio_createcard_createform_description" : "Описание карточки",
 
     "error_404" : "404 НЕ ТУДА",
     "error_404_description" : "Эта страница не найдена :(",

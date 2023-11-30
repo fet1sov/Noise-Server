@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+
+    <%- include('../elems/styles.ejs', {}); %>
+
+    <link rel="stylesheet" href="../styles/pages/createcard.css"/>
+    <script src="../scripts/createcard.js"></script>
+</head>
+<body>
+    <%- include('../elems/preloader.ejs', {}); %>
+
+    <div id="create-message" class="create-message">
+        <div class="equalizer-block opactiyOn">
+            <div class="equalizer">
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+              </div>
+        </div>
+        <div class="title-message"><%- locale.studio_createcard_title %></div>
+        <div class="description-message"><%- locale.studio_createcard_description %></div>
+        <button id="create-artist" class="button green"><%- locale.studio_createcard_createcard %></button>
+        <a href="../" class="description-message white"><%- locale.studio_createcard_comeback %></a>
+    </div>
+    
+    <main id="main-form" style="display: none;">
+        <form class="create-card-form" action="../" method="post">
+            <div class="title-message"><%- locale.studio_createcard_createform_title %></div>
+
+            <div class="drag-n-drop-area">
+                
+            </div>
+
+            <input type="text" placeholder="<%- locale.studio_createcard_createform_username %>">
+            <textarea type="text" placeholder="<%- locale.studio_createcard_createform_description %>"></textarea>
+            
+            <button id="create-artist" class="button green"><%- locale.studio_createcard_createcard %></button>
+        </form>
+    </main>
+
+</body>
