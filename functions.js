@@ -165,3 +165,19 @@ async function getArtistDataById(artist_id) {
 };
 
 module.exports.getArtistDataById = getArtistDataById;
+
+async function getListOfGenres() {
+    return new Promise(function(resolve, reject)
+    {
+        db.all(`SELECT * FROM genre`, function(err, rows) {
+            if (typeof rows != "undefined")
+            {
+                resolve(rows);
+            } else {
+                resolve(null);
+            }
+        });
+    });
+};
+
+module.exports.getListOfGenres = getListOfGenres;

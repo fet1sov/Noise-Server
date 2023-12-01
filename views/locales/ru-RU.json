@@ -52,6 +52,15 @@
 
     "studio_createcard_createform_username" : "Псевдоним исполнителя",
     "studio_createcard_createform_description" : "Описание карточки",
+    "studio_createcard_createform_banner" : "Загрузите баннер до 5 МБ\nВ формате .jpg .png",
+
+    "studio_createcard_createform_genre" : "Выберите свой основной жанр",
+
+    "genres_list" : [
+        "",
+        "Хип-Хоп",
+        "Мэшапы"
+    ],
 
     "error_404" : "404 НЕ ТУДА",
     "error_404_description" : "Эта страница не найдена :(",

@@ -54,6 +54,15 @@
 
     "studio_createcard_createform_username" : "Artist name",
     "studio_createcard_createform_description" : "Description of card",
+    "studio_createcard_createform_banner" : "Upload the banner Max: 5 MB\nIn format .jpg .png",
+
+    "studio_createcard_createform_genre" : "Select your main genre",
+
+    "genres_list" : [
+        "",
+        "Hip-Hop",
+        "Mashup"
+    ],
 
     "error_404" : "404 NOT FOUND",
     "error_404_description" : "This page is not found",

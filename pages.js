@@ -8,7 +8,7 @@ const router = express.Router(),
 const session = require('express-session');
 
 const path = require('path');
-const { getLocaleByIP, getArtistDataById, authUser, registerUser } = require('./functions');
+const { getLocaleByIP, getArtistDataById, authUser, registerUser, getListOfGenres } = require('./functions');
 const cookieParser = require('cookie-parser');
 
 router.use(cookieParser());
@@ -155,11 +155,14 @@ router.get('/studio/:section?', function (request, response) {
                     section: request.params.section,
                 });
             } else {
-                response.status(200);
-                response.render('pages/createcard', {
-                    title: 'Noise',
-                    locale: getLocaleByIP(request.socket.remoteAddress),
-                });
+                getListOfGenres().then(function(result) {
+                    response.status(200);
+                    response.render('pages/createcard', {
+                        title: 'Noise',
+                        locale: getLocaleByIP(request.socket.remoteAddress),
+                        genres: result
+                    });
+                });  
             }
         });
     } else {

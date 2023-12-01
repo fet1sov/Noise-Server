@@ -11,6 +11,19 @@ main {
     height: 100%;
 }
 
+p {
+    color: var(--primary-text-color);
+    font-size: small;
+}
+
+select {
+    margin-top: 15px;
+
+    padding: 10px;
+    color: var(--primary-text-color);
+    background-color: var(--text-box-color);
+}
+
 .create-card-form {
     display: flex;
     justify-content: center;
@@ -103,4 +116,26 @@ textarea {
 
     height: auto;
     resize: vertical;
+}
+
+.drag-n-drop-area {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+
+    user-select: none;
+
+    margin: 15px auto;
+    border: var(--text-box-color) 6px dashed;
+
+    width: 200px;
+    height: 200px;
+}
+
+.drag-small-icon {
+    margin: 10px auto;
+
+    width: 64px;
+    height: 64px;
+    fill: var(--primary-text-color);
 }
