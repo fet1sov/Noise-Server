@@ -67,14 +67,14 @@ select {
     color: var(--secondary-text-color);
     font-size: var(--tiny-font-size);
 
-    animation: appearAnimationX 2s both;
+    animation: appearAnimation-Y 2s both;
     animation-delay: 0.3s;
 }
 
 .white {
     color: var(--primary-text-color);
     
-    animation: appearAnimationX 2s both;
+    animation: appearAnimation-Y 2s both;
     animation-delay: 1.3s;
 }
 

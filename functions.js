@@ -130,6 +130,50 @@ async function registerUser(username, email, password, repeatPassword) {
 
 module.exports.registerUser = registerUser;
 
+
+async function registerNewArtist(username, description, bannerFile, genreId, belongId) {
+    return new Promise(function(resolve, reject)
+    {
+        artistData = {
+            data: {
+                username: username,
+                description: description,
+                bannerFile: bannerFile,
+                genreId: genreId,
+                belongId: belongId
+            },
+            errorData: 200
+        };
+
+        if (username.length < 3)
+        {
+            artistData.errorData = 1;
+            resolve(artistData);
+            return;
+        }
+
+        if (username.length > 40)
+        {
+            artistData.errorData = 2;
+            resolve(artistData);
+            return;
+        }
+
+        if (bannerFile)
+        {
+            artistData.errorData = 3;
+            resolve(artistData);
+            return;
+        }
+
+        
+
+        resolve(artistData);
+    });
+}
+
+module.exports.registerNewArtist = registerNewArtist;
+
 async function getArtistDataById(artist_id) {
     return new Promise(function(resolve, reject)
     {

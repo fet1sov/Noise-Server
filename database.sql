@@ -1,6 +1,6 @@
 CREATE TABLE user (
     id                INTEGER       PRIMARY KEY AUTOINCREMENT,
-    login             TEXT (32),
+    login             TEXT (40),
     password          TEXT (255),
     email             TEXT (255),
     role_id           INTEGER (25),

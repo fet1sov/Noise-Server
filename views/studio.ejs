@@ -77,9 +77,8 @@
                 </div>
 
                 <hr>
-
+                    <% if(artistData.songsList.length != 0) { %>
                     <ul class="studio-songs-list">
-                        <% if(artistData.songsList) { %>
                             <% artistData.songsList.forEach(song=> { %>
                                 <li data-id="<%- song.id %>">
                                     <div class="small-information">
@@ -97,12 +96,13 @@
                                     </div>
                                 </li>
                             <% }); %>
-                        <% } else { %>
-                            <div class="error-text-info">
-                                <%- locale.studio_content_notracks %>
-                            </div>
-                        <% } %>
                     </ul>
+                    <% } else { %>
+                        <div class="error-text-info">
+                            <%- locale.studio_content_notracks %>
+                        </div>
+                    <% } %>
+                    
             </div>
         </main>
     <% } %>

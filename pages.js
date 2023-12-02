@@ -8,14 +8,15 @@ const router = express.Router(),
 const session = require('express-session');
 
 const path = require('path');
-const { getLocaleByIP, getArtistDataById, authUser, registerUser, getListOfGenres } = require('./functions');
+const { getLocaleByIP, getArtistDataById, authUser, registerUser, getListOfGenres, registerNewArtist } = require('./functions');
 const cookieParser = require('cookie-parser');
 
 router.use(cookieParser());
 router.use(bodyParser.urlencoded({ extended: false}));
+router.use(fileUpload({}));
 
 router.use(session({
-    secret: 'secretKey',
+    secret: 'theVerySecretNoiseKey',
     resave: true,
     saveUninitialized: true,
 }));
@@ -165,6 +166,39 @@ router.get('/studio/:section?', function (request, response) {
                 });  
             }
         });
+    } else {
+        response.redirect("../");
+    }
+});
+router.post('/studio', function (request, response) {
+    if (request.session.user)
+    {
+        if (typeof request.files == "undefined")
+        {
+            request.files = {
+                bannerImg: {}
+            };
+        }
+
+        getListOfGenres().then(function(genres) {
+            registerNewArtist(request.body.username, request.body.description, request.files.bannerImg, request.body.genre, request.session.user.data.id).then(function(artistData) {
+
+                if (artistData.errorData === 200)
+                {
+                    response.status(200);
+                } else {
+                    response.status(400);
+                }
+
+                response.render('pages/createcard', {
+                    title: 'Noise',
+                    locale: getLocaleByIP(request.socket.remoteAddress),
+                    artistData: artistData.data,
+                    errorData: artistData.errorData,
+                    genres: genres
+                });
+            });
+        });  
     } else {
         response.redirect("../");
     }

@@ -56,6 +56,11 @@
 
     "studio_createcard_createform_genre" : "Выберите свой основной жанр",
 
+    "studio_createcard_createform_error_more" : "Псевдоним должен быть больше 3-х символов",
+    "studio_createcard_createform_error_less" : "Псевдоним должен быть меньше 40-х символов",
+    "studio_createcard_createform_error_banner" : "Необходимо загрузить баннер",
+    "studio_createcard_createform_error_genre" : "Необходимо выбрать основной жанр",
+
     "genres_list" : [
         "",
         "Хип-Хоп",

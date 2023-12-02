@@ -208,6 +208,10 @@ body {
 
   color: red;
 
+  margin-top: 10px;
+
+  animation: appearAnimationX 1s both;
+
   max-width: 200px;
   overflow-wrap: break-word;
 }

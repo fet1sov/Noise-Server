@@ -58,6 +58,11 @@
 
     "studio_createcard_createform_genre" : "Select your main genre",
 
+    "studio_createcard_createform_error_more" : "Username should be more than 3 symbols",
+    "studio_createcard_createform_error_less" : "Username should be less than 40 symbols",
+    "studio_createcard_createform_error_banner" : "Banner is required",
+    "studio_createcard_createform_error_genre" : "Please select the main genre",
+
     "genres_list" : [
         "",
         "Hip-Hop",
