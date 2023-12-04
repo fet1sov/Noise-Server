@@ -10,6 +10,19 @@ const fs = require('fs');
 
 const rootDir = path.join(__dirname, '..');
 
+function logMessage(tag, message, type)
+{
+    if (type === 0) { // Info message
+        console.log(`${customConsole.BgGray + customConsole.FgWhite}${tag}${customConsole.BgBlack + customConsole.FgGray} ${message}`);
+    } else if (type === 1) { // Success message
+        console.log(`${customConsole.BgGreen + customConsole.FgWhite}${tag}${customConsole.BgBlack + customConsole.FgGreen} ${message}`);
+    } else if (type === 2) { // Warn message
+        console.log(`${customConsole.BgYellow + customConsole.FgWhite}${tag}${customConsole.BgBlack + customConsole.FgYellow} ${message}`);
+    } else if (type === 3) { // Error message
+        console.log(`${customConsole.BgRed + customConsole.FgWhite}${tag}${customConsole.BgBlack + customConsole.FgRed} ${message}`);
+    }
+}
+
 exports.getLocaleByIP = (ip) => {
     var region = geoip.lookup(ip);
 
@@ -136,6 +149,7 @@ async function registerNewArtist(username, description, bannerFile, genreId, bel
     {
         artistData = {
             data: {
+                id: 0,
                 username: username,
                 description: description,
                 bannerFile: bannerFile,
@@ -159,16 +173,61 @@ async function registerNewArtist(username, description, bannerFile, genreId, bel
             return;
         }
 
-        if (bannerFile)
+        if (!bannerFile)
         {
             artistData.errorData = 3;
             resolve(artistData);
             return;
         }
 
-        
+        db.run(`INSERT INTO artist(belong_id, username, description, location, genre) VALUES('${belongId}', '${username}', '${description}', 'Somewhere', '${genreId}')`, function (error) {
+            if (error)
+            {
+                logMessage("API", `FAILED TO INSERT NEW ARTIST CARD`, 3);
+            } else {
+                const uploadedFileExtension = bannerFile.mimetype.split("/")[1];
 
-        resolve(artistData);
+                artistData.data.id = this.lastID;
+
+                let uploadPath = "";
+                if (uploadedFileExtension === "png"
+                    || uploadedFileExtension === "jpeg"
+                    || uploadedFileExtension === "webp") {
+                    uploadPath = __dirname
+                        + "/public/banner/" + artistData.id + ".png";
+                } else {
+                    artistData.errorData = 4;
+                    resolve(artistData);
+                    return;
+                }
+
+                const pngProfilePic = __dirname
+                    + "/public/banner/" + artistData.id + ".png";
+
+                if (fs.existsSync(pngProfilePic)) {
+                    fs.unlink(pngProfilePic, () => { });
+                }
+
+                try {
+                    bannerFile.mv(uploadPath, function (err) {
+                        if (err) {
+                            artistData.errorData = 5;
+                            resolve(artistData);
+                            logMessage("API", `FAILED TO UPLOAD BANNER FILE: ${err}`, 3);
+                            return;
+                        } else {
+                            artistData.errorData = 6;
+                            resolve(artistData);
+                            return;
+                        }
+                    });
+                } catch {
+
+                }
+
+                resolve(artistData);
+            }
+        });       
     });
 }
 
@@ -180,7 +239,7 @@ async function getArtistDataById(artist_id) {
         db.get(`SELECT * FROM artist WHERE id='${artist_id}'`, function(err, row) {
             if (typeof row != "undefined")
             {
-                db.all(`SELECT * FROM song WHERE artist_id='${artist_id}' ORDER BY plays DESC`, function(err, rows) {
+                db.all(`SELECT * FROM song WHERE artist_id='${row.id}' ORDER BY plays DESC`, function(err, rows) {
                     let bannerURL = "";
                     if (fs.existsSync(rootDir + "/public/banner/" + row.id + ".png")) {
                         bannerURL = `/banner/${row.id}.png`;
@@ -209,6 +268,43 @@ async function getArtistDataById(artist_id) {
 };
 
 module.exports.getArtistDataById = getArtistDataById;
+
+async function getArtistDataByBelongId(belong_id) {
+    return new Promise(function(resolve, reject)
+    {
+        db.get(`SELECT * FROM artist WHERE belong_id='${belong_id}'`, function(err, row) {
+            if (typeof row != "undefined")
+            {
+                db.all(`SELECT * FROM song WHERE artist_id='${row.id}' ORDER BY plays DESC`, function(err, rows) {
+                    let bannerURL = "";
+                    if (fs.existsSync(rootDir + "/public/banner/" + row.id + ".png")) {
+                        bannerURL = `/banner/${row.id}.png`;
+                    } else if (fs.existsSync(rootDir + "/public/banner/" + row.id + ".gif")) {
+                        bannerURL = `/banner/${row.id}.gif`;
+                    }
+
+                    let artistData = {
+                        id: row.id,
+                        belong_id: row.belong_id,
+                        username: row.username,
+                        description: row.description,
+                        location: row.location,
+                        genre: row.genre,
+                        banner: bannerURL,
+                        songsList: rows
+                    };
+
+                    resolve(artistData);
+                });
+            } else {
+                resolve(null);
+            }
+        });
+    });
+};
+
+module.exports.getArtistDataByBelongId = getArtistDataByBelongId;
+
 
 async function getListOfGenres() {
     return new Promise(function(resolve, reject)

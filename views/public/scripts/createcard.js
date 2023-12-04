@@ -9,8 +9,4 @@ window.addEventListener("DOMContentLoaded", () => {
         const mainForm = document.getElementById("main-form");
         mainForm.style.display = "flex";
     });
-
-    bannerDragArea.addEventListener("click", () => {
-        
-    });
 });

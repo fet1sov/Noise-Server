@@ -210,6 +210,83 @@ hr {
     color: var(--secondary-text-color);
 }
 
+.edit-card-form {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+
+    padding: 20px;
+    background-color: var(--form-color);
+    border-radius: 10px;
+
+    animation: appearAnimation-Y 1s both;
+}
+
+.form-title {
+    color: var(--primary-text-color);
+    font-size: var(--small-font-size);
+    font-weight: bold;
+
+    animation: appearAnimationY 1s both;
+    animation-delay: 0.3s;
+
+    text-align: center;
+}
+
+input {
+    color: var(--primary-text-color);
+    margin-top: 20px;
+
+    border-radius: 10px;
+    padding: 10px;
+
+    width: 100%;
+    background-color: var(--text-box-color);
+}
+
+textarea {
+    color: var(--primary-text-color);
+    margin-top: 20px;
+
+    border-radius: 10px;
+    padding: 10px;
+
+    width: 100%;
+    background-color: var(--text-box-color);
+
+    height: auto;
+    resize: vertical;
+}
+
+p {
+    color: var(--primary-text-color);
+    font-size: small;
+}
+
+select {
+    margin-top: 15px;
+
+    padding: 10px;
+    color: var(--primary-text-color);
+    background-color: var(--text-box-color);
+}
+
+.yellow {
+    background-color: #dfe207;
+
+    margin-top: 20px;
+
+    animation: appearAnimation-Y 2s both;
+    animation-delay: 1s;
+    box-shadow: 0 0 40px #dfe207;
+}
+
+.yellow:hover {
+    background-color: #ccc903;
+    box-shadow: 0 0 40px #ccc903;
+}
+
+
 @media (max-width: 800px) {
     body {
         flex-direction: column;

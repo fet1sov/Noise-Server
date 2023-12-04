@@ -121,6 +121,28 @@ body {
     align-items: center;
 }
 
+.drag-n-drop-area {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+
+  user-select: none;
+
+  margin: 15px auto;
+  border: var(--text-box-color) 6px dashed;
+
+  width: 200px;
+  height: 200px;
+}
+
+.drag-small-icon {
+  margin: 10px auto;
+
+  width: 64px;
+  height: 64px;
+  fill: var(--primary-text-color);
+}
+
 .preloader {
     position: fixed;
 

@@ -8,7 +8,7 @@ const router = express.Router(),
 const session = require('express-session');
 
 const path = require('path');
-const { getLocaleByIP, getArtistDataById, authUser, registerUser, getListOfGenres, registerNewArtist } = require('./functions');
+const { getLocaleByIP, getArtistDataByBelongId, getArtistDataById, authUser, registerUser, getListOfGenres, registerNewArtist } = require('./functions');
 const cookieParser = require('cookie-parser');
 
 router.use(cookieParser());
@@ -145,23 +145,26 @@ router.get('/logout', function (request, response) {
 router.get('/studio/:section?', function (request, response) {
     if (request.session.user)
     {
-        getArtistDataById(request.session.user.data.id).then(function(result) {
+        getArtistDataByBelongId(request.session.user.data.id).then(function(result) {
             if(result)
             {
-                response.status(200);
-                response.render('studio', {
-                    title: 'Noise',
-                    locale: getLocaleByIP(request.socket.remoteAddress),
-                    artistData: result,
-                    section: request.params.section,
+                getListOfGenres().then(function(genres) {
+                    response.status(200);
+                    response.render('studio', {
+                        title: 'Noise',
+                        locale: getLocaleByIP(request.socket.remoteAddress),
+                        artistData: result,
+                        section: request.params.section,
+                        genres: genres
+                    });
                 });
             } else {
-                getListOfGenres().then(function(result) {
+                getListOfGenres().then(function(genres) {
                     response.status(200);
                     response.render('pages/createcard', {
                         title: 'Noise',
                         locale: getLocaleByIP(request.socket.remoteAddress),
-                        genres: result
+                        genres: genres
                     });
                 });  
             }
@@ -173,7 +176,7 @@ router.get('/studio/:section?', function (request, response) {
 router.post('/studio', function (request, response) {
     if (request.session.user)
     {
-        if (typeof request.files == "undefined")
+        if (typeof request.files.bannerImg == "undefined")
         {
             request.files = {
                 bannerImg: {}
@@ -182,10 +185,10 @@ router.post('/studio', function (request, response) {
 
         getListOfGenres().then(function(genres) {
             registerNewArtist(request.body.username, request.body.description, request.files.bannerImg, request.body.genre, request.session.user.data.id).then(function(artistData) {
-
                 if (artistData.errorData === 200)
                 {
-                    response.status(200);
+                    response.redirect(`../artist/${artistData.data.id}`);
+                    return;
                 } else {
                     response.status(400);
                 }

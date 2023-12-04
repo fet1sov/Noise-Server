@@ -36,7 +36,7 @@
 
     "artist" : "Исполнитель",
     "artist_song_list" : "Список треков",
-    "artist_not_songs_found" : "Исполнитель не загрузил не одного трека",
+    "artist_not_songs_found" : "Исполнитель не загрузил ни одного трека",
 
     "studio_stats" : "Статистика",
     "studio_stats_plays" : "Прослушивания",
@@ -55,6 +55,9 @@
     "studio_createcard_createform_banner" : "Загрузите баннер до 5 МБ\nВ формате .jpg .png",
 
     "studio_createcard_createform_genre" : "Выберите свой основной жанр",
+
+    "studio_card_title" : "Редактирование карточки",
+    "studio_card_editcardbutton" : "Редактировать",
 
     "studio_createcard_createform_error_more" : "Псевдоним должен быть больше 3-х символов",
     "studio_createcard_createform_error_less" : "Псевдоним должен быть меньше 40-х символов",

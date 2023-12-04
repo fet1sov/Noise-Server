@@ -58,6 +58,9 @@
 
     "studio_createcard_createform_genre" : "Select your main genre",
 
+    "studio_card_title" : "Artist card edit",
+    "studio_card_editcardbutton" : "Edit card",
+
     "studio_createcard_createform_error_more" : "Username should be more than 3 symbols",
     "studio_createcard_createform_error_less" : "Username should be less than 40 symbols",
     "studio_createcard_createform_error_banner" : "Banner is required",
