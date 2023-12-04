@@ -8,7 +8,7 @@ const router = express.Router(),
 const session = require('express-session');
 
 const path = require('path');
-const { getLocaleByIP, getArtistDataByBelongId, getArtistDataById, authUser, registerUser, getListOfGenres, registerNewArtist } = require('./functions');
+const { getLocaleByIP, getRecomendationInfo, getArtistDataByBelongId, getArtistDataById, authUser, registerUser, getListOfGenres, registerNewArtist } = require('./functions');
 const cookieParser = require('cookie-parser');
 
 router.use(cookieParser());
@@ -23,12 +23,28 @@ router.use(session({
 
 // index
 router.get('/', function (request, response) {
-    response.status(200);
-    response.render('index', {
-        title: 'Noise',
-        locale: getLocaleByIP(request.socket.remoteAddress),
-        userData: request.session.user ? request.session.user.data : null
-    });
+    if (!request.session.user)
+    {
+        response.status(200);
+        response.render('index', {
+            title: 'Noise',
+            locale: getLocaleByIP(request.socket.remoteAddress),
+            userData: request.session.user ? request.session.user.data : null
+        });
+    } else {
+        getRecomendationInfo(request.session.user.data.id).then(
+            function(recomendations)
+            {
+                response.status(200);
+                response.render('main', {
+                    title: 'Noise',
+                    locale: getLocaleByIP(request.socket.remoteAddress),
+                    userData: request.session.user ? request.session.user.data : null,
+                    userRecs: recomendations
+                });
+            }
+        );    
+    }
 });
 
 // Sign In

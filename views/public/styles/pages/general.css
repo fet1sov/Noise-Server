@@ -1,0 +1,85 @@
+main {
+    margin: 100px 10% 10% 10%;
+}
+
+.block-title {
+    color: var(--primary-text-color);
+    font-size: var(--small-font-size);
+    font-weight: bold;
+    margin-bottom: 20px;
+
+    animation: appearAnimation 2s both;
+    animation-delay: 0.5s;
+}
+
+.block-sub-title {
+    color: var(--secondary-text-color);
+    font-size: var(--tiny-font-size);
+    font-weight: bold;
+    margin-bottom: 20px;
+
+    animation: appearAnimationY 2s both;
+    animation-delay: 1s;
+}
+
+.blocks-list {
+    display: flex;
+    flex-direction: row;
+}
+
+.blocks-list li {
+    width: 150px;
+    height: 200px;
+
+    padding: 20px;
+
+    animation: appearAnimationX 2s both;
+    animation-delay: 0.5s;
+
+    margin-right: 15px;
+
+    margin-bottom: 20px;
+
+    text-align: center;
+
+    border-radius: 10px;
+    background-color: var(--secondary-color);
+}
+
+.blocks-list li a {
+    color: var(--primary-text-color);
+    text-align: center;
+
+    font-weight: bold;
+
+    overflow-wrap: break-word;
+}
+
+.artist-banner {
+    min-width: 100px;
+    min-height: 100px;
+
+    margin-bottom: 10px;
+
+    border-radius: 10px;
+}
+
+.artist-genre-info {
+    color: var(--secondary-text-color);
+    font-weight: normal;
+}
+
+@media (max-width: 1000px) {
+    .blocks-list {
+        overflow-x: scroll;
+        scroll-behavior: smooth;
+    }
+
+    .blocks-list::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    .blocks-list::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+}

@@ -108,7 +108,7 @@
             <% } %>
     
             <% if (section == 'card') { %>
-                <form class="edit-card-form">
+                <form class="edit-card-form" method="post" enctype="multipart/form-data">
                     <div class="form-title"><%- locale.studio_card_title %></div>
 
                     <input name="username" type="text" placeholder="<%- locale.studio_createcard_createform_username %>" value="<% if (typeof artistData != "undefined") { %><%- artistData.username %><% } %>" required>

@@ -3,7 +3,7 @@
 
 
     "welcome_message" : "Welcome to the ",
-    "welcome_description" : "Audio-streaming platform for listening the music in high quality. Listen in app or directly from your browser",
+    "welcome_description" : "Audio-streaming platform for listening the music in high quality. Listen music in app or directly from your browser",
     "welcome_download_button" : "Install",
     "welcome_web_button" : "Open in browser",
 
@@ -71,6 +71,12 @@
         "Hip-Hop",
         "Mashup"
     ],
+
+    "main_artists_on_rise" : "New artists",
+    "main_artists_on_rise_sub" : "Brand new artists",
+    "main_hits" : "Most listened",
+    "main_hits_sub" : "These tracks was most listened to",
+
 
     "error_404" : "404 NOT FOUND",
     "error_404_description" : "This page is not found",

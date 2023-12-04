@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+
+    <%- include('elems/styles.ejs', {}); %>
+
+    <link rel="stylesheet" href="styles/pages/general.css"/>
+
+    <script src="../scripts/mainPage.js"></script>
+
+</head>
+<body>
+    <%- include('elems/header.ejs', { isIndex: true }); %>
+
+    <main>
+
+        <div class="block-title"><%- locale.main_hits %></div>
+        <div class="block-sub-title"><%- locale.main_hits_sub %></div>
+        <ul class="blocks-list">
+            <% userRecs.songsList.forEach(song => { %>
+                <li>
+                    <%- `<a href="../song/${song.id}">` %>
+                        <%- `<img class="artist-banner" src="../thumbnails/${song.id}.png">` %>
+                        <%- song.name %>
+                        <div class="artist-genre-info"><%- song.username %></div>
+                    </a>
+                </li>
+            <% }); %>
+        </ul>
+
+        <div class="block-title"><%- locale.main_artists_on_rise %></div>
+        <div class="block-sub-title"><%- locale.main_artists_on_rise_sub %></div>
+        <ul class="blocks-list">
+            <% userRecs.newArtists.forEach(artist => { %>
+                <li>
+                    <%- `<a href="../artist/${artist.id}">` %>
+                        <%- `<img class="artist-banner" src="../banner/${artist.id}.png">` %>
+                        <%- artist.username %>
+                        <div class="artist-genre-info"><%- locale.genres_list[artist.genre] %></div>
+                    </a>
+                </li>
+            <% }); %>
+        </ul>
+    </main>
+</body>
+</html>

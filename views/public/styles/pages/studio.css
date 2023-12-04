@@ -215,7 +215,7 @@ hr {
     justify-content: center;
     flex-direction: column;
 
-    padding: 20px;
+    padding: 70px;
     background-color: var(--form-color);
     border-radius: 10px;
 
@@ -242,6 +242,12 @@ input {
 
     width: 100%;
     background-color: var(--text-box-color);
+}
+
+input[type='radio']{
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
 }
 
 textarea {

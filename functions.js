@@ -269,6 +269,24 @@ async function getArtistDataById(artist_id) {
 
 module.exports.getArtistDataById = getArtistDataById;
 
+
+async function getRecomendationInfo() {
+    return new Promise(function(resolve, reject)
+    {
+        db.all(`SELECT * FROM artist ORDER BY id DESC LIMIT 5`, function(err, newArtists) {
+            db.all('SELECT `song`.*, `artist`.`username` FROM `song` INNER JOIN `artist` ON `song`.`artist_id` = `artist`.`id` ORDER BY `song`.`plays` ASC LIMIT 5', function(err, songsList) {
+                let recomendData = {
+                    newArtists: newArtists,
+                    songsList: songsList
+                };
+
+                resolve(recomendData);
+            });
+        });
+    });
+}
+module.exports.getRecomendationInfo = getRecomendationInfo;
+
 async function getArtistDataByBelongId(belong_id) {
     return new Promise(function(resolve, reject)
     {
