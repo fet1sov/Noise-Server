@@ -8,7 +8,8 @@ const router = express.Router(),
 const session = require('express-session');
 
 const path = require('path');
-const { getLocaleByIP, getRecomendationInfo, getArtistDataByBelongId, getArtistDataById, authUser, registerUser, getListOfGenres, registerNewArtist } = require('./functions');
+const { getLocaleByIP, updateArtistInfo, getSongInfoById, getRecomendationInfo, getArtistDataByBelongId, getArtistDataById, authUser, registerUser, getListOfGenres, registerNewArtist } = 
+require('./functions');
 const cookieParser = require('cookie-parser');
 
 router.use(cookieParser());
@@ -221,6 +222,45 @@ router.post('/studio', function (request, response) {
     } else {
         response.redirect("../");
     }
+});
+router.post('/studio/card', function (request, response) {
+    if (request.session.user)
+    {   
+        if (request.files)
+        {
+            updateArtistInfo(request.body.username, request.body.description, request.body.genre, request.session.user.data.id, request.files.bannerImg).then(function (artistData) {
+                response.redirect(`../artist/${artistData.id}`);
+            });
+        } else {
+            updateArtistInfo(request.body.username, request.body.description, request.body.genre, request.session.user.data.id).then(function (artistData) {
+                response.redirect(`../artist/${artistData.id}`);
+            });
+        }
+        
+    } else {
+        response.redirect("../");
+    }
+});
+
+router.get('/song/:song_id', function(request, response) {
+    getSongInfoById(request.params.song_id).then(function(result) {
+        if (result)
+        {
+            response.status(200);
+            response.render('pages/songinfo', {
+                title: 'Noise',
+                locale: getLocaleByIP(request.socket.remoteAddress),
+                userData: request.session.user ? request.session.user.data : null,
+                songData: result
+            });
+        } else {
+            response.status(404);
+            response.render('404', {
+                title: 'Noise — 404',
+                locale: getLocaleByIP(request.socket.remoteAddress)
+            });
+        }
+    });
 });
 
 // 404 HTTP Error

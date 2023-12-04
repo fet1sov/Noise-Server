@@ -12,11 +12,11 @@
 <body>
     <%- include('elems/preloader.ejs', {}); %>
 
-    <div class="profile-block">
+    <a href="../artist/<%- artistData.id %>" class="profile-block">
         <div><img class="account-avatar" src="../banner/<%- artistData.id %>.png" alt="Avatar"></div>
         <div class="account-name"><%- artistData.username %></div>
         <div class="account-description"><%- artistData.description %></div>
-    </div>
+    </a>
 
 
     <% var totalPlays = 0; %>
@@ -108,7 +108,7 @@
             <% } %>
     
             <% if (section == 'card') { %>
-                <form class="edit-card-form" method="post" enctype="multipart/form-data">
+                <form class="edit-card-form" action="../studio/card" method="post" enctype="multipart/form-data">
                     <div class="form-title"><%- locale.studio_card_title %></div>
 
                     <input name="username" type="text" placeholder="<%- locale.studio_createcard_createform_username %>" value="<% if (typeof artistData != "undefined") { %><%- artistData.username %><% } %>" required>

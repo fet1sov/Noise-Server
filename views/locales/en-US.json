@@ -77,6 +77,8 @@
     "main_hits" : "Most listened",
     "main_hits_sub" : "These tracks was most listened to",
 
+    "song_author": "Author",
+    "song_track": "Track",
 
     "error_404" : "404 NOT FOUND",
     "error_404_description" : "This page is not found",

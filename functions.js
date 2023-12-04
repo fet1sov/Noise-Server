@@ -233,6 +233,48 @@ async function registerNewArtist(username, description, bannerFile, genreId, bel
 
 module.exports.registerNewArtist = registerNewArtist;
 
+async function updateArtistInfo(username, description, genreId, belongId, bannerFile = null)
+{
+    return new Promise(function(resolve, reject)
+    {
+        db.get(`SELECT * FROM artist WHERE belong_id='${belongId}'`, function(error, row) {
+            if (bannerFile)
+            {
+                const uploadedFileExtension = bannerFile.mimetype.split("/")[1];
+                let uploadPath = "";
+                if (uploadedFileExtension === "png"
+                    || uploadedFileExtension === "jpeg"
+                    || uploadedFileExtension === "webp") {
+                    uploadPath = __dirname
+                        + "/public/banner/" + row.id + ".png";
+                }
+
+                const pngProfilePic = __dirname
+                    + "/public/banner/" + row.id + ".png";
+
+                if (fs.existsSync(pngProfilePic)) {
+                    fs.unlink(pngProfilePic, () => { });
+                }
+
+                try {
+                    bannerFile.mv(uploadPath, function (err) {
+                        if (err) {
+                            logMessage("API", `FAILED TO UPLOAD BANNER FILE: ${err}`, 3);
+                        }
+                    });
+                } catch {
+
+                }
+            }
+
+            db.run(`UPDATE artist SET username='${username}', description='${description}', genre='${genreId}' WHERE id=${belongId}`);
+            resolve(row);
+        });        
+    });
+};
+
+module.exports.updateArtistInfo = updateArtistInfo;
+
 async function getArtistDataById(artist_id) {
     return new Promise(function(resolve, reject)
     {
@@ -323,6 +365,22 @@ async function getArtistDataByBelongId(belong_id) {
 
 module.exports.getArtistDataByBelongId = getArtistDataByBelongId;
 
+async function getSongInfoById(song_id) {
+    return new Promise(function(resolve, reject)
+    {
+        var query = "SELECT `song`.*, `artist`.`username`, `artist`.`id` AS `artist_id`, `artist`.`description` AS `artist_description` FROM `song` INNER JOIN `artist` ON `song`.`artist_id` = `artist`.`id` WHERE `song`.`id`=\'" + song_id + "\'";
+        db.get(query, function(err, row) {
+            if (typeof row != "undefined")
+            {
+                resolve(row);
+            } else {
+                resolve(null);
+            }
+        });
+    });
+}
+
+module.exports.getSongInfoById = getSongInfoById;
 
 async function getListOfGenres() {
     return new Promise(function(resolve, reject)
