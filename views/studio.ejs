@@ -78,13 +78,13 @@
                     </div>
     
                     <hr>
-                    <% if(artistData.songsList.length !=0) { %>
+                    <% if(artistData.songsList.length != 0) { %>
                         <ul class="studio-songs-list">
                             <% artistData.songsList.forEach(song=> { %>
                                 <li data-id="<%- song.id %>">
                                     <div class="small-information">
     
-                                        <input type="radio" name="song" data-id="<%- song.id %>">
+                                        <input type="checkbox" name="song" data-id="<%- song.id %>">
     
                                         <img src="../thumbnails/<%- song.id %>.png">
                                         <div>

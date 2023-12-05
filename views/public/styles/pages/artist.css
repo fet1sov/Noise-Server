@@ -29,6 +29,8 @@ main {
     font-size: var(--big-font-size);
     font-weight: bold;
 
+    text-shadow: 1px 1px 2px black;
+
     animation: appearAnimation 2s both;
 }
 
@@ -36,11 +38,16 @@ main {
     color: var(--primary-text-color);
     margin-bottom: 20px;
 
+    text-shadow: 1px 1px 2px black;
+
     animation: appearAnimation-Y 4s both;
 }
 
 .artist-description {
     color: var(--secondary-text-color);
+
+    text-shadow: 1px 1px 2px black;
+
     animation: appearAnimationY 2s both;
 }
 
@@ -95,6 +102,11 @@ main {
 .song-small-info {
     color: var(--secondary-text-color);
     font-weight: normal;
+}
+
+.song-name-info {
+    color: var(--primary-text-color);
+    font-weight: bold;
 }
 
 .not-found {

@@ -248,6 +248,8 @@ body {
 .main-user-name {
   color: var(--primary-text-color);
   font-weight: bold;
+
+  text-shadow: 1px 1px 2px black;
 }
 
 .main-user-avatar {
@@ -293,7 +295,7 @@ body {
 
   background-color: var(--secondary-color-glass);
   width: 135px;
-  height: 100px;
+  height: 140px;
 
   display: flex;
   justify-content: center;

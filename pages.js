@@ -8,7 +8,7 @@ const router = express.Router(),
 const session = require('express-session');
 
 const path = require('path');
-const { getLocaleByIP, updateArtistInfo, getSongInfoById, getRecomendationInfo, getArtistDataByBelongId, getArtistDataById, authUser, registerUser, getListOfGenres, registerNewArtist } = 
+const { getLocaleByIP, getProfileByUsername, updateArtistInfo, getSongInfoById, getRecomendationInfo, getArtistDataByBelongId, getArtistDataById, authUser, registerUser, getListOfGenres, registerNewArtist } = 
 require('./functions');
 const cookieParser = require('cookie-parser');
 
@@ -252,6 +252,27 @@ router.get('/song/:song_id', function(request, response) {
                 locale: getLocaleByIP(request.socket.remoteAddress),
                 userData: request.session.user ? request.session.user.data : null,
                 songData: result
+            });
+        } else {
+            response.status(404);
+            response.render('404', {
+                title: 'Noise — 404',
+                locale: getLocaleByIP(request.socket.remoteAddress)
+            });
+        }
+    });
+});
+
+router.get('/profile/:username', function(request, response) {
+    getProfileByUsername(request.params.username).then(function(result) {
+        if (result)
+        {
+            response.status(200);
+            response.render('pages/userprofile', {
+                title: 'Noise',
+                locale: getLocaleByIP(request.socket.remoteAddress),
+                userData: request.session.user ? request.session.user.data : null,
+                profileData: result
             });
         } else {
             response.status(404);

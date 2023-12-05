@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%- title %></title>
+
+    <%- include('../elems/styles.ejs', {}); %>
+
+    <link rel="stylesheet" href="../styles/pages/profile.css"/>
+
+</head>
+<body>
+    <%- include('../elems/header.ejs', { isIndex: false }); %>
+
+    <main>
+        <div class="profile-block">
+            <div>
+                <div class="profile-title"><%- locale.profile_user %></div>
+                <div class="profile-name"><%- profileData.userData.login %></div>
+            </div>
+        </div>
+        
+        <% console.log(profileData); %>
+
+        <% if (profileData.artistData) { %>
+            <%- `<a class="artist-block" href="../artist/${profileData.artistData.id}">` %>
+                <%- `<img class="artist-banner" src="../banner/${profileData.artistData.id}.png">` %>
+                <div class="artist-sub-block">
+                    <div class="artist-title"><%- locale.profile_artist_card %></div>
+                    <div class="artist-name"><%- profileData.artistData.username %></div>
+                </div>
+            </a>
+        <% } %>
+
+        <div class="profile-block">
+            <% if (userData) { %> 
+                <% if (profileData.userData.id != userData.id) { %>
+                    <div class="profile-title-category"><%- locale.profile_playlists %></div>
+                <% } else { %>
+                    <div class="profile-title-category"><%- locale.profile_my_playlists %></div>
+                <% } %>
+            <% } else { %>
+                <div class="profile-title-category"><%- locale.profile_playlists %></div>
+            <% } %>
+
+            <ul>
+                
+            </ul>
+        </div>
+    </main>
+
+</body>

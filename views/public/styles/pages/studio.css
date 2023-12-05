@@ -143,6 +143,9 @@ hr {
 .account-avatar {
     width: 128px;
     height: 128px;
+
+    max-width: 128px;
+    max-height: 128px;
     border-radius: 50%;
 
     animation: opacityOn 1.5s both;
@@ -246,10 +249,23 @@ input {
     background-color: var(--text-box-color);
 }
 
-input[type='radio']{
-    width: 48px;
-    height: 48px;
-    border-radius: 10px;
+input[type="checkbox"] {
+    appearance: none;
+    background-color: var(--text-box-color);
+    margin: 0;
+
+    width: 1.15em;
+    height: 1.15em;
+    border-radius: 5px;
+
+    margin-right: 10px;
+}
+
+input[type="checkbox"]:checked {
+    width: 0.65em;
+    height: 0.65em;
+    border-radius: 5px;
+    box-shadow: inset 1em 1em var(--accent-color);
 }
 
 textarea {

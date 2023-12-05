@@ -1,6 +1,10 @@
 {
     "auth_button" : "Войти",
 
+    "profile_user" : "Пользователь",
+    "profile_artist_card" : "Карточка исполнителя",
+    "profile_my_playlists": "Мои плейлисты",
+    "profile_playlists" : "Плейлисты",
     
     "welcome_message" : "Добро пожаловать в ",
     "welcome_description" : "Аудио-стриминговая платформа для прослушивания музыки в высоком качестве. Слушайте музыку в нашем приложении или же прямо из браузера",
@@ -31,6 +35,7 @@
     "auth_error_wrong_password" : "Неверный пароль",
     "auth_error_not_found" : "Аккаунт не найден",
 
+    "profile_menu_profile" : "Профиль",
     "profile_menu_studio" : "Студия",
     "profile_menu_logout" : "Выйти",
 

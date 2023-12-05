@@ -24,10 +24,10 @@ function logMessage(tag, message, type)
 }
 
 exports.getLocaleByIP = (ip) => {
-    var region = geoip.lookup(ip);
+    let region = geoip.lookup(ip);
 
-    var localeContent = "";
-    var localeJSON = "";
+    let localeContent = "";
+    let localeJSON = "";
 
     if (region)
     {
@@ -312,6 +312,73 @@ async function getArtistDataById(artist_id) {
 module.exports.getArtistDataById = getArtistDataById;
 
 
+async function getProfileByUsername(username) {
+    return new Promise(function(resolve, reject)
+    {
+        let userData = {
+            artistData: null,
+            userData: null,
+            playlistData: null
+        } 
+
+        if (!username.startsWith("id"))
+        {
+            db.get(`SELECT * FROM user WHERE login='${username}'`, function(err, row) {
+                if (typeof row != "undefined")
+                {
+                    userData.userData = row;
+
+                    db.get(`SELECT * FROM artist WHERE belong_id='${row.id}'`, function(err, artistRow) {
+                        if (typeof artistRow != "undefined")
+                        {
+                            userData.artistData = artistRow;
+                        } 
+
+                        db.all(`SELECT * FROM playlist WHERE user_id='${row.id}'`, function(err, playListRows) {
+                            if (typeof playListRows != "undefined")
+                            {
+                                userData.playlistData = playListRows;
+                            }
+
+                            resolve(userData);
+                        });
+                    });
+                } else {
+                    resolve(null);
+                }
+            });
+        } else {
+            db.get(`SELECT * FROM user WHERE id='${username.slice(2)}'`, function(err, row) {
+                if (typeof row != "undefined")
+                {
+                    userData.userData = row;
+
+                    db.get(`SELECT * FROM artist WHERE belong_id='${row.id}'`, function(err, artistRow) {
+                        if (typeof artistRow != "undefined")
+                        {
+                            userData.artistData = artistRow;
+                        }
+
+                        db.all(`SELECT * FROM playlist WHERE user_id='${row.id}'`, function(err, playListRows) {
+                            if (typeof playListRows != "undefined")
+                            {
+                                userData.playlistData = playListRows;
+                            }
+
+                            resolve(userData);
+                        });
+                    });
+                } else {
+                    resolve(null);
+                }
+            });
+        }
+        
+    });
+}
+
+module.exports.getProfileByUsername = getProfileByUsername;
+
 async function getRecomendationInfo() {
     return new Promise(function(resolve, reject)
     {
@@ -368,7 +435,7 @@ module.exports.getArtistDataByBelongId = getArtistDataByBelongId;
 async function getSongInfoById(song_id) {
     return new Promise(function(resolve, reject)
     {
-        var query = "SELECT `song`.*, `artist`.`username`, `artist`.`id` AS `artist_id`, `artist`.`description` AS `artist_description` FROM `song` INNER JOIN `artist` ON `song`.`artist_id` = `artist`.`id` WHERE `song`.`id`=\'" + song_id + "\'";
+        let query = "SELECT `song`.*, `artist`.`username`, `artist`.`id` AS `artist_id`, `artist`.`description` AS `artist_description` FROM `song` INNER JOIN `artist` ON `song`.`artist_id` = `artist`.`id` WHERE `song`.`id`=\'" + song_id + "\'";
         db.get(query, function(err, row) {
             if (typeof row != "undefined")
             {

@@ -1,6 +1,10 @@
 {
     "auth_button" : "Join",
 
+    "profile_user" : "User",
+    "profile_artist_card" : "Artist card",
+    "profile_my_playlists": "My playlists",
+    "profile_playlists" : "Playlists",
 
     "welcome_message" : "Welcome to the ",
     "welcome_description" : "Audio-streaming platform for listening the music in high quality. Listen music in app or directly from your browser",

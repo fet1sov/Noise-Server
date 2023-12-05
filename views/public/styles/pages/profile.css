@@ -1,0 +1,66 @@
+main {
+    margin: 100px 10% 10% 10%;
+}
+
+.profile-block {
+    display: flex;
+
+    margin-top: 20px;
+}
+
+.profile-title {
+    color: var(--primary-text-color);
+
+    animation: appearAnimationY 2s both;
+}
+
+.profile-name {
+    color: var(--primary-text-color);
+    font-size: var(--big-font-size);
+    font-weight: bold;
+
+    animation: appearAnimation 2s both;
+}
+
+.artist-block {
+    display: flex;
+
+    animation: appearAnimation-Y 1s both;
+
+    padding: 10px;
+    border-radius: 10px;
+
+    margin-top: 50px;
+}
+
+.artist-name {
+    color: var(--primary-text-color);
+    font-size: var(--small-font-size);
+    font-weight: bold;
+}
+
+.artist-banner {
+    width: 128px;
+    height: 128px;
+
+    border-radius: 50%;
+}
+
+.artist-title {
+    color: var(--primary-text-color);
+    background-color: var(--accent-color);
+    padding: 5px;
+    border-radius: 20px;
+}
+
+.artist-sub-block {
+    margin-left: 20px;
+}
+
+.profile-title-category {
+    color: var(--primary-text-color);
+    font-size: var(--small-font-size);
+    font-weight: bold;
+
+    animation: appearAnimation 1.5s both;
+}
