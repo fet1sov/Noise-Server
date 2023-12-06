@@ -50,18 +50,27 @@
     "auth_error_not_found" : "Аккаунт не найден",
 
     "profile_menu_profile" : "Профиль",
+    "profile_menu_admin" : "Админ",
     "profile_menu_studio" : "Студия",
     "profile_menu_logout" : "Выйти",
 
     "artist" : "Исполнитель",
     "artist_song_list" : "Список треков",
     "artist_not_songs_found" : "Исполнитель не загрузил ни одного трека",
+    "artist_last_release" : "Последний релиз",
 
     "studio_stats" : "Статистика",
     "studio_stats_plays" : "Прослушивания",
     "studio_stats_amount" : "Композиций",
     "studio_stats_listening" : "Сейчас слушают",
     "studio_content_notracks" : "Вы ещё не загрузили не одной композиции :(",
+    "studio_content_addbutton" : "Добавить",
+
+    "studio_content_add" : "Добавление трека",
+    "studio_content_song_name" : "Название трека",
+    "studio_content_song_genre" : "Выберите жанр трека",
+    "studio_content_song_thumbnail" : "Загрузите обложку до 5 МБ\nВ формате .jpg .png .gif",
+    "studio_content_song_upload" : "Загрузить трек",
 
     "studio_createcard_title" : "Поделись своим творчеством",
     "studio_createcard_description" : "Создай карточку исполнителя на Noise и начни делиться своим твочеством уже сейчас. Присоединись к нашему сообществу авторов в сфере музыки",
@@ -71,7 +80,7 @@
 
     "studio_createcard_createform_username" : "Псевдоним исполнителя",
     "studio_createcard_createform_description" : "Описание карточки",
-    "studio_createcard_createform_banner" : "Загрузите баннер до 5 МБ\nВ формате .jpg .png",
+    "studio_createcard_createform_banner" : "Загрузите баннер до 5 МБ\nВ формате .jpg .png .gif",
 
     "studio_createcard_createform_genre" : "Выберите свой основной жанр",
 

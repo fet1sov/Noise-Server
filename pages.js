@@ -159,7 +159,7 @@ router.get('/logout', function (request, response) {
 });
 
 // Studio pages
-router.get('/studio/:section?', function (request, response) {
+router.get('/studio/:section?/:subsection?', function (request, response) {
     if (request.session.user)
     {
         getArtistDataByBelongId(request.session.user.data.id).then(function(result) {
@@ -172,6 +172,7 @@ router.get('/studio/:section?', function (request, response) {
                         locale: getLocaleByIP(request.socket.remoteAddress),
                         artistData: result,
                         section: request.params.section,
+                        subsection: request.params.subsection,
                         genres: genres
                     });
                 });

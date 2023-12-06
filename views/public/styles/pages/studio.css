@@ -213,7 +213,7 @@ hr {
     color: var(--secondary-text-color);
 }
 
-.edit-card-form {
+.studio-form {
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -310,6 +310,27 @@ select {
     box-shadow: 0 0 40px #ccc903;
 }
 
+.green {
+    background-color: #07e207;
+
+    margin-top: 20px;
+
+    animation: appearAnimation-Y 2s both;
+    animation-delay: 1s;
+    box-shadow: 0 0 40px #07e207;
+}
+
+.green:hover {
+    background-color: #14cc03;
+    box-shadow: 0 0 40px #14cc03;
+}
+
+.small-button {
+    color: var(--primary-text-color);
+    font-size: var(--tiny-font-size);
+
+    display: inline-flex;
+}
 
 @media (max-width: 800px) {
     body {
@@ -345,5 +366,9 @@ select {
         margin-left: 10px;
 
         margin-bottom: 80px;
+    }
+
+    .studio-block {
+        padding: 0;
     }
 }

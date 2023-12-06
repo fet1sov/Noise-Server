@@ -23,6 +23,8 @@
         <div class="artist-songs-list">
 
             <% if (typeof artistData.lastRelease != "undefined") { %>
+                <div class="artist-category-title"><%- locale.artist_last_release %></div>
+
                 <a class="artist-last-release" href="../song/<%- artistData.lastRelease.id %>">
 
                     <img class="last-release-image" src="../thumbnails/<%- artistData.lastRelease.id %>.png">

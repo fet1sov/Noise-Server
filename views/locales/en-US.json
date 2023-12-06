@@ -52,8 +52,10 @@
     "artist" : "Artist",
     "artist_song_list" : "List of tracks",
     "artist_not_songs_found" : "This haven't uploaded something yet",
+    "artist_last_release" : "Last release",
     
-
+    "profile_menu_profile" : "Profile",
+    "profile_menu_admin" : "Admin",
     "profile_menu_studio" : "Studio",
     "profile_menu_logout" : "Log out",
 
@@ -63,6 +65,13 @@
     "studio_stats_amount" : "Soundtracks",
     "studio_stats_listening" : "Listening",
     "studio_content_notracks" : "No songs yet :(",
+    "studio_content_addbutton" : "Add track",
+
+    "studio_content_add" : "Track add",
+    "studio_content_song_name" : "Track name",
+    "studio_content_song_genre" : "Select the track genre",
+    "studio_content_song_thumbnail" : "Upload the thumbnail Max: 5 MB\nIn format .jpg .png .gif",
+    "studio_content_song_upload" : "Upload track",
 
     "studio_createcard_title" : "Share your creativity",
     "studio_createcard_description" : "Create a artist card on Noise and start sharing your creativity now. Join our ",
@@ -72,7 +81,7 @@
 
     "studio_createcard_createform_username" : "Artist name",
     "studio_createcard_createform_description" : "Description of card",
-    "studio_createcard_createform_banner" : "Upload the banner Max: 5 MB\nIn format .jpg .png",
+    "studio_createcard_createform_banner" : "Upload the banner Max: 5 MB\nIn format .jpg .png .gif",
 
     "studio_createcard_createform_genre" : "Select your main genre",
 
