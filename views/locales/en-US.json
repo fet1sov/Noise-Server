@@ -71,6 +71,7 @@
     "studio_content_song_name" : "Track name",
     "studio_content_song_genre" : "Select the track genre",
     "studio_content_song_thumbnail" : "Upload the thumbnail Max: 5 MB\nIn format .jpg .png .gif",
+    "studio_content_song_file" : "Upload the song file Max: 5 MB",
     "studio_content_song_upload" : "Upload track",
 
     "studio_createcard_title" : "Share your creativity",

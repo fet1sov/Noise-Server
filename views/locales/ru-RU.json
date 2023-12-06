@@ -70,6 +70,7 @@
     "studio_content_song_name" : "Название трека",
     "studio_content_song_genre" : "Выберите жанр трека",
     "studio_content_song_thumbnail" : "Загрузите обложку до 5 МБ\nВ формате .jpg .png .gif",
+    "studio_content_song_file" : "Загрузите файл аудиозаписи до 5 МБ",
     "studio_content_song_upload" : "Загрузить трек",
 
     "studio_createcard_title" : "Поделись своим творчеством",

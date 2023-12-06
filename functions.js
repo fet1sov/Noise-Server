@@ -386,7 +386,7 @@ async function getRecomendationInfo() {
     return new Promise(function(resolve, reject)
     {
         db.all(`SELECT * FROM artist ORDER BY id DESC LIMIT 5`, function(err, newArtists) {
-            db.all('SELECT `song`.*, `artist`.`username` FROM `song` INNER JOIN `artist` ON `song`.`artist_id` = `artist`.`id` ORDER BY `song`.`plays` ASC LIMIT 5', function(err, songsList) {
+            db.all('SELECT `song`.*, `artist`.`username` FROM `song` INNER JOIN `artist` ON `song`.`artist_id` = `artist`.`id` ORDER BY `song`.`plays` DESC LIMIT 5', function(err, songsList) {
                 let recomendData = {
                     newArtists: newArtists,
                     songsList: songsList
@@ -497,3 +497,63 @@ async function getListOfGenres() {
 };
 
 module.exports.getListOfGenres = getListOfGenres;
+
+async function uploadSoundTrack(artistId, name, thumbnailFile, songFile, genreId) {
+    return new Promise(function(resolve, reject)
+    {
+        db.run(`INSERT INTO song(artist_id, name, genre) VALUES('${artistId}', '${name}', '${genreId}')`, function (error) {
+            if (error)
+            {
+                logMessage("API", `FAILED TO INSERT NEW SOUND TRACK`, 3);
+            } else {
+                const uploadedFileExtension = thumbnailFile.mimetype.split("/")[1];
+
+                let uploadPath = "";
+                if (uploadedFileExtension === "png"
+                    || uploadedFileExtension === "jpeg"
+                    || uploadedFileExtension === "webp") {
+                    uploadPath = __dirname
+                        + "/public/thumbnails/" + this.lastID + ".png";
+                }
+
+                try {
+                    thumbnailFile.mv(uploadPath, function (err) {
+                        if (err) {
+                            logMessage("API", `FAILED TO UPLOAD BANNER FILE: ${err}`, 3);
+                        } else {
+                            
+                        }
+                    });
+                } catch {
+
+                }
+
+                const songFileExtension = thumbnailFile.mimetype.split("/")[1];
+
+                let songUploadPath = "";
+
+                if (uploadedFileExtension === "mp3"
+                    || uploadedFileExtension === "flac") {
+                    uploadPath = __dirname
+                    + "/public/songs/" + this.lastID + ".mp3";
+                }
+
+                try {
+                    songFile.mv(songUploadPath, function (err) {
+                        if (err) {
+                            logMessage("API", `FAILED TO UPLOAD SONG FILE: ${err}`, 3);
+                        } else {
+                            
+                        }
+                    });
+                } catch {
+
+                }
+
+                resolve(this.lastID);
+            }
+        });
+    });
+};
+
+module.exports.uploadSoundTrack = uploadSoundTrack;

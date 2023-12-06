@@ -8,7 +8,7 @@ const router = express.Router(),
 const session = require('express-session');
 
 const path = require('path');
-const { getLocaleByIP, getProfileByUsername, updateArtistInfo, getSongInfoById, getRecomendationInfo, getArtistDataByBelongId, getArtistDataById, authUser, registerUser, getListOfGenres, registerNewArtist } = 
+const { getLocaleByIP, uploadSoundTrack, getProfileByUsername, updateArtistInfo, getSongInfoById, getRecomendationInfo, getArtistDataByBelongId, getArtistDataById, authUser, registerUser, getListOfGenres, registerNewArtist } = 
 require('./functions');
 const cookieParser = require('cookie-parser');
 
@@ -165,6 +165,10 @@ router.get('/studio/:section?/:subsection?', function (request, response) {
         getArtistDataByBelongId(request.session.user.data.id).then(function(result) {
             if(result)
             {
+                request.session.artist = {
+                    id: result.id,
+                };
+
                 getListOfGenres().then(function(genres) {
                     response.status(200);
                     response.render('studio', {
@@ -191,6 +195,17 @@ router.get('/studio/:section?/:subsection?', function (request, response) {
         response.redirect("../");
     }
 });
+router.post('/studio/content/add', function (request, response) {
+    if (request.session.user && request.session.artist)
+    {
+        uploadSoundTrack(request.session.artist.id, request.body.songName, request.files.songThumbnail, request.files.songFile, request.body.genre).then(function(songInfo) {
+            response.redirect(`/song/${songInfo}`);
+        });
+    } else {
+        response.redirect("/");
+    }
+});
+
 router.post('/studio', function (request, response) {
     if (request.session.user)
     {

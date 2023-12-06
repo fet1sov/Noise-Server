@@ -1,9 +1,17 @@
+let audio = {
+
+};
+
 window.addEventListener("DOMContentLoaded", () => {
-    const songPlayButton = document.getElementById("song-play-button");
+    let songPlayButton = document.querySelectorAll(".song-play");
+
     if (songPlayButton)
     {
-        songPlayButton.addEventListener("click", (event) => {
-            console.log(songPlayButton.dataset.id);
+        songPlayButton.forEach((song) => {
+            audio[`${song.dataset.id}`] = new Audio(`../songs/${song.dataset.id}.mp3`);
+            song.addEventListener("click", (event) => {
+                audio[`${song.dataset.id}`].play();
+            });
         });
     }
 });
