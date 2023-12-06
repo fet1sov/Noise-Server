@@ -333,6 +333,14 @@ body {
   color: var(--primary-text-color);
 }
 
+.breakable-word {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-all;
+  word-break: break-word;
+  hyphens: auto;
+}
+
 .equalizer {
     font-size: 0;
   }

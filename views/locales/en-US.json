@@ -11,6 +11,20 @@
     "welcome_download_button" : "Install",
     "welcome_web_button" : "Open in browser",
 
+    "months_three" : [
+        "JAN",
+        "FEB",
+        "MAR",
+        "APR",
+        "MAY",
+        "JUN",
+        "JUL",
+        "AUG",
+        "SEP",
+        "OCT",
+        "NOV",
+        "DEC"
+    ],
 
     "auth_login" : "Log In",
     "auth_register" : "Register",

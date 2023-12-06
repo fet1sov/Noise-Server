@@ -3,8 +3,6 @@ main {
 }
 
 .profile-block {
-    display: flex;
-
     margin-top: 20px;
 }
 
@@ -51,6 +49,7 @@ main {
     background-color: var(--accent-color);
     padding: 5px;
     border-radius: 20px;
+    max-width: 205px;
 }
 
 .artist-sub-block {
@@ -63,4 +62,31 @@ main {
     font-weight: bold;
 
     animation: appearAnimation 1.5s both;
+}
+
+.playlist-list li {
+    width: 150px;
+    height: 200px;
+    padding: 20px;
+    animation: appearAnimationX 2s both;
+    animation-delay: 0.5s;
+    margin-right: 15px;
+    margin-bottom: 20px;
+    text-align: center;
+    border-radius: 10px;
+    background-color: var(--secondary-color);
+
+    color: var(--primary-text-color);
+    font-weight: bold;
+}
+
+.playlist-list li a {
+    color: var(--primary-text-color);
+}
+
+.playlist-list-thumb {
+    min-width: 100px;
+    min-height: 100px;
+    margin-bottom: 10px;
+    border-radius: 10px;
 }

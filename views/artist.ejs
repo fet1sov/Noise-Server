@@ -21,6 +21,22 @@
         </div>
 
         <div class="artist-songs-list">
+
+            <% if (typeof artistData.lastRelease != "undefined") { %>
+                <a class="artist-last-release" href="../song/<%- artistData.lastRelease.id %>">
+
+                    <img class="last-release-image" src="../thumbnails/<%- artistData.lastRelease.id %>.png">
+
+                    <div class="artist-last-release-block-info breakable-word">
+                        <% let publicationDate = new Date(artistData.lastRelease.publication_date); %>
+
+                        <div class="artist-last-release-title"><%- artistData.lastRelease.name %></div>
+                        <div class="artist-last-release-sub-title"><%- publicationDate.getDate() + ' ' + locale.months_three[(publicationDate.getMonth())] + ' ' + publicationDate.getFullYear() %></div>
+                    </div>
+                    
+                </a>
+            <% } %>
+
             <% if (artistData.songsList.length !== 0) { %>
                 <ul class="song-list">
                     <%- locale.artist_song_list %>

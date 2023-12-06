@@ -297,7 +297,10 @@ async function getArtistDataById(artist_id) {
                         location: row.location,
                         genre: row.genre,
                         banner: bannerURL,
-                        songsList: rows
+                        songsList: rows,
+                        lastRelease: rows.sort(function(x, y){
+                            return x.timestamp - y.timestamp;
+                        })[0]
                     };
 
                     resolve(artistData);
@@ -418,7 +421,10 @@ async function getArtistDataByBelongId(belong_id) {
                         location: row.location,
                         genre: row.genre,
                         banner: bannerURL,
-                        songsList: rows
+                        songsList: rows,
+                        lastRelease: rows.sort(function(x, y){
+                            return x.timestamp - y.timestamp;
+                        })[0]
                     };
 
                     resolve(artistData);
@@ -431,6 +437,33 @@ async function getArtistDataByBelongId(belong_id) {
 };
 
 module.exports.getArtistDataByBelongId = getArtistDataByBelongId;
+
+async function getPlaylistInfoById(playlist_id) {
+    return new Promise(function(resolve, reject)
+    {
+        let playlistData = {
+            playlist: null,
+            songList: null,
+        };
+
+        db.get(`SELECT * FROM playlist WHERE id='${playlist_id}'`, function(err, row) {
+            if (typeof row != "undefined")
+            {
+                playlistData.playlist = row;
+
+                db.all(`SELECT * FROM song WHERE id IN ()`, function (err, songs) {
+                    playlistData.songList = songs;
+                    resolve(playlistData);
+                });
+
+            } else {
+                resolve(null)
+            }
+        });
+    });
+}
+
+module.exports.getPlaylistInfoById = getPlaylistInfoById;
 
 async function getSongInfoById(song_id) {
     return new Promise(function(resolve, reject)

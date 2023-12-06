@@ -20,8 +20,6 @@
                 <div class="profile-name"><%- profileData.userData.login %></div>
             </div>
         </div>
-        
-        <% console.log(profileData); %>
 
         <% if (profileData.artistData) { %>
             <%- `<a class="artist-block" href="../artist/${profileData.artistData.id}">` %>
@@ -44,8 +42,15 @@
                 <div class="profile-title-category"><%- locale.profile_playlists %></div>
             <% } %>
 
-            <ul>
-                
+            <ul class="playlist-list">
+                <% profileData.playlistData.forEach(playlist => { %>
+                    <li>
+                        <a href="../playlist/<%- playlist.id %>">
+                            <img class="playlist-list-thumb" src="../playlistThumbs/<%- playlist.id %>.png">
+                            <div><%- playlist.name %></div>
+                        </a>
+                    </li>
+                <% }); %>
             </ul>
         </div>
     </main>
