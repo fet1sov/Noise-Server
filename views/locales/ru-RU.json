@@ -65,8 +65,12 @@
     "studio_stats_listening" : "Сейчас слушают",
     "studio_content_notracks" : "Вы ещё не загрузили не одной композиции :(",
     "studio_content_addbutton" : "Добавить",
+    "studio_content_editbutton" : "Изменить",
+    "studio_content_deletebutton" : "Удалить",
 
     "studio_content_add" : "Добавление трека",
+    "studio_content_edit" : "Редактирование трека",
+
     "studio_content_song_name" : "Название трека",
     "studio_content_song_genre" : "Выберите жанр трека",
     "studio_content_song_thumbnail" : "Загрузите обложку до 5 МБ\nВ формате .jpg .png .gif",

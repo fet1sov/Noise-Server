@@ -66,6 +66,8 @@
     "studio_stats_listening" : "Listening",
     "studio_content_notracks" : "No songs yet :(",
     "studio_content_addbutton" : "Add track",
+    "studio_content_editbutton" : "Edit track",
+    "studio_content_deletebutton" : "Delete",
 
     "studio_content_add" : "Track add",
     "studio_content_song_name" : "Track name",

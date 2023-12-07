@@ -297,11 +297,12 @@ async function getArtistDataById(artist_id) {
                         location: row.location,
                         genre: row.genre,
                         banner: bannerURL,
-                        songsList: rows,
-                        lastRelease: rows.sort(function(x, y){
-                            return x.timestamp - y.timestamp;
-                        })[0]
+                        songsList: rows
                     };
+
+                    artistData.lastRelease = rows.sort(function(x, y){
+                        return x.publication_date - y.publication_date;
+                    })[0];
 
                     resolve(artistData);
                 });
@@ -504,7 +505,7 @@ async function uploadSoundTrack(artistId, name, thumbnailFile, songFile, genreId
         db.run(`INSERT INTO song(artist_id, name, genre) VALUES('${artistId}', '${name}', '${genreId}')`, function (error) {
             if (error)
             {
-                logMessage("API", `FAILED TO INSERT NEW SOUND TRACK`, 3);
+                console.log(`FAILED TO INSERT NEW SOUND TRACK ${error}`);
             } else {
                 const uploadedFileExtension = thumbnailFile.mimetype.split("/")[1];
 
@@ -519,7 +520,7 @@ async function uploadSoundTrack(artistId, name, thumbnailFile, songFile, genreId
                 try {
                     thumbnailFile.mv(uploadPath, function (err) {
                         if (err) {
-                            logMessage("API", `FAILED TO UPLOAD BANNER FILE: ${err}`, 3);
+                            console.log(`FAILED TO UPLOAD BANNER FILE: ${err}`);
                         } else {
                             
                         }
@@ -541,7 +542,7 @@ async function uploadSoundTrack(artistId, name, thumbnailFile, songFile, genreId
                 try {
                     songFile.mv(songUploadPath, function (err) {
                         if (err) {
-                            logMessage("API", `FAILED TO UPLOAD SONG FILE: ${err}`, 3);
+                            console.log(`FAILED TO UPLOAD SONG FILE: ${err}`);
                         } else {
                             
                         }

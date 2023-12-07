@@ -205,6 +205,39 @@ router.post('/studio/content/add', function (request, response) {
         response.redirect("/");
     }
 });
+router.get('/studio/content/edit/:song_id', function (request, response) {
+    if (request.session.user)
+    {
+        getArtistDataByBelongId(request.session.user.data.id).then(function(artistData) {
+            if (artistData)
+            {
+                getListOfGenres().then(function(genres) {
+                    getSongInfoById(request.params.song_id).then(function(songInfo) {
+                        if (songInfo)
+                        {
+                            response.status(200);
+                            response.render('studio', {
+                                title: 'Noise',
+                                locale: getLocaleByIP(request.socket.remoteAddress),
+                                artistData: artistData,
+                                section: "content",
+                                subsection: "edittrack",
+                                songData: songInfo,
+                                genres: genres
+                            });
+                        } else {
+                            response.redirect("/studio");
+                        }
+                    });
+                });
+            } else {
+                response.redirect("/studio");
+            }
+        });
+    } else {
+        response.redirect("/");
+    }
+});
 
 router.post('/studio', function (request, response) {
     if (request.session.user)
