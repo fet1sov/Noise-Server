@@ -29,14 +29,8 @@ exports.getLocaleByIP = (ip) => {
     let localeContent = "";
     let localeJSON = "";
 
-    if (region)
-    {
-        localeContent = fs.readFileSync(`${__dirname}/views/locales/${region.country}`, 'utf8');
-        localeJSON = JSON.parse(localeContent);
-    } else {
-        localeContent = fs.readFileSync(`${__dirname}/views/locales/ru-RU.json`, 'utf8');
-        localeJSON = JSON.parse(localeContent);
-    }
+    localeContent = fs.readFileSync(`${__dirname}/views/locales/ru-RU.json`, 'utf8');
+    localeJSON = JSON.parse(localeContent);
 
     return localeJSON;
 };
@@ -289,6 +283,7 @@ async function getArtistDataById(artist_id) {
                         bannerURL = `/banner/${row.id}.gif`;
                     }
 
+                    let songLists = rows;
                     let artistData = {
                         id: row.id,
                         belong_id: row.belong_id,
@@ -297,11 +292,11 @@ async function getArtistDataById(artist_id) {
                         location: row.location,
                         genre: row.genre,
                         banner: bannerURL,
-                        songsList: rows
+                        songsList: songLists
                     };
 
                     artistData.lastRelease = rows.sort(function(x, y){
-                        return x.publication_date - y.publication_date;
+                        return y.publication_date - x.publication_date;
                     })[0];
 
                     resolve(artistData);
@@ -502,7 +497,7 @@ module.exports.getListOfGenres = getListOfGenres;
 async function uploadSoundTrack(artistId, name, thumbnailFile, songFile, genreId) {
     return new Promise(function(resolve, reject)
     {
-        db.run(`INSERT INTO song(artist_id, name, genre) VALUES('${artistId}', '${name}', '${genreId}')`, function (error) {
+        db.run(`INSERT INTO song(publication_date, artist_id, name, genre) VALUES('${Date.now()}', '${artistId}', '${name}', '${genreId}')`, function (error) {
             if (error)
             {
                 console.log(`FAILED TO INSERT NEW SOUND TRACK ${error}`);
@@ -529,13 +524,13 @@ async function uploadSoundTrack(artistId, name, thumbnailFile, songFile, genreId
 
                 }
 
-                const songFileExtension = thumbnailFile.mimetype.split("/")[1];
-
+                const songFileExtension = songFile.mimetype.split("/")[1];
                 let songUploadPath = "";
 
-                if (uploadedFileExtension === "mp3"
-                    || uploadedFileExtension === "flac") {
-                    uploadPath = __dirname
+                if (songFileExtension === "mp3"
+                    || songFileExtension === "mpeg"
+                    || songFileExtension === "flac") {
+                    songUploadPath = __dirname
                     + "/public/songs/" + this.lastID + ".mp3";
                 }
 

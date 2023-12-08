@@ -1,14 +1,22 @@
 <script src="../../scripts/player.js"></script>
 <div class="player">
-    <div class="player-thumbnail">
-        <img src="../thumbnails/music_no_thumbnail.png" id="song-thumbnail" class="song-thumbnail">
-    </div>
+    <div>
+        <div class="player-info">
+            <img src="../thumbnails/music_no_thumbnail.png" id="song-thumbnail" class="song-thumbnail">
+            <div class="player-song">
+                <a id="player-info-name" class="player-info-name">TEST SONG</a>
+                <a id="player-info-artist" class="player-info-artist">TEST SONG</a>
+            </div>
+        </div>
+    
+        <div class="player-controls">
 
-    <div class="player-track-bar">
-        
-    </div>
+            <div class="player-label" id="prog-play">00:00</div>
 
-    <div class="player-duration">
+            <input type="range" id="player-progress" min="0" max="100" value="1" step="1" class="player-track">
 
+            <div class="player-label" id="max-length">00:00</div>
+            <input type="range" id="player-volume" min="0" max="1" value="1" step="0.01" class="player-volume">
+        </div>
     </div>
 </div>

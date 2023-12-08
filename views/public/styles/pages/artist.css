@@ -54,7 +54,6 @@ main {
 .artist-songs-list {
     min-height: 100vh !important;
     height: 100%;
-    
 
     background-color: var(--primary-color);
     color: var(--primary-text-color);
@@ -73,6 +72,8 @@ main {
     font-size: var(--small-font-size);
     font-weight: bold;
     padding: 0 5% 5%;
+
+    padding-bottom: 100px;
 
     animation: appearAnimation-Y 2s both;
 }
