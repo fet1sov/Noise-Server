@@ -11,6 +11,11 @@
     "welcome_download_button" : "Установить",
     "welcome_web_button" : "Открыть в браузере",
 
+    "delete" : "Удалить",
+    "cancel" : "Отмена",
+
+    "search" : "Поиск",
+
     "months_three" : [
         "ЯНВ",
         "ФЕВ",
@@ -58,6 +63,9 @@
     "artist_song_list" : "Список треков",
     "artist_not_songs_found" : "Исполнитель не загрузил ни одного трека",
     "artist_last_release" : "Последний релиз",
+
+    "modal_delete_title" : "Удаление",
+    "modal_message_track" : "Вы уверены что хотите удалить выбранные треки?",
 
     "studio_stats" : "Статистика",
     "studio_stats_plays" : "Прослушивания",
@@ -110,6 +118,13 @@
 
     "song_author": "Автор",
     "song_track": "Трек",
+
+    "search_tracks": "Треки",
+    "search_playlists": "Плейлисты",
+    "search_artists": "Артисты",
+    "search_profiles": "Профили",
+
+    "search_no_results" : "По вашему запросу ничего не найдено :(",
 
     "error_404" : "404 НЕ ТУДА",
     "error_404_description" : "Эта страница не найдена :(",

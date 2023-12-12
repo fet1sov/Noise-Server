@@ -1,5 +1,5 @@
 <script src="../../scripts/player.js"></script>
-<div class="player">
+<div id="player" class="player">
     <div>
         <div class="player-info">
             <img src="../thumbnails/music_no_thumbnail.png" id="song-thumbnail" class="song-thumbnail">
@@ -11,12 +11,24 @@
     
         <div class="player-controls">
 
-            <div class="player-label" id="prog-play">00:00</div>
+            <div class="player-controls-row">
+                <div id="player-play" style="display: none;" class="player-icon">
+                    <svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M3 5.49686C3 3.17662 5.52116 1.73465 7.52106 2.91106L18.5764 9.41423C20.5484 10.5742 20.5484 13.4259 18.5764 14.5858L7.52106 21.089C5.52116 22.2654 3 20.8234 3 18.5032V5.49686Z" fill="#323232"/>
+                    </svg>
+                </div>
 
-            <input type="range" id="player-progress" min="0" max="100" value="1" step="1" class="player-track">
+                <div id="player-pause" class="player-icon">
+                    <svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.163 3.819C5 4.139 5 4.559 5 5.4v13.2c0 .84 0 1.26.163 1.581a1.5 1.5 0 0 0 .656.655c.32.164.74.164 1.581.164h.2c.84 0 1.26 0 1.581-.163a1.5 1.5 0 0 0 .656-.656c.163-.32.163-.74.163-1.581V5.4c0-.84 0-1.26-.163-1.581a1.5 1.5 0 0 0-.656-.656C8.861 3 8.441 3 7.6 3h-.2c-.84 0-1.26 0-1.581.163a1.5 1.5 0 0 0-.656.656zm9 0C14 4.139 14 4.559 14 5.4v13.2c0 .84 0 1.26.164 1.581a1.5 1.5 0 0 0 .655.655c.32.164.74.164 1.581.164h.2c.84 0 1.26 0 1.581-.163a1.5 1.5 0 0 0 .655-.656c.164-.32.164-.74.164-1.581V5.4c0-.84 0-1.26-.163-1.581a1.5 1.5 0 0 0-.656-.656C17.861 3 17.441 3 16.6 3h-.2c-.84 0-1.26 0-1.581.163a1.5 1.5 0 0 0-.655.656z" fill="#000000"/></svg>
+                </div>
+            </div>
 
-            <div class="player-label" id="max-length">00:00</div>
-            <input type="range" id="player-volume" min="0" max="1" value="1" step="0.01" class="player-volume">
+            <div class="player-controls-row">
+                <div class="player-label" id="prog-play">00:00</div>
+                <input type="range" id="player-progress" min="0" max="100" value="1" step="1" class="player-track">
+                <div class="player-label" id="max-length">00:00</div>
+                <input type="range" id="player-volume" min="0" max="1" value="1" step="0.01" class="player-volume">
+            </div>
         </div>
     </div>
 </div>

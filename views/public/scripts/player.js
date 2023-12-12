@@ -1,103 +1,100 @@
-let audio = {
+let audioSource = null;
 
-};
-
-let playerOptions = {
-    volume: 0,
-}
-
-if (localStorage.getItem("currentlyPlaying_id")) {
-    audio[`${localStorage.getItem("currentlyPlaying_id")}`] = new Audio(`../songs/${localStorage.getItem("currentlyPlaying_id")}.mp3`);
-    audio[`${localStorage.getItem("currentlyPlaying_id")}`].currentTime = localStorage.getItem("currentlyPlaying_progress");
-    audio[`${localStorage.getItem("currentlyPlaying_id")}`].play();
-}
-
-function setPlayerInfo(id, name, artist_name, artist_id)
+function setPlayerState(visible)
 {
-    const playerInfoName = document.getElementById("player-info-name");
-    const playerArtistName = document.getElementById("player-info-artist");
+    const player = document.getElementById("player");
 
-    const songThumbnail = document.getElementById("song-thumbnail");
-
-    playerInfoName.setAttribute("href", `../song/${id}`);
-    playerArtistName.setAttribute("href", `../artist/${artist_id}`);
-
-    songThumbnail.setAttribute("src", `../thumbnails/${id}.png`);
-    playerInfoName.textContent = name;
-    playerArtistName.textContent = artist_name;
-
-    localStorage.setItem('currentlyPlaying_id', id);
-    localStorage.setItem("currentlyPlaying_name", name);
-    localStorage.setItem("currentlyPlaying_arName", artist_name);
-    localStorage.setItem("currentlyPlaying_arId", artist_id);
-
-    setTrackDuration(localStorage.getItem("currentlyPlaying_maxLength"));
-}
-
-function setTrackDuration(length)
-{
-    document.getElementById("max-length").textContent = new Date(localStorage.getItem("currentlyPlaying_maxLength") * 1000)
-    .toISOString()
-    .substring(14).slice(0, -5);
-}
-
-window.addEventListener("beforeunload", () => {
-    if (audio[`${localStorage.getItem("currentlyPlaying_id")}`])
+    if (visible)
     {
-        localStorage.setItem("currentlyPlaying_progress", audio[`${localStorage.getItem("currentlyPlaying_id")}`].currentTime);
+        player.style.display = "flex";
+    } else {
+        player.style.display = "none";
     }
+}
+
+function playSoundTrack(playerInfo)
+{
+    const mainWindow = document.getElementById("main-window");
+    document.querySelectorAll('audio').forEach(audioElement => audioElement.remove());
+
+    audioSource = new Audio(`../songs/${playerInfo.songId}`);
+    document.body.append(audioSource);
+
+    audioSource.addEventListener("canplay", () => {
+        const playerInfoName = document.getElementById("player-info-name");
+        const playerArtistName = document.getElementById("player-info-artist");
+
+        const songThumbnail = document.getElementById("song-thumbnail");
+
+        songThumbnail.setAttribute("src", `../thumbnails/${playerInfo.songId}.png`);
+        playerInfoName.textContent = playerInfo.songName;
+        playerArtistName.textContent = playerInfo.songArtistName;
+
+        let playerVolume = document.getElementById("player-volume");
+        audioSource.volume = playerVolume.value;
+
+        playerVolume.addEventListener("input", (event) => {
+            audioSource.volume = playerVolume.value;
+        });
+
+        let playerProgress = document.getElementById("player-progress");
+        playerProgress.addEventListener("input", (event) => {
+            audioSource.pause();
+            audioSource.currentTime = playerProgress.value;
+        });
+
+        const playerPlayButton = document.getElementById("player-play");
+        const playerPauseButton = document.getElementById("player-pause");
+
+        playerPlayButton.addEventListener("click", () => {
+            audioSource.play();
+
+            playerPlayButton.style.display = "none";
+            playerPauseButton.style.display = "block";
+        });
+
+        playerPauseButton.addEventListener("click", () => {
+            audioSource.pause();
+
+            playerPlayButton.style.display = "block";
+            playerPauseButton.style.display = "none";
+        });
+
+
+        playerInfoName.addEventListener("click", () => {
+            mainWindow.setAttribute("src", `../song/${playerInfo.songId}`);
+        });       
+        
+        playerArtistName.addEventListener("click", () => {
+            mainWindow.setAttribute("src", `../artist/${playerInfo.songArtist}`);
+        });
+
+        document.getElementById("max-length").textContent = new Date(audioSource.duration * 1000)
+        .toISOString()
+        .substring(14).slice(0, -5);
+
+        audioSource.addEventListener("timeupdate", () => {
+            document.getElementById("prog-play").textContent = new Date(audioSource.currentTime * 1000)
+            .toISOString()
+            .substring(14).slice(0, -5);
+            
+            document.getElementById("player-progress").value = audioSource.currentTime;
+        });
+
+        document.getElementById("player-progress").setAttribute("max", audioSource.duration);
+
+        audioSource.volume = playerVolume.value;
+        audioSource.play();
+
+        setPlayerState(true);
+    });
+}
+
+window.addEventListener("storage", (event) => {
+    playSoundTrack(JSON.parse(localStorage.getItem("player_info")));
 });
 
 window.addEventListener("DOMContentLoaded", () => {
-    let songPlayButton = document.querySelectorAll(".song-play");
-
-
-    let playerVolume = document.getElementById("player-volume");
-    playerVolume.addEventListener("input", (event) => {
-        audio[`${localStorage.getItem("currentlyPlaying_id")}`].volume = playerVolume.value;
-    });
-
-    let playerProgress = document.getElementById("player-progress");
-    playerProgress.addEventListener("input", (event) => {
-        audio[`${localStorage.getItem("currentlyPlaying_id")}`].currentTime = playerProgress.value;
-    });
-
-    if (songPlayButton)
-    {
-        if (localStorage.getItem("currentlyPlaying_id")) 
-        {
-            setPlayerInfo(localStorage.getItem("currentlyPlaying_id"), localStorage.getItem("currentlyPlaying_name"), localStorage.getItem("currentlyPlaying_arName"), localStorage.getItem("currentlyPlaying_arId"));
-            document.getElementById("player-progress").max = localStorage.getItem("currentlyPlaying_maxLength");
-            audio[`${localStorage.getItem("currentlyPlaying_id")}`].addEventListener("timeupdate", () => {
-                document.getElementById("prog-play").textContent = new Date(audio[`${localStorage.getItem("currentlyPlaying_id")}`].currentTime * 1000)
-                .toISOString()
-                .substring(14).slice(0, -5);
-                
-                document.getElementById("player-progress").value = audio[`${localStorage.getItem("currentlyPlaying_id")}`].currentTime;
-            });
-        }
-
-        songPlayButton.forEach((song) => {
-            audio[`${song.dataset.id}`] = new Audio(`../songs/${song.dataset.id}.mp3`);
-            song.addEventListener("click", (event) => {
-                for (let audioSource in audio)
-                {
-                    audio[`${audioSource}`].currentTime = 0;
-                    audio[`${audioSource}`].removeEventListener("timeupdate", () => {});
-                    audio[`${audioSource}`].pause();
-                }
-
-                setPlayerInfo(song.dataset.id, song.dataset.name, song.dataset.arname, song.dataset.artist);
-
-                localStorage.setItem("currentlyPlaying_maxLength", audio[`${song.dataset.id}`].duration);
-
-                audio[`${localStorage.getItem("currentlyPlaying_id")}`].play();
-                audio[`${localStorage.getItem("currentlyPlaying_id")}`].addEventListener("timeupdate", () => {
-                    document.getElementById("prog-play").textContent = new Date(audio[`${localStorage.getItem("currentlyPlaying_id")}`].currentTime * 1000)
-                    .toISOString()
-                    .substring(14).slice(0, -5);
-                });
-            });
-        });
-    }
+    localStorage.clear();
+    setPlayerState(false);
 });

@@ -11,6 +11,11 @@
     "welcome_download_button" : "Install",
     "welcome_web_button" : "Open in browser",
 
+    "delete" : "Delete",
+    "cancel" : "Cancel",
+
+    "search" : "Search",
+
     "months_three" : [
         "JAN",
         "FEB",
@@ -53,6 +58,9 @@
     "artist_song_list" : "List of tracks",
     "artist_not_songs_found" : "This haven't uploaded something yet",
     "artist_last_release" : "Last release",
+
+    "modal_delete_title" : "Deleting",
+    "modal_message_track" : "Are you sure you want to delete selected tracks?",
     
     "profile_menu_profile" : "Profile",
     "profile_menu_admin" : "Admin",
@@ -109,6 +117,13 @@
 
     "song_author": "Author",
     "song_track": "Track",
+
+    "search_tracks": "Tracks",
+    "search_playlists": "Playlists",
+    "search_artists": "Artists",
+    "search_profiles": "Profiles",
+
+    "search_no_results" : "Nothing found :(",
 
     "error_404" : "404 NOT FOUND",
     "error_404_description" : "This page is not found",

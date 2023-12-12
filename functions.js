@@ -275,7 +275,7 @@ async function getArtistDataById(artist_id) {
         db.get(`SELECT * FROM artist WHERE id='${artist_id}'`, function(err, row) {
             if (typeof row != "undefined")
             {
-                db.all(`SELECT * FROM song WHERE artist_id='${row.id}' ORDER BY plays DESC`, function(err, rows) {
+                db.all(`SELECT * FROM song WHERE artist_id='${row.id}' ORDER BY plays ASC`, function(err, rows) {
                     let bannerURL = "";
                     if (fs.existsSync(rootDir + "/public/banner/" + row.id + ".png")) {
                         bannerURL = `/banner/${row.id}.png`;
@@ -553,3 +553,130 @@ async function uploadSoundTrack(artistId, name, thumbnailFile, songFile, genreId
 };
 
 module.exports.uploadSoundTrack = uploadSoundTrack;
+
+async function updateSongById(songId, name, genreId, fileList) {
+    return new Promise(function(resolve, reject)
+    {
+        db.run(`UPDATE song SET name = '${name}', genre = '${genreId}' WHERE id='${songId}' `, function (error) {
+            if (error)
+            {
+                console.log(`FAILED TO UPDATE SOUND TRACK ${error}`);
+            } else {
+                if (fileList)
+                {
+                    const uploadedFileExtension = fileList.songThumbnail.mimetype.split("/")[1];
+
+                    let uploadPath = "";
+                    if (uploadedFileExtension === "png"
+                        || uploadedFileExtension === "jpeg"
+                        || uploadedFileExtension === "webp") {
+                        uploadPath = __dirname
+                            + "/public/thumbnails/" + songId + ".png";
+                    }
+
+                    if (fs.existsSync(uploadPath)) {
+                        fs.unlink(uploadPath, () => { });
+                    }
+
+                    try {
+                        fileList.songThumbnail.mv(uploadPath, function (err) {
+                            if (err) {
+                                console.log(`FAILED TO UPLOAD BANNER FILE: ${err}`);
+                            } else {
+                                
+                            }
+                        });
+                    } catch {
+
+                    }
+                }
+
+                resolve(songId);
+            }
+        });
+    });
+};
+
+module.exports.updateSongById = updateSongById;
+
+async function getSongsForPaginationArtist(artistId, songsPerPage, page) {
+    return new Promise(function(resolve, reject)
+    {
+        db.all(`SELECT * FROM song WHERE artist_id='${artistId}' ORDER BY plays DESC LIMIT ${songsPerPage} OFFSET ${(page - 1) * songsPerPage}`, function(err, rows) {
+            resolve(rows);
+        });
+    });
+}
+module.exports.getSongsForPaginationArtist = getSongsForPaginationArtist;
+
+async function incrementPlaysCount(songId) {
+    return new Promise(function(resolve, reject)
+    {
+        db.get(`SELECT * FROM song WHERE id='${songId}'`, function(err, row) {
+            if (typeof row != "undefined")
+            {
+                let songPlays = row.plays + 1;
+                db.run(`UPDATE song SET plays='${songPlays}' WHERE id='${songId}' `, function (error) {
+                    
+                });
+            }
+
+            resolve(null);
+        });
+    });
+}
+
+module.exports.incrementPlaysCount = incrementPlaysCount;
+
+async function proceedSearchByTerm(searchTerm) {
+    return new Promise(function(resolve, reject) {
+        // INNER JOIN sucks >_<
+        db.all(`SELECT *, SUBSTRING(artist.username, 0, 22) as trimmed_name FROM artist WHERE username LIKE '${searchTerm}%' LIMIT 10`, function(err, artistList) {
+            db.all(`SELECT song.*, SUBSTRING(song.name, 0, 22) as trimmed_name, artist.username AS artist_name FROM song INNER JOIN artist ON song.artist_id = artist.id WHERE name LIKE '${searchTerm}%' OR artist_name LIKE '${searchTerm}%' ORDER BY plays ASC LIMIT 10`, function(err, songList) {
+                db.all(`SELECT * FROM playlist WHERE name LIKE '${searchTerm}%' LIMIT 10`, function(err, playlistList) {
+                    db.all(`SELECT * FROM user WHERE login LIKE '${searchTerm}%' LIMIT 10`, function(err, profilesList) {
+                        let searchResult = {
+                            artistList: artistList,
+                            songList: songList,
+                            playlistList: playlistList,
+                            profilesList: profilesList,
+                        }
+    
+                        resolve(searchResult);
+                    });
+                });
+            });
+        });
+    });
+}
+
+module.exports.proceedSearchByTerm = proceedSearchByTerm;
+
+async function deleteSongList(authorId, songList) {
+    return new Promise(function(resolve, reject)
+    {
+        songList = songList.split(", ");
+
+        for (let i = 0; i < songList.length; i++)
+        {
+            if (fs.existsSync("/public/thumbnails/" + i + ".png")) {
+                fs.unlink("/public/thumbnails/" + i + ".png", () => { });
+            }
+
+            if (fs.existsSync("/public/songs/" + i + ".mp3")) {
+                fs.unlink("/public/songs/" + i + ".mp3", () => { });
+            }
+        }
+
+        db.run(`DELETE FROM song WHERE id IN (${songList.join(", ")}) AND artist_id = '${authorId}'`, function (error) {
+            if (error)
+            {
+                console.log(`FAILED TO DELETE SOUND TRACK(-s): ${error}`);
+            }
+        });
+
+        resolve(null);
+    });
+}
+
+module.exports.deleteSongList = deleteSongList;

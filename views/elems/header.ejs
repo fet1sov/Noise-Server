@@ -14,13 +14,20 @@
             </li>
         <% } else { %>
             <li class="main-nav-item">
-                <a href="../../">
+                <a href="../../../../index">
                     <svg class="small-logo" fill="#000000" width="800px" height="800px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
                         <path d="M26 17l-3 3-3-3-3 3-3-3-3 3-6-6 3-3 3 3 3-3 3 3 3-3 6 6z"></path>
                     </svg>
                 </a>
             </li>
         <% } %>
+
+
+        <li class="main-nav-item">
+            <form action="../../../../../../search">
+                <input class="search" name="term" placeholder="<%- locale.search %>" type="search">
+            </form>
+        </li>
 
         <% if (!userData) { %>
             <li class="main-nav-item">

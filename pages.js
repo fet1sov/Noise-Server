@@ -8,7 +8,7 @@ const router = express.Router(),
 const session = require('express-session');
 
 const path = require('path');
-const { getLocaleByIP, uploadSoundTrack, getProfileByUsername, updateArtistInfo, getSongInfoById, getRecomendationInfo, getArtistDataByBelongId, getArtistDataById, authUser, registerUser, getListOfGenres, registerNewArtist } = 
+const { getLocaleByIP, proceedSearchByTerm, getSongsForPaginationArtist, incrementPlaysCount, updateSongById, deleteSongList, uploadSoundTrack, getProfileByUsername, updateArtistInfo, getSongInfoById, getRecomendationInfo, getArtistDataByBelongId, getArtistDataById, authUser, registerUser, getListOfGenres, registerNewArtist } = 
 require('./functions');
 const cookieParser = require('cookie-parser');
 
@@ -22,8 +22,18 @@ router.use(session({
     saveUninitialized: true,
 }));
 
-// index
 router.get('/', function (request, response) {
+    response.status(200);
+    response.render('mainwindow', {
+        title: 'Noise',
+        historyUrl: request.session.historyUrl ? request.session.historyUrl : null
+    });
+});
+
+// index
+router.get('/index', function (request, response) {
+    request.session.historyUrl = request.originalUrl;
+
     if (!request.session.user)
     {
         response.status(200);
@@ -50,6 +60,8 @@ router.get('/', function (request, response) {
 
 // Sign In
 router.get('/signin', function (request, response) {
+    request.session.historyUrl = request.originalUrl;
+
     if (!request.session.user)
     {
         response.status(200);
@@ -58,7 +70,7 @@ router.get('/signin', function (request, response) {
             locale: getLocaleByIP(request.socket.remoteAddress)
         });
     } else {
-        response.redirect("../");
+        response.redirect("../index");
     }
 });
 router.post('/signin', function(request, response) {
@@ -75,7 +87,7 @@ router.post('/signin', function(request, response) {
                     });
                 } else {
                     request.session.user = result;
-                    response.redirect("../");
+                    response.redirect("../index");
                 }
             } else {
                 response.render('signin', {
@@ -90,6 +102,8 @@ router.post('/signin', function(request, response) {
 
 // Sign Up
 router.get('/signup', function (request, response) {
+    request.session.historyUrl = request.originalUrl;
+
     if (!request.session.user)
     {
         response.status(200);
@@ -98,7 +112,7 @@ router.get('/signup', function (request, response) {
             locale: getLocaleByIP(request.socket.remoteAddress)
         });
     } else {
-        response.redirect("../");
+        response.redirect("../index");
     }
 });
 router.post('/signup', function(request, response) {
@@ -123,6 +137,7 @@ router.post('/signup', function(request, response) {
 
 // Artist
 router.get('/artist/:artist_id', function (request, response) {
+    request.session.historyUrl = request.originalUrl;
 
     var artistId = request.params.artist_id;
     var artistData = {};
@@ -149,17 +164,21 @@ router.get('/artist/:artist_id', function (request, response) {
 
 // Log out
 router.get('/logout', function (request, response) {
+    request.session.historyUrl = request.originalUrl;
+
     if (!request.session.user)
     {
-        response.redirect("../");
+        response.redirect("../index");
     } else {
         request.session.user = null;
-        response.redirect("../");
+        response.redirect("../index");
     }
 });
 
 // Studio pages
 router.get('/studio/:section?/:subsection?', function (request, response) {
+    request.session.historyUrl = request.originalUrl;
+
     if (request.session.user)
     {
         getArtistDataByBelongId(request.session.user.data.id).then(function(result) {
@@ -169,17 +188,51 @@ router.get('/studio/:section?/:subsection?', function (request, response) {
                     id: result.id,
                 };
 
-                getListOfGenres().then(function(genres) {
-                    response.status(200);
-                    response.render('studio', {
-                        title: 'Noise',
-                        locale: getLocaleByIP(request.socket.remoteAddress),
-                        artistData: result,
-                        section: request.params.section,
-                        subsection: request.params.subsection,
-                        genres: genres
+                if (request.params.section != "content")
+                {
+                    getListOfGenres().then(function(genres) {
+                        response.status(200);
+                        response.render('studio', {
+                            title: 'Noise',
+                            locale: getLocaleByIP(request.socket.remoteAddress),
+                            artistData: result,
+                            section: request.params.section,
+                            subsection: request.params.subsection,
+                            genres: genres
+                        });
                     });
-                });
+                } else {
+                    getListOfGenres().then(function(genres) {
+                        let songsPerPage = 5;
+                        let maxPages = Math.ceil(result.songsList.length / songsPerPage);
+
+                        let currentPage = 0;
+
+                        if (request.query.page && request.query.page < maxPages + 1)
+                        {
+                            currentPage = request.query.page;
+                        } else {
+                            currentPage = 0;
+                        }
+
+                        getSongsForPaginationArtist(result.id, songsPerPage, currentPage).then(function (songData) {
+                            result.songsList = songData;
+    
+                            response.status(200);
+                            response.render('studio', {
+                                title: 'Noise',
+                                locale: getLocaleByIP(request.socket.remoteAddress),
+                                artistData: result,
+                                section: request.params.section,
+                                subsection: request.params.subsection,
+                                genres: genres,
+
+                                page: currentPage,
+                                maxPages: maxPages,
+                            });
+                        });
+                    });
+                }
             } else {
                 getListOfGenres().then(function(genres) {
                     response.status(200);
@@ -192,7 +245,7 @@ router.get('/studio/:section?/:subsection?', function (request, response) {
             }
         });
     } else {
-        response.redirect("../");
+        response.redirect("../index");
     }
 });
 router.post('/studio/content/add', function (request, response) {
@@ -202,10 +255,12 @@ router.post('/studio/content/add', function (request, response) {
             response.redirect(`/song/${songInfo}`);
         });
     } else {
-        response.redirect("/");
+        response.redirect("../index");
     }
 });
 router.get('/studio/content/edit/:song_id', function (request, response) {
+    request.session.historyUrl = request.originalUrl;
+
     if (request.session.user)
     {
         getArtistDataByBelongId(request.session.user.data.id).then(function(artistData) {
@@ -229,6 +284,78 @@ router.get('/studio/content/edit/:song_id', function (request, response) {
                             response.redirect("/studio");
                         }
                     });
+                });
+            } else {
+                response.redirect("/studio");
+            }
+        });
+    } else {
+        response.redirect("/");
+    }
+});
+
+router.get('/search', function (request, response) {
+    request.session.historyUrl = request.originalUrl;
+
+    proceedSearchByTerm(request.query.term).then(function(searchResult) {
+        response.status(200);
+        response.render('search', {
+            title: 'Noise',
+            locale: getLocaleByIP(request.socket.remoteAddress),
+            userData: request.session.user ? request.session.user.data : null,
+            searchResult: searchResult
+        });
+    });
+});
+
+router.get('/songs/:song_id', function (request, response) {
+    incrementPlaysCount(request.params.song_id).then(function(result) {
+        response.sendFile(__dirname + `/public/songs/${request.params.song_id}.mp3`);
+    });
+});
+
+router.post('/studio/content/edit/:song_id', function (request, response) {
+    if (request.session.user)
+    {
+        getArtistDataByBelongId(request.session.user.data.id).then(function(artistData) {
+            if (artistData)
+            {
+                getListOfGenres().then(function(genres) {
+                    getSongInfoById(request.params.song_id).then(function(songInfo) {
+                        if (songInfo) {
+                            if (songInfo.artist_id === artistData.id)
+                            {
+                                updateSongById(request.params.song_id, request.body.songName, request.body.genre, request.files).then(function(songId) {
+                                    if (songId)
+                                    {
+                                        response.redirect(`/song/${songId}`);
+                                    }
+                                });
+                            } else {
+                                response.redirect("/studio");
+                            }
+                        } else {
+                            response.redirect("/studio");
+                        }
+                    });
+                });
+            } else {
+                response.redirect("/studio");
+            }
+        });
+    } else {
+        response.redirect("/");
+    }
+});
+
+router.post('/studio/content/delete', function (request, response) {
+    if (request.session.user)
+    {
+        getArtistDataByBelongId(request.session.user.data.id).then(function(artistData) {
+            if (artistData)
+            {
+                deleteSongList(artistData.id, request.body.songList).then(function(result) {
+                    response.redirect("/studio/content");
                 });
             } else {
                 response.redirect("/studio");
@@ -292,6 +419,8 @@ router.post('/studio/card', function (request, response) {
 });
 
 router.get('/song/:song_id', function(request, response) {
+    request.session.historyUrl = request.originalUrl;
+
     getSongInfoById(request.params.song_id).then(function(result) {
         if (result)
         {
@@ -313,6 +442,8 @@ router.get('/song/:song_id', function(request, response) {
 });
 
 router.get('/profile/:username', function(request, response) {
+    request.session.historyUrl = request.originalUrl;
+
     getProfileByUsername(request.params.username).then(function(result) {
         if (result)
         {
@@ -335,6 +466,8 @@ router.get('/profile/:username', function(request, response) {
 
 // 404 HTTP Error
 router.get('*', function (request, response) {
+    request.session.historyUrl = request.originalUrl;
+
     response.status(404);
     response.render('404', {
         title: 'Noise — 404',

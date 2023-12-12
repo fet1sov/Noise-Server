@@ -1,0 +1,30 @@
+.search-block {
+    margin-top: 35px;
+}
+
+.no-results-block {
+    display: flex;
+    justify-content: center;
+
+    color: var(--primary-text-color);
+
+    flex-direction: column;
+    text-align: center;
+
+    animation: appearAnimation-Y 1s both;
+}
+
+.no-results-icon {
+    width: 150px;
+    height: 150px;
+
+    margin: 0 auto;
+}
+
+.no-results-icon path {
+    fill: var(--primary-text-color);
+}
+
+.best-result-block {
+    background-color: var(--form-color);
+}
