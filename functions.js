@@ -439,15 +439,16 @@ async function getPlaylistInfoById(playlist_id) {
     {
         let playlistData = {
             playlist: null,
-            songList: null,
+            songList: [],
         };
 
-        db.get(`SELECT * FROM playlist WHERE id='${playlist_id}'`, function(err, row) {
+        db.get(`SELECT playlist.*, user.id AS author_id, user.login AS author_username FROM playlist INNER JOIN user ON playlist.user_id = user.id WHERE playlist.id='${playlist_id}'`, function(err, row) {
             if (typeof row != "undefined")
             {
                 playlistData.playlist = row;
+                playlistData.songList = row.songs_id.split("|");
 
-                db.all(`SELECT * FROM song WHERE id IN ()`, function (err, songs) {
+                db.all(`SELECT song.*, artist.username AS artist_name FROM song INNER JOIN artist ON song.artist_id = artist.id WHERE song.id IN (${playlistData.songList.join(", ")})`, function (err, songs) {
                     playlistData.songList = songs;
                     resolve(playlistData);
                 });

@@ -8,7 +8,7 @@ const router = express.Router(),
 const session = require('express-session');
 
 const path = require('path');
-const { getLocaleByIP, proceedSearchByTerm, getSongsForPaginationArtist, incrementPlaysCount, updateSongById, deleteSongList, uploadSoundTrack, getProfileByUsername, updateArtistInfo, getSongInfoById, getRecomendationInfo, getArtistDataByBelongId, getArtistDataById, authUser, registerUser, getListOfGenres, registerNewArtist } = 
+const { getLocaleByIP, getPlaylistInfoById, proceedSearchByTerm, getSongsForPaginationArtist, incrementPlaysCount, updateSongById, deleteSongList, uploadSoundTrack, getProfileByUsername, updateArtistInfo, getSongInfoById, getRecomendationInfo, getArtistDataByBelongId, getArtistDataById, authUser, registerUser, getListOfGenres, registerNewArtist } = 
 require('./functions');
 const cookieParser = require('cookie-parser');
 
@@ -292,6 +292,20 @@ router.get('/studio/content/edit/:song_id', function (request, response) {
     } else {
         response.redirect("/");
     }
+});
+
+router.get('/playlist/:playlist_id', function(request, response) {
+    request.session.historyUrl = request.originalUrl;
+
+    getPlaylistInfoById(request.params.playlist_id).then(function(playlistInfo) {
+        response.status(200);
+        response.render('pages/playlistinfo', {
+            title: 'Noise',
+            locale: getLocaleByIP(request.socket.remoteAddress),
+            userData: request.session.user ? request.session.user.data : null,
+            playlistInfo: playlistInfo
+        });
+    });
 });
 
 router.get('/search', function (request, response) {

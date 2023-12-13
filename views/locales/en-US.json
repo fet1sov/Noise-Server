@@ -118,6 +118,10 @@
     "song_author": "Author",
     "song_track": "Track",
 
+    "playlist_name" : "Playlist",
+    "playlist_author" : "Playlist author",
+    "playlist_track_amount" : "Track amount: ",
+
     "search_tracks": "Tracks",
     "search_playlists": "Playlists",
     "search_artists": "Artists",

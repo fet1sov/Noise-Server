@@ -119,6 +119,10 @@
     "song_author": "Автор",
     "song_track": "Трек",
 
+    "playlist_name" : "Плейлист",
+    "playlist_author" : "Автор плейлиста",
+    "playlist_track_amount" : "Треков: ",
+
     "search_tracks": "Треки",
     "search_playlists": "Плейлисты",
     "search_artists": "Артисты",
