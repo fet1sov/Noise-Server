@@ -428,7 +428,7 @@ router.post('/studio/card', function (request, response) {
         }
         
     } else {
-        response.redirect("../");
+        response.redirect("../index");
     }
 });
 
@@ -476,6 +476,20 @@ router.get('/profile/:username', function(request, response) {
             });
         }
     });
+});
+
+router.get('/admin/', function(request, response) {
+    if (request.session.user)
+    {   
+        if (request.session.user.admin) 
+        {
+
+        } else {
+            response.redirect("../index");
+        }
+    } else {
+        response.redirect("../index");
+    }
 });
 
 // 404 HTTP Error

@@ -46,6 +46,9 @@ function playSoundTrack(playerInfo)
         const playerPlayButton = document.getElementById("player-play");
         const playerPauseButton = document.getElementById("player-pause");
 
+        playerPlayButton.style.display = "none";
+        playerPauseButton.style.display = "block";
+
         playerPlayButton.addEventListener("click", () => {
             audioSource.play();
 
@@ -90,6 +93,11 @@ function playSoundTrack(playerInfo)
     });
 }
 
+function disposePlayer() {
+    document.querySelectorAll('audio').forEach(audioElement => audioElement.remove());
+    setPlayerState(false);
+}
+
 window.addEventListener("storage", (event) => {
     playSoundTrack(JSON.parse(localStorage.getItem("player_info")));
 });
@@ -97,4 +105,9 @@ window.addEventListener("storage", (event) => {
 window.addEventListener("DOMContentLoaded", () => {
     localStorage.clear();
     setPlayerState(false);
+
+    const playerClose = document.getElementById("player-close");
+    playerClose.addEventListener("click", () => {
+        disposePlayer();
+    });
 });

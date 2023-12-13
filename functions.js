@@ -51,11 +51,28 @@ async function authUser(username, password) {
                 if (row.password == passMD5)
                 {
                     userData.data = row;
+
+                    if (!row.role_id)
+                    {
+                        resolve(userData);
+                    } else {
+                        db.get(`SELECT * FROM role WHERE role_id='${row.role_id}'`, function(err, roleData) {
+                            if (typeof roleData != "undefined")
+                            {
+                                if (roleData.is_admin)
+                                {
+                                    userData.data.admin = true;
+                                }
+
+                                resolve(userData);
+                            } else {
+                                resolve(userData);
+                            } 
+                        });
+                    }
                 } else {
                     userData.errorData = 400;
                 }
-
-                resolve(userData);
             } else {
                 resolve(null);
             }
@@ -632,10 +649,10 @@ module.exports.incrementPlaysCount = incrementPlaysCount;
 async function proceedSearchByTerm(searchTerm) {
     return new Promise(function(resolve, reject) {
         // INNER JOIN sucks >_<
-        db.all(`SELECT *, SUBSTRING(artist.username, 0, 22) as trimmed_name FROM artist WHERE username LIKE '${searchTerm}%' LIMIT 10`, function(err, artistList) {
+        db.all(`SELECT *, SUBSTRING(artist.username, 0, 22) as trimmed_name FROM artist WHERE LOWER(username) LIKE '${searchTerm.toLowerCase()}%' LIMIT 10`, function(err, artistList) {
             db.all(`SELECT song.*, SUBSTRING(song.name, 0, 22) as trimmed_name, artist.username AS artist_name FROM song INNER JOIN artist ON song.artist_id = artist.id WHERE name LIKE '${searchTerm}%' OR artist_name LIKE '${searchTerm}%' ORDER BY plays ASC LIMIT 10`, function(err, songList) {
-                db.all(`SELECT * FROM playlist WHERE name LIKE '${searchTerm}%' LIMIT 10`, function(err, playlistList) {
-                    db.all(`SELECT * FROM user WHERE login LIKE '${searchTerm}%' LIMIT 10`, function(err, profilesList) {
+                db.all(`SELECT * FROM playlist WHERE LOWER(name) LIKE '${searchTerm.toLowerCase()}%' LIMIT 10`, function(err, playlistList) {
+                    db.all(`SELECT * FROM user WHERE LOWER(login) LIKE '${searchTerm.toLowerCase()}%' LIMIT 10`, function(err, profilesList) {
                         let searchResult = {
                             artistList: artistList,
                             songList: songList,

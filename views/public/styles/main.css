@@ -285,7 +285,7 @@ body {
   background-color: var(--secondary-color-glass);
 
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 .player-label {

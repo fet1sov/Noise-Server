@@ -361,8 +361,7 @@ select {
 }
 
 .pagination-list li .current {
-    color: var(--primary-text-color);
-    background-color: var(--accent-color);
+    color: var(--secondary-text-color);
 }
 
 @media (max-width: 800px) {

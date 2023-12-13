@@ -131,17 +131,19 @@
                                 </div>
                                 <% } %>
 
+                            <% if (maxPages > 1) { %>
                             <div class="pagination-list-block">
                                 <ul class="pagination-list">    
                                     <% for(let i = 0; i < maxPages; i++) { %>
                                         <% if (i + 1 == page) { %>
-                                            <%- `<li class="current"><a>${(i + 1)}</a></li>` %>
+                                            <%- `<li><a class="current">${(i + 1)}</a></li>` %>
                                         <% } else { %>
                                             <%- `<li><a href="?page=${i + 1}">${(i + 1)}</a></li>` %>
                                         <% } %>
                                     <% } %>
                                 </ul>
                             </div>
+                            <% } %>
                     </div>
                 <% } else { %>
                     <% if (subsection == "add") { %>
