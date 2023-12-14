@@ -141,9 +141,7 @@ router.post('/signup', function(request, response) {
 router.get('/artist/:artist_id', function (request, response) {
     request.session.historyUrl = request.originalUrl;
 
-    var artistId = request.params.artist_id;
-    var artistData = {};
-
+    let artistId = request.params.artist_id;
     getArtistDataById(artistId).then(function(result) {
         if (result)
         {
@@ -208,13 +206,11 @@ router.get('/studio/:section?/:subsection?', function (request, response) {
                         let songsPerPage = 5;
                         let maxPages = Math.ceil(result.songsList.length / songsPerPage);
 
-                        let currentPage = 0;
+                        let currentPage = 1;
 
                         if (request.query.page && request.query.page < maxPages + 1)
                         {
                             currentPage = request.query.page;
-                        } else {
-                            currentPage = 0;
                         }
 
                         getSongsForPaginationArtist(result.id, songsPerPage, currentPage).then(function (songData) {
@@ -379,15 +375,8 @@ router.post('/studio/content/delete', function (request, response) {
 router.post('/studio', function (request, response) {
     if (request.session.user)
     {
-        if (typeof request.files.bannerImg == "undefined")
-        {
-            request.files = {
-                bannerImg: {}
-            };
-        }
-
         getListOfGenres().then(function(genres) {
-            registerNewArtist(request.body.username, request.body.description, request.files.bannerImg, request.body.genre, request.session.user.data.id).then(function(artistData) {
+            registerNewArtist(request.body.username, request.body.description, request.body.genre, request.session.user.data.id, request.files ? request.files.bannerImg : null).then(function(artistData) {
                 if (artistData.errorData === 200)
                 {
                     response.redirect(`../artist/${artistData.data.id}`);

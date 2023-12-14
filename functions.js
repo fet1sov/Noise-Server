@@ -156,7 +156,7 @@ async function registerUser(username, email, password, repeatPassword) {
 module.exports.registerUser = registerUser;
 
 
-async function registerNewArtist(username, description, bannerFile, genreId, belongId) {
+async function registerNewArtist(username, description, genreId, belongId, bannerFile = null) {
     return new Promise(function(resolve, reject)
     {
         artistData = {
@@ -197,45 +197,49 @@ async function registerNewArtist(username, description, bannerFile, genreId, bel
             {
                 logMessage("API", `FAILED TO INSERT NEW ARTIST CARD`, 3);
             } else {
-                const uploadedFileExtension = bannerFile.mimetype.split("/")[1];
+                if (bannerFile)
+                {
+                    const uploadedFileExtension = bannerFile.mimetype.split("/")[1];
 
-                artistData.data.id = this.lastID;
+                    artistData.data.id = this.lastID;
 
-                let uploadPath = "";
-                if (uploadedFileExtension === "png"
-                    || uploadedFileExtension === "jpeg"
-                    || uploadedFileExtension === "webp") {
-                    uploadPath = __dirname
+                    let uploadPath = "";
+                    if (uploadedFileExtension === "png"
+                        || uploadedFileExtension === "jpeg"
+                        || uploadedFileExtension === "webp") {
+                        uploadPath = __dirname
+                            + "/public/banner/" + artistData.id + ".png";
+                    } else {
+                        artistData.errorData = 4;
+                        resolve(artistData);
+                        return;
+                    }
+
+                    const pngProfilePic = __dirname
                         + "/public/banner/" + artistData.id + ".png";
-                } else {
-                    artistData.errorData = 4;
-                    resolve(artistData);
-                    return;
+
+                    if (fs.existsSync(pngProfilePic)) {
+                        fs.unlink(pngProfilePic, () => { });
+                    }
+
+                    try {
+                        bannerFile.mv(uploadPath, function (err) {
+                            if (err) {
+                                artistData.errorData = 5;
+                                resolve(artistData);
+                                logMessage("API", `FAILED TO UPLOAD BANNER FILE: ${err}`, 3);
+                                return;
+                            } else {
+                                artistData.errorData = 6;
+                                resolve(artistData);
+                                return;
+                            }
+                        });
+                    } catch {
+
+                    }
                 }
-
-                const pngProfilePic = __dirname
-                    + "/public/banner/" + artistData.id + ".png";
-
-                if (fs.existsSync(pngProfilePic)) {
-                    fs.unlink(pngProfilePic, () => { });
-                }
-
-                try {
-                    bannerFile.mv(uploadPath, function (err) {
-                        if (err) {
-                            artistData.errorData = 5;
-                            resolve(artistData);
-                            logMessage("API", `FAILED TO UPLOAD BANNER FILE: ${err}`, 3);
-                            return;
-                        } else {
-                            artistData.errorData = 6;
-                            resolve(artistData);
-                            return;
-                        }
-                    });
-                } catch {
-
-                }
+                
 
                 resolve(artistData);
             }
@@ -279,7 +283,7 @@ async function updateArtistInfo(username, description, genreId, belongId, banner
                 }
             }
 
-            db.run(`UPDATE artist SET username='${username}', description='${description}', genre='${genreId}' WHERE id=${belongId}`);
+            db.run(`UPDATE artist SET username='${username}', description='${description}', genre='${genreId}' WHERE id=${row.id}`);
             resolve(row);
         });        
     });

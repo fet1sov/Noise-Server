@@ -396,6 +396,10 @@ body {
   margin-left: 10px;
 }
 
+#player-close {
+  display: none;
+}
+
 .song-thumbnail {
   border-radius: 10px;
   width: 48px;
@@ -692,6 +696,10 @@ body {
     top: calc(50% - 150px);
     left: 50%;
   }
+
+  #player-close {
+    display: block;
+  }
 }
 
 @media (max-width: 600px) {
@@ -710,8 +718,6 @@ body {
       -webkit-backdrop-filter: blur(5px) saturate(100%);
       background-color: var(--secondary-color-glass);
     }
-
-
 }
 
 @media (max-width: 400px) {
