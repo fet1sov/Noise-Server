@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title><%- playlistInfo.playlist.name %></title>
+    <title><%- playlistInfo.playlist.name %> | <%- title %></title>
 
     <%- include('../elems/styles.ejs', {}); %>
 
@@ -14,12 +14,14 @@
 <body>
     <main>
         <div class="playlist-info-block">
-            <%- `<img class="playlist-info-img" src="../playlistThumbs/${playlistInfo.playlist.id}.png" alt="${playlistInfo.name}">` %>
+            <%- `<img class="playlist-info-img" src="../playlistThumbs/${playlistInfo.playlist.id}.png" alt="${playlistInfo.playlist.name}">` %>
 
             <div class="playlist-information">
                 <div>
                     <div class="playlist-info-block-track"><%- locale.playlist_name %></div>
                     <div class="playlist-info-title"><%- playlistInfo.playlist.name %></div>
+
+                    <div class="playlist-info-description"><%- playlistInfo.playlist.description %></div>
                 </div>
 
                 <div>

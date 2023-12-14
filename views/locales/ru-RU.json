@@ -82,6 +82,9 @@
     "artist_not_songs_found" : "Исполнитель не загрузил ни одного трека",
     "artist_last_release" : "Последний релиз",
 
+    "artist_options_report" : "Пожаловаться",
+    "artist_options_share" : "Поделиться",
+
     "modal_delete_title" : "Удаление",
     "modal_message_track" : "Вы уверены что хотите удалить выбранные треки?",
 

@@ -72,6 +72,9 @@
     "artist_not_songs_found" : "This haven't uploaded something yet",
     "artist_last_release" : "Last release",
 
+    "artist_options_report" : "Report",
+    "artist_options_share" : "Share",
+
     "modal_delete_title" : "Deleting",
     "modal_message_track" : "Are you sure you want to delete selected tracks?",
     

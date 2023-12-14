@@ -13,6 +13,14 @@ window.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
+
+    const artistOptions = document.getElementById("artist-options");
+    if (artistOptions)
+    {
+        artistOptions.addEventListener("click", () => {
+            
+        });
+    }
 });
 
 window.addEventListener("scroll", () => {

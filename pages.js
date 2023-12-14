@@ -486,6 +486,22 @@ router.get('/admin/:section?', function(request, response) {
     }
 });
 
+router.get('/report/:artist_id', function(request, response) {
+    if (request.session.user)
+    {   
+        getArtistDataById(request.params.artist_id).then(function (artistData) {
+            response.render('pages/report', {
+                title: 'Noise',
+                locale: getLocaleByIP(request.socket.remoteAddress),
+                userData: request.session.user ? request.session.user.data : null,
+                artistData: artistData,
+            });  
+        });
+    } else {
+        response.redirect("../index");
+    }
+});
+
 /* Additional get information routes */
 router.get('/songs/:song_id', function (request, response) {
     incrementPlaysCount(request.params.song_id).then(function(result) {

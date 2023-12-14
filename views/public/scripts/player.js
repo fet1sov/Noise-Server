@@ -12,6 +12,11 @@ function setPlayerState(visible)
     }
 }
 
+function setPageTitle(title)
+{
+    document.title = title;
+}
+
 function playSoundTrack(playerInfo)
 {
     const mainWindow = document.getElementById("main-window");
@@ -25,6 +30,8 @@ function playSoundTrack(playerInfo)
         const playerArtistName = document.getElementById("player-info-artist");
 
         const songThumbnail = document.getElementById("song-thumbnail");
+
+        setPageTitle(`${playerInfo.songArtistName} — ${playerInfo.songName}`)
 
         songThumbnail.setAttribute("src", `../thumbnails/${playerInfo.songId}.png`);
         playerInfoName.textContent = playerInfo.songName;

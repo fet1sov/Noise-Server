@@ -208,7 +208,7 @@ async function registerNewArtist(username, description, genreId, belongId, banne
                         || uploadedFileExtension === "jpeg"
                         || uploadedFileExtension === "webp") {
                         uploadPath = __dirname
-                            + "/public/banner/" + artistData.id + ".png";
+                            + "/public/banner/" + artistData.data.id + ".png";
                     } else {
                         artistData.errorData = 4;
                         resolve(artistData);
@@ -216,7 +216,7 @@ async function registerNewArtist(username, description, genreId, belongId, banne
                     }
 
                     const pngProfilePic = __dirname
-                        + "/public/banner/" + artistData.id + ".png";
+                        + "/public/banner/" + artistData.data.id + ".png";
 
                     if (fs.existsSync(pngProfilePic)) {
                         fs.unlink(pngProfilePic, () => { });
@@ -229,19 +229,14 @@ async function registerNewArtist(username, description, genreId, belongId, banne
                                 resolve(artistData);
                                 logMessage("API", `FAILED TO UPLOAD BANNER FILE: ${err}`, 3);
                                 return;
-                            } else {
-                                artistData.errorData = 6;
-                                resolve(artistData);
-                                return;
                             }
                         });
                     } catch {
 
                     }
-                }
-                
 
-                resolve(artistData);
+                    resolve(artistData);
+                }
             }
         });       
     });
