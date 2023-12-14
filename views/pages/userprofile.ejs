@@ -16,7 +16,7 @@
     <main>
         <div class="profile-block">
             <div>
-                <div class="profile-title"><%- locale.profile_user %></div>
+                <div class="profile-title" style="color: <%- locale.profile_roles[profileData.userData.role_id].color %>"><%- locale.profile_roles[profileData.userData.role_id].name %></div>
                 <div class="profile-name"><%- profileData.userData.login %></div>
             </div>
         </div>

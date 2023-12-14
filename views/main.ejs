@@ -23,7 +23,7 @@
             <% userRecs.songsList.forEach(song => { %>
                 <li>
                     <%- `<a href="../song/${song.id}">` %>
-                        <%- `<img class="artist-banner" src="../thumbnails/${song.id}.png">` %>
+                        <%- `<img class="artist-banner" src="../thumbnails/${song.id}">` %>
                         <%- song.name %>
                         <div class="artist-genre-info"><%- song.username %></div>
                     </a>
@@ -37,7 +37,7 @@
             <% userRecs.newArtists.forEach(artist => { %>
                 <li>
                     <%- `<a href="../artist/${artist.id}">` %>
-                        <%- `<img class="artist-banner" src="../banner/${artist.id}.png">` %>
+                        <%- `<img class="artist-banner" src="../banner/${artist.id}">` %>
                         <%- artist.username %>
                         <div class="artist-genre-info"><%- locale.genres_list[artist.genre] %></div>
                     </a>

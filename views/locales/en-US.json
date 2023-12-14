@@ -1,7 +1,20 @@
 {
     "auth_button" : "Join",
 
-    "profile_user" : "User",
+    "profile_roles" : [
+        {
+            "name" : "User",
+            "color" : "#FFFFFF"
+        },
+        {
+            "name" : "Moderator",
+            "color" : "#0dbc79"
+        },
+        {
+            "name" : "Administrator",
+            "color" : "#fc0303"
+        }
+    ],
     "profile_artist_card" : "Artist card",
     "profile_my_playlists": "My playlists",
     "profile_playlists" : "Playlists",
@@ -67,6 +80,10 @@
     "profile_menu_studio" : "Studio",
     "profile_menu_logout" : "Log out",
 
+    "admin_stats" : "Platform statistic",
+    "admin_stats_users_count" : "Users amount",
+    "admin_stats_artists_count" : "Artists amount",
+    "admin_stats_songs_count" : "Songs amount",
 
     "studio_stats" : "Statistics",
     "studio_stats_plays" : "Plays",
@@ -131,5 +148,7 @@
 
     "error_404" : "404 NOT FOUND",
     "error_404_description" : "This page is not found",
-    "comeback_button" : "Comeback"
+    "comeback_button" : "Comeback",
+
+    "units" : ["k", "m"]
 }

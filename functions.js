@@ -61,7 +61,7 @@ async function authUser(username, password) {
                             {
                                 if (roleData.is_admin)
                                 {
-                                    userData.data.admin = true;
+                                    userData.data.admin = roleData.is_admin;
                                 }
 
                                 resolve(userData);
@@ -72,6 +72,7 @@ async function authUser(username, password) {
                     }
                 } else {
                     userData.errorData = 400;
+                    resolve(userData);
                 }
             } else {
                 resolve(null);
@@ -339,7 +340,7 @@ async function getProfileByUsername(username) {
 
         if (!username.startsWith("id"))
         {
-            db.get(`SELECT * FROM user WHERE login='${username}'`, function(err, row) {
+            db.get(`SELECT * FROM user WHERE user.login='${username}'`, function(err, row) {
                 if (typeof row != "undefined")
                 {
                     userData.userData = row;
@@ -355,7 +356,6 @@ async function getProfileByUsername(username) {
                             {
                                 userData.playlistData = playListRows;
                             }
-
                             resolve(userData);
                         });
                     });
@@ -520,50 +520,55 @@ async function uploadSoundTrack(artistId, name, thumbnailFile, songFile, genreId
             {
                 console.log(`FAILED TO INSERT NEW SOUND TRACK ${error}`);
             } else {
-                const uploadedFileExtension = thumbnailFile.mimetype.split("/")[1];
 
-                let uploadPath = "";
-                if (uploadedFileExtension === "png"
-                    || uploadedFileExtension === "jpeg"
-                    || uploadedFileExtension === "webp") {
-                    uploadPath = __dirname
-                        + "/public/thumbnails/" + this.lastID + ".png";
+                if (thumbnailFile)
+                {
+                    const uploadedFileExtension = thumbnailFile.mimetype.split("/")[1];
+                    let uploadPath = "";
+                    if (uploadedFileExtension === "png"
+                        || uploadedFileExtension === "jpeg"
+                        || uploadedFileExtension === "webp") {
+                        uploadPath = __dirname
+                            + "/public/thumbnails/" + this.lastID + ".png";
+                    }
+
+                    try {
+                        thumbnailFile.mv(uploadPath, function (err) {
+                            if (err) {
+                                console.log(`FAILED TO UPLOAD BANNER FILE: ${err}`);
+                            } else {
+                                
+                            }
+                        });
+                    } catch {
+
+                    }
                 }
+                
+                if (songFile)
+                {
+                    const songFileExtension = songFile.mimetype.split("/")[1];
+                    let songUploadPath = "";
+                    if (songFileExtension === "mp3"
+                        || songFileExtension === "mpeg"
+                        || songFileExtension === "flac") {
+                        songUploadPath = __dirname
+                        + "/public/songs/" + this.lastID + ".mp3";
+                    }
 
-                try {
-                    thumbnailFile.mv(uploadPath, function (err) {
-                        if (err) {
-                            console.log(`FAILED TO UPLOAD BANNER FILE: ${err}`);
-                        } else {
-                            
-                        }
-                    });
-                } catch {
+                    try {
+                        songFile.mv(songUploadPath, function (err) {
+                            if (err) {
+                                console.log(`FAILED TO UPLOAD SONG FILE: ${err}`);
+                            } else {
+                                
+                            }
+                        });
+                    } catch {
 
+                    }
                 }
-
-                const songFileExtension = songFile.mimetype.split("/")[1];
-                let songUploadPath = "";
-
-                if (songFileExtension === "mp3"
-                    || songFileExtension === "mpeg"
-                    || songFileExtension === "flac") {
-                    songUploadPath = __dirname
-                    + "/public/songs/" + this.lastID + ".mp3";
-                }
-
-                try {
-                    songFile.mv(songUploadPath, function (err) {
-                        if (err) {
-                            console.log(`FAILED TO UPLOAD SONG FILE: ${err}`);
-                        } else {
-                            
-                        }
-                    });
-                } catch {
-
-                }
-
+                
                 resolve(this.lastID);
             }
         });
@@ -698,3 +703,27 @@ async function deleteSongList(authorId, songList) {
 }
 
 module.exports.deleteSongList = deleteSongList;
+
+async function getAdminInfo() {
+    return new Promise(function(resolve, reject)
+    {
+        let adminInfo = {
+            userList: [],
+            artistList: [],
+            songList: []
+        }
+
+        db.all(`SELECT * FROM user`, function(err, userList) {
+            db.all(`SELECT * FROM artist`, function(err, artistList) {
+                db.all(`SELECT * FROM song`, function(err, songList) {
+                    adminInfo.userList = userList;
+                    adminInfo.artistList = artistList;
+                    adminInfo.songList = songList;
+                    resolve(adminInfo);
+                });
+            });
+        }); 
+    });
+}
+
+module.exports.getAdminInfo = getAdminInfo;

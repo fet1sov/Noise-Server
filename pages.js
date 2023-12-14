@@ -8,9 +8,11 @@ const router = express.Router(),
 const session = require('express-session');
 
 const path = require('path');
-const { getLocaleByIP, getPlaylistInfoById, proceedSearchByTerm, getSongsForPaginationArtist, incrementPlaysCount, updateSongById, deleteSongList, uploadSoundTrack, getProfileByUsername, updateArtistInfo, getSongInfoById, getRecomendationInfo, getArtistDataByBelongId, getArtistDataById, authUser, registerUser, getListOfGenres, registerNewArtist } = 
+const { getLocaleByIP, getAdminInfo, getPlaylistInfoById, proceedSearchByTerm, getSongsForPaginationArtist, incrementPlaysCount, updateSongById, deleteSongList, uploadSoundTrack, getProfileByUsername, updateArtistInfo, getSongInfoById, getRecomendationInfo, getArtistDataByBelongId, getArtistDataById, authUser, registerUser, getListOfGenres, registerNewArtist } = 
 require('./functions');
 const cookieParser = require('cookie-parser');
+
+var fs = require('fs');
 
 router.use(cookieParser());
 router.use(bodyParser.urlencoded({ extended: false}));
@@ -322,12 +324,6 @@ router.get('/search', function (request, response) {
     });
 });
 
-router.get('/songs/:song_id', function (request, response) {
-    incrementPlaysCount(request.params.song_id).then(function(result) {
-        response.sendFile(__dirname + `/public/songs/${request.params.song_id}.mp3`);
-    });
-});
-
 router.post('/studio/content/edit/:song_id', function (request, response) {
     if (request.session.user)
     {
@@ -478,17 +474,53 @@ router.get('/profile/:username', function(request, response) {
     });
 });
 
-router.get('/admin/', function(request, response) {
+router.get('/admin/:section?', function(request, response) {
     if (request.session.user)
     {   
-        if (request.session.user.admin) 
+        if (request.session.user.data.admin) 
         {
-
+            getAdminInfo().then(function (adminData) {
+                response.status(200);
+                response.render('pages/admin/admin', {
+                    title: 'Noise',
+                    locale: getLocaleByIP(request.socket.remoteAddress),
+                    userData: request.session.user ? request.session.user.data : null,
+                    adminData: adminData,
+                    section: request.params.section
+                });
+            });
         } else {
             response.redirect("../index");
         }
     } else {
         response.redirect("../index");
+    }
+});
+
+/* Additional get information routes */
+router.get('/songs/:song_id', function (request, response) {
+    incrementPlaysCount(request.params.song_id).then(function(result) {
+        response.sendFile(__dirname + `/public/songs/${request.params.song_id}.mp3`);
+    });
+});
+
+router.get('/banner/:artist_id', function (request, response) {
+    const bannerPath = __dirname + `/public/banner/${request.params.artist_id}.png`;
+
+    if (fs.existsSync(bannerPath)) {
+        response.sendFile(bannerPath);
+    } else {
+        response.sendFile(__dirname + `/public/banner/artist_no_thumbnail.png`);
+    }
+});
+
+router.get('/thumbnails/:song_id', function (request, response) {
+    const songPath = __dirname + `/public/thumbnails/${request.params.song_id}.png`;
+
+    if (fs.existsSync(songPath)) {
+        response.sendFile(songPath);
+    } else {
+        response.sendFile(__dirname + `/public/thumbnails/music_no_thumbnail.png`);
     }
 });
 

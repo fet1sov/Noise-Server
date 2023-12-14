@@ -1,7 +1,20 @@
 {
     "auth_button" : "Войти",
 
-    "profile_user" : "Пользователь",
+    "profile_roles" : [
+        {
+            "name" : "Пользователь",
+            "color" : "#FFFFFF"
+        },
+        {
+            "name" : "Модератор",
+            "color" : "#0dbc79"
+        },
+        {
+            "name" : "Администратор",
+            "color" : "#fc0303"
+        }
+    ],
     "profile_artist_card" : "Карточка исполнителя",
     "profile_my_playlists": "Мои плейлисты",
     "profile_playlists" : "Плейлисты",
@@ -58,6 +71,11 @@
     "profile_menu_admin" : "Админ",
     "profile_menu_studio" : "Студия",
     "profile_menu_logout" : "Выйти",
+
+    "admin_stats" : "Статистика площадки",
+    "admin_stats_users_count" : "Пользователей",
+    "admin_stats_artists_count" : "Исполнителей",
+    "admin_stats_songs_count" : "Композиций",
 
     "artist" : "Исполнитель",
     "artist_song_list" : "Список треков",
@@ -132,5 +150,7 @@
 
     "error_404" : "404 НЕ ТУДА",
     "error_404_description" : "Эта страница не найдена :(",
-    "comeback_button" : "Вернуться"
+    "comeback_button" : "Вернуться",
+
+    "units" : ["тыс.", "мил."]
 }

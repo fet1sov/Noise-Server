@@ -48,7 +48,7 @@
                     <%- locale.studio_createcard_createform_banner %>
                 </p>
             </label>
-            <input id="bannerImg" name="bannerImg" type="file">
+            <input id="bannerImg" name="bannerImg" type="file" accept="image/png, image/gif, image/jpeg">
 
             <textarea name="description" type="text" placeholder="<%- locale.studio_createcard_createform_description %>"><% if (typeof artistData != "undefined") { %><%- artistData.description %><% } %></textarea>
             
