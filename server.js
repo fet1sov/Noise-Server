@@ -33,21 +33,21 @@ app.use(API_ROOT + '/playlist', playlistRoute);
 app.use(express.static(__dirname + '/public'), router);
 app.use(express.static(__dirname + '/views/public'), router);
 
-if (serverConfig.web)
-{
-    const pageRoute = require("./pages.js");
-    app.use('/', pageRoute);
-}
-
 /* ------------ */
 app.set('view engine', 'ejs');
-let httpServer = http.createServer(app).listen(serverConfig.port);
 
-if (httpServer.listening)
+const pageRoute = require("./pages.js");
+app.use('/', pageRoute);
+
+if (process.env.NODE_ENV != "test")
 {
+    let httpServer = http.createServer(app).listen(serverConfig.port);
+
     customConsole.printColoredMessage(
         `SERVER | Currently listening ${httpServer.address().address.split(":")[3] ? httpServer.address().address.split(":")[3] : "localhost"}:${httpServer.address().port}`, 
         customConsole.BgWhite, 
         customConsole.FgBlack
     );
 }
+
+module.exports.app = app;

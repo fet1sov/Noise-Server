@@ -4,11 +4,18 @@
   "description": "A server for noise audio streaming platform",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "cross-env NODE_ENV=test jest --testTimeout=3000",
+    "server": "cross-env NODE_ENV=server"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dxAugust/Noise-Server.git"
+    "url": "git+https://github.com/fet1sov/Noise-Server.git"
   },
   "keywords": [
     "server",
@@ -19,13 +26,13 @@
   "author": "fet1sov",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/dxAugust/Noise-Server/issues"
+    "url": "https://github.com/fet1sov/Noise-Server/issues"
   },
-  "homepage": "https://github.com/dxAugust/Noise-Server#readme",
+  "homepage": "https://github.com/fet1sov/Noise-Server#readme",
   "dependencies": {
-    "better-sqlite3": "^8.4.0",
     "cookie-parser": "^1.4.6",
     "crypto": "^1.0.1",
+    "dotenv": "^16.4.5",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
     "express-fileupload": "^1.4.0",
@@ -35,6 +42,11 @@
     "http": "^0.0.1-security",
     "path": "^0.12.7",
     "sqlite": "^4.2.1",
-    "sqlite3": "^5.1.6"
+    "sqlite3": "^5.1.7",
+    "supertest": "^6.3.4"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "jest": "^29.7.0"
   }
 }
