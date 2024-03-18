@@ -1,0 +1,33 @@
+.artist-info-block {
+    display: flex;
+    flex-direction: row;
+
+    margin-top: 15px;
+}
+
+.artist-info-img {
+    border-radius: 50%;
+    width: 128px;
+    height: 128px;
+}
+
+.artist-info-name {
+    font-weight: bold;
+
+    font-size: var(--small-font-size);
+    color: var(--primary-text-color);
+
+    word-break: break-all;
+}
+
+.artist-info-description {
+    font-size: var(--tiny-font-size);
+    color: var(--secondary-text-color);
+    
+    word-break: break-all;
+}
+
+.artist-description-block {
+    margin-left: 10px;
+}
+

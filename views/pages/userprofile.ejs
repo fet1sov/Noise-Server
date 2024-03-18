@@ -7,8 +7,9 @@
 
     <%- include('../elems/styles.ejs', {}); %>
 
+    <link rel="stylesheet" href="../styles/pages/general.css"/>
     <link rel="stylesheet" href="../styles/pages/profile.css"/>
-
+    <script src="../../scripts/mainPage.js"></script>
 </head>
 <body>
     <%- include('../elems/header.ejs', { isIndex: false }); %>
@@ -16,8 +17,8 @@
     <main>
         <div class="profile-block">
             <div>
-                <div class="profile-title" style="color: <%- locale.profile_roles[profileData.userData.role_id].color %>"><%- locale.profile_roles[profileData.userData.role_id].name %></div>
-                <div class="profile-name"><%- profileData.userData.login %></div>
+                <div class="profile-title" style="color: <%- locale.profile_roles[profileData.userData.role_id].color %>"><%= locale.profile_roles[profileData.userData.role_id].name %></div>
+                <div class="profile-name"><%= profileData.userData.login %></div>
             </div>
         </div>
 
@@ -25,8 +26,8 @@
             <%- `<a class="artist-block" href="../artist/${profileData.artistData.id}">` %>
                 <%- `<img class="artist-banner" src="../banner/${profileData.artistData.id}.png">` %>
                 <div class="artist-sub-block">
-                    <div class="artist-title"><%- locale.profile_artist_card %></div>
-                    <div class="artist-name"><%- profileData.artistData.username %></div>
+                    <div class="artist-title"><%= locale.profile_artist_card %></div>
+                    <div class="artist-name"><%= profileData.artistData.username %></div>
                 </div>
             </a>
         <% } %>
@@ -34,24 +35,33 @@
         <div class="profile-block">
             <% if (userData) { %> 
                 <% if (profileData.userData.id != userData.id) { %>
-                    <div class="profile-title-category"><%- locale.profile_playlists %></div>
+                    <div class="profile-title-category"><%= locale.profile_playlists %></div>
                 <% } else { %>
-                    <div class="profile-title-category"><%- locale.profile_my_playlists %></div>
+                    <div class="profile-title-category"><%= locale.profile_my_playlists %></div>
                 <% } %>
             <% } else { %>
-                <div class="profile-title-category"><%- locale.profile_playlists %></div>
+                <div class="profile-title-category"><%= locale.profile_playlists %></div>
             <% } %>
 
-            <ul class="playlist-list">
+            <% if (profileData.playlistData.length) { %>
+
+            <%- `<a class="small-item" href="../../../profile/${profileData.userData.login}/playlists">` %>
+                <%= locale.profile_show_more_playlists %>
+            </a>
+
+            <ul class="blocks-list">
                 <% profileData.playlistData.forEach(playlist => { %>
                     <li>
-                        <a href="../playlist/<%- playlist.id %>">
-                            <img class="playlist-list-thumb" src="../playlistThumbs/<%- playlist.id %>.png">
-                            <div><%- playlist.name %></div>
+                        <a href="../playlist/<%= playlist.id %>">
+                            <img class="playlist-list-thumb" src="../playlistThumbs/<%= playlist.id %>">
+                            <div><%= playlist.name %></div>
                         </a>
                     </li>
                 <% }); %>
             </ul>
+            <% } else { %>
+                <div class="error-text-info"><%- locale.playlist_nothing %></div>
+            <% } %>
         </div>
     </main>
 </body>

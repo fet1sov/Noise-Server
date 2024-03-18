@@ -3,19 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title><%- title %></title>
 
     <%- include('../elems/styles.ejs', {}); %>
 
     <link rel="stylesheet" href="../../styles/pages/createcard.css"/>
+    <link rel="stylesheet" href="../../styles/pages/report.css"/>
 </head>
 <body>
-    <main>
-        <form>
-            
-        </form>
+    <main class="main-form">
+        <% if (!sent) { %>
+            <%- `<form class="create-card-form" action="../report/${artistData.id}" method="post" enctype="multipart/form-data">` %>
+                <div class="title-message"><%- locale.report_form_title %></div>
+                <%- `<a class="artist-info-block" href="../../artist/${artistData.id}">` %>
+                    <div>
+                        <%- `<img class="artist-info-img" src="../../banner/${artistData.id}">` %>
+                    </div>
+
+                    <div class="artist-description-block">
+                        <div class="artist-info-name">
+                            <%= artistData.username %>
+                        </div>
+
+                        <div class="artist-info-description">
+                            <%= artistData.description %>
+                        </div>
+                    </div>
+                </a>
+
+                <select name="reason" required>
+                    <option value="" disabled selected hidden><%= locale.report_selector_reason %></option>
+
+                    <% for (let i = 0; i < locale.report_reasons.length; i++) { %>
+                        <%- `<option value="${i}">${locale.report_reasons[i]}</option>` %>
+                    <% } %>
+                </select>
+
+                <textarea name="description" type="text" placeholder="<%= locale.report_form_description %>"></textarea>
+                <button class="button red"><%- locale.report_form_button %></button>
+            </form>
+        <% } else { %>
+            <a style="margin-top: 20px;" class="button" href="../../../../../index"><%= locale.comeback_button %></a>
+        <% } %>
     </main>
-    
+
     <%- include('../elems/header.ejs', { isIndex: false }); %>
 </body>

@@ -1,5 +1,72 @@
 .admin-studio {
+    width: 100%;
     margin: 5%;
 
     color: var(--primary-text-color);
+}
+
+.label {
+    animation: appearAnimation 2s both;
+}
+
+.report-artist {
+    font-weight: normal;
+    color: var(--secondary-text-color);
+}
+
+.report-block {
+    margin-top: 50px;
+}
+
+.report-info-block {
+    margin-left: 10px;
+}
+
+.report-description {
+    color: var(--primary-text-color);
+    font-weight: bold;
+}
+
+.report-suspect-reason {
+    font-size: var(--small-font-size);
+    color: var(--primary-text-color);
+    font-weight: bold;
+}
+
+.report-info {
+    margin-top: 20px;
+}
+
+.report-suspect-name {
+    font-size: var(--small-font-size);
+    color: var(--secondary-text-color);
+}
+
+.report-author-name {
+    color: var(--primary-text-color);
+    font-size: var(--small-font-size);
+}
+
+.report-info-description {
+    color: var(--secondary-text-color);
+    font-size: var(--tiny-font-size);
+}
+
+.button {
+    padding: 10px;
+
+    animation: appearAnimationX 2s both;
+}
+
+@media (max-width: 800px) {
+    .admin-studio {
+        margin: 0;
+    }
+}
+
+@media (max-width: 750px) {
+    .big-rounded-square {
+        width: 128px;
+        height: 128px;
+    }
 }

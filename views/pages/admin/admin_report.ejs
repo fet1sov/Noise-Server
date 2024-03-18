@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+
+    <%- include('../../elems/styles.ejs', {}); %>
+
+    <link rel="stylesheet" href="../../../../styles/pages/admin.css"/>
+    <link rel="stylesheet" href="../../../../styles/pages/studio.css"/>
+</head>
+<body>
+    <%- include('../../elems/preloader.ejs', {}); %>
+
+    <main class="admin-studio">
+            <div class="studio-block transparent">
+                <div class="label"><%- locale.admin_report_information %></div>
+
+                <div class="report-block">
+                    <div class="small-information">
+                        <%- `<a href="../../../artist/${reportData.suspect_id}"><img class="big-rounded-square" src="../../banner/${reportData.suspect_id}" alt="${reportData.artist_name}"></a>` %>
+
+                        <div class="report-info-block">
+                            <div class="report-suspect-reason"><%- locale.report_reasons[reportData.reason] %></div>
+                            <%- `<a href="../../../artist/${reportData.suspect_id}" class="report-suspect-name">${reportData.artist_name}</a>` %>
+                        </div>
+                    </div>
+
+                    <%- `<form action="../../admin/report/${reportData.id}" method="post">` %>
+                        <button class="button red"><%= locale.admin_report_inactive_button %></button>
+                    </form>
+
+                    <div class="small-information">
+                        <div class="report-info">
+                            <div class="label"><%- locale.admin_report_author %></div>
+                            <%- `<a href="../../../../profile/id${reportData.author_id}" class="report-author-name">${reportData.user_name}</a>` %>
+                        </div>
+                    </div>
+
+                    <% if (reportData.description.length > 0) { %>
+                    <div class="small-information">
+                        <div class="report-info">
+                            <div class="label"><%= locale.admin_report_description %></div>
+                            <div class="report-info-description"><%= reportData.description %></div>
+                        </div>
+                    </div>
+                    <% } %>
+                </div>
+            </div>
+    </main>
+
+    <%- include('admin_navigation.ejs', {}); %>
+</body>

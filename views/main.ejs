@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
 
+    <%- `<meta property="og:site_name" content="Noise">` %>
+    <%- `<meta property="og:title" content="${locale.main_title}">` %>
+    <%- `<meta property="og:url" content="${host}">` %>
+    <%- `<meta property="og:image" content="${host}/brand/noise-unfurl-square.png">` %>
+    <%- `<meta property="og:description" content="${locale.main_description}">` %>
+    <%- `<meta name="theme-color" content="${locale.theme_color}">` %>
+
     <%- include('elems/styles.ejs', {}); %>
 
     <link rel="stylesheet" href="styles/pages/general.css"/>
@@ -24,8 +31,8 @@
                 <li>
                     <%- `<a href="../song/${song.id}">` %>
                         <%- `<img class="artist-banner" src="../thumbnails/${song.id}">` %>
-                        <%- song.name %>
-                        <div class="artist-genre-info"><%- song.username %></div>
+                        <%= song.name %>
+                        <div class="artist-genre-info"><%= song.username %></div>
                     </a>
                 </li>
             <% }); %>
@@ -38,8 +45,23 @@
                 <li>
                     <%- `<a href="../artist/${artist.id}">` %>
                         <%- `<img class="artist-banner" src="../banner/${artist.id}">` %>
-                        <%- artist.username %>
-                        <div class="artist-genre-info"><%- locale.genres_list[artist.genre] %></div>
+                        <%= artist.username %>
+                        <div class="artist-genre-info"><%= locale.genres_list[artist.genre] %></div>
+                    </a>
+                </li>
+            <% }); %>
+        </ul>
+
+        <div class="block-title"><%= locale.profile_my_playlists %></div>
+        <%- `<a class="block-sub-title" href="../../../profile/${userData.login}/playlists">` %> 
+            <%= locale.profile_show_more_playlists %>
+        </a>
+        <ul class="blocks-list">
+            <% userRecs.playlistList.forEach(playlist => { %>
+                <li>
+                    <%- `<a href="../playlist/${playlist.id}">` %>
+                        <%- `<img class="artist-banner" src="../playlistThumbs/${playlist.id}">` %>
+                        <%= playlist.name %>
                     </a>
                 </li>
             <% }); %>

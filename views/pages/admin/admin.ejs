@@ -66,7 +66,6 @@
     <% } %>
 
     <main class="admin-studio">
-        <% if(!section) { %>
             <div class="studio-block transparent">
                 <div class="label"><%- locale.admin_stats %></div>
             </div>
@@ -87,58 +86,54 @@
                     <div class="stats-number-label"><%- songsCount %></div>
                 </li>
             </ul>
-        <% } else if (section == "users"){ // USER LIST %>
-            TEST
-        <% } else if (section == "songs") { // SONGS LIST %>
-            TEST
-        <% } %>
+
+            <div class="studio-block transparent">
+                <div class="label"><%- locale.admin_report_list %></div>
+
+                <% let reportsPerPage = 3 %>
+                <% let maxPages = Math.ceil(adminData.reportList.length / reportsPerPage); %>
+
+                <% if (adminData.reportList.length) { %>
+                <ul class="studio-songs-list">
+                    <% for(let i = page * reportsPerPage; i < page * reportsPerPage + reportsPerPage; i++) { %>
+                        <% if (adminData.reportList[i]) { %>
+                                <li data-id="<%- adminData.reportList[i].id %>">
+                                    <div class="small-information">
+                                        <div class="small-information">
+                                            <%- `<img src="../../../banner/${adminData.reportList[i].suspect_id}" class="small-square-rounded">` %>
+                                            <div>
+                                                <div class="report-description"><%- locale.report_reasons[adminData.reportList[i].reason] %></div>
+                                                <a class="report-artist" href="../../../../artist/<%= adminData.reportList[i].suspect_id %>"><%= adminData.reportList[i].artist_name %></a>
+                                            </div>
+                                        </div> 
+                                    </div>
+
+                                    <a class="button red no-animation" href="admin/report/<%= adminData.reportList[i].id %>"><%= locale.admin_report_more %></a>
+                                </li>
+                        <% } %>
+                    <% } %>
+                </ul>
+                <% } else { %>
+                    <div class="error-text-info">
+                        <%= locale.admin_no_reports %>
+                    </div>
+                <% } %>
+
+                <% if (maxPages > 1) { %>
+                    <div class="pagination-list-block">
+                        <ul class="pagination-list">    
+                            <% for(let i = 0; i < maxPages; i++) { %>
+                                <% if (i == page) { %>
+                                    <%- `<li><a class="current">${(i + 1)}</a></li>` %>
+                                <% } else { %>
+                                    <%- `<li><a href="?page=${i + 1}">${(i + 1)}</a></li>` %>
+                                <% } %>
+                            <% } %>
+                        </ul>
+                    </div>
+                <% } %>
+            </div>
     </main>
 
-    <nav class="studio-navigation-bar">
-        <ul class="studio-navigation-bar-list">
-            <li>
-                <a href="../../index">
-                    <svg class="small-logo" fill="#000000" width="800px" height="800px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M26 17l-3 3-3-3-3 3-3-3-3 3-6-6 3-3 3 3 3-3 3 3 3-3 6 6z"></path>
-                    </svg>
-                </a>
-            </li>
-
-            <li>
-                <ul class="studio-navigation-bar-list horizontally-center">
-                    <li>
-                        <a href="../../../../admin">
-                            <svg class="navigation-icon" version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
-                                 viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
-                            <path fill="#231F20" d="M62.79,29.172l-28-28C34.009,0.391,32.985,0,31.962,0s-2.047,0.391-2.828,1.172l-28,28
-                                c-1.562,1.566-1.484,4.016,0.078,5.578c1.566,1.57,3.855,1.801,5.422,0.234L8,33.617V60c0,2.211,1.789,4,4,4h16V48h8v16h16
-                                c2.211,0,4-1.789,4-4V33.695l1.195,1.195c1.562,1.562,3.949,1.422,5.516-0.141C64.274,33.188,64.356,30.734,62.79,29.172z"/>
-                            </svg>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="../../../../admin/users">
-                            <svg class="navigation-icon" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                                <rect width="48" height="48" fill="none"/>
-                                <path d="M38,6H29.9V4a2,2,0,0,0-2-2h-8a2,2,0,0,0-2,2V6H10A2,2,0,0,0,8,8V44a2,2,0,0,0,2,2H38a2,2,0,0,0,2-2V8A2,2,0,0,0,38,6ZM24,14a8,8,0,1,1-8,8A8,8,0,0,1,24,14ZM36,42H12V39.2a24.1,24.1,0,0,1,24,0Z"/>
-                            </svg>
-                        </a>    
-                    </li>
-
-                    <li>
-                        <a href="../../../../admin/songs">
-                            <svg class="navigation-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M7 3.25178V20.7518C7 21.3918 6.39 21.9018 5.77 21.7318C3.37 21.0518 2 19.0918 2 16.1918V7.81178C2 4.91178 3.37 2.95178 5.77 2.27178C6.39 2.10178 7 2.60178 7 3.25178Z" fill="#292D32"/>
-                                <path d="M12.4691 14.3711C12.0891 14.3711 11.7891 14.6811 11.7891 15.0511C11.7891 15.4211 12.0991 15.7311 12.4691 15.7311C12.8491 15.7311 13.1591 15.4211 13.1591 15.0511C13.1591 14.6811 12.8491 14.3711 12.4691 14.3711Z" fill="#292D32"/>
-                                <path d="M17.5181 13.4492C17.1381 13.4492 16.8281 13.7592 16.8281 14.1392C16.8281 14.5192 17.1381 14.8192 17.5181 14.8192C17.8981 14.8192 18.2081 14.5092 18.2081 14.1392C18.2081 13.7692 17.8981 13.4492 17.5181 13.4492Z" fill="#292D32"/>
-                                <path d="M16.19 2H9.5C8.95 2 8.5 2.45 8.5 3V21C8.5 21.55 8.95 22 9.5 22H16.19C19.4 22 22 19.4 22 16.19V7.81C22 4.6 19.4 2 16.19 2ZM19.6 9.74V14.14C19.6 14.15 19.59 14.16 19.59 14.17C19.57 15.3 18.65 16.21 17.52 16.21C16.38 16.21 15.45 15.28 15.45 14.14C15.45 13 16.38 12.07 17.52 12.07C17.76 12.07 17.99 12.12 18.21 12.2V10.65L14.54 11.65V15.07C14.54 15.08 14.53 15.09 14.53 15.1C14.51 16.23 13.59 17.14 12.46 17.14C11.32 17.14 10.39 16.21 10.39 15.07C10.39 13.93 11.32 13 12.46 13C12.7 13 12.93 13.05 13.15 13.13V11.13V9.5C13.15 8.64 13.68 7.94 14.51 7.73L17.26 6.97C18.12 6.74 18.65 6.97 18.95 7.2C19.38 7.53 19.59 8.05 19.59 8.75V9.74H19.6Z" fill="#292D32"/>
-                            </svg>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            
-        </ul>
-    </nav>
+    <%- include('admin_navigation.ejs', {}); %>
 </body>

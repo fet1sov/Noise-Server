@@ -93,7 +93,7 @@ main {
 
     z-index: 99999;
 
-    animation: appearAnimation-Y 2s both;
+    animation: appearAnimation-Y 1s both;
 }
 
 .options-list li {

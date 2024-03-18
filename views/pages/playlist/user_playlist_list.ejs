@@ -1,0 +1,37 @@
+<% if (playlistList.length) { %>
+            <ul class="studio-songs-list">
+                <% for(let i = 0; i < playlistList.length; i++) { %>
+                            <li class="playlist-list-item" data-id="<%= playlistList[i].id %>">
+                                <div class="small-information">
+                                    <%- `<img src="../../../playlistThumbs/${playlistList[i].id}" class="small-square-rounded">` %>
+                                            <div>
+                                                <% if (!noAction) { %>
+                                                    <div class="playlist-name"><%= playlistList[i].name %></div>
+                                                <% } else { %>
+                                                    <%- `<a href="../../../../playlist/${playlistList[i].id}" class="playlist-name">${playlistList[i].name}</a>` %>
+                                                <% } %>
+                                                <div class="playlist-description"><%= playlistList[i].description %></div>
+                                            </div>
+                                </div>
+                            </li>
+                <% } %>
+            </ul>
+            <% } else { %>
+                <div class="error-text-info">
+                    <%= locale.playlist_nothing %>
+                </div>
+            <% } %>
+
+            <% if (maxPages > 1) { %>
+                <div class="pagination-list-block">
+                    <ul class="pagination-list">    
+                        <% for(let i = 0; i < maxPages; i++) { %>
+                            <% if (i == page) { %>
+                                <%- `<li><a class="current">${(i + 1)}</a></li>` %>
+                            <% } else { %>
+                                <%- `<li><a href="?page=${i + 1}">${(i + 1)}</a></li>` %>
+                            <% } %>
+                        <% } %>
+                    </ul>
+                </div>
+            <% } %>

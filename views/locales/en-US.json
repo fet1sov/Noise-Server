@@ -1,4 +1,8 @@
 {
+    "theme_color" : "#0023ec",
+    "main_title" : "Chill out with Noise",
+    "main_description" : "Share and listen music around the world. Join our community of artists.",
+
     "auth_button" : "Join",
 
     "profile_roles" : [
@@ -18,6 +22,8 @@
     "profile_artist_card" : "Artist card",
     "profile_my_playlists": "My playlists",
     "profile_playlists" : "Playlists",
+
+    "edit" : "Edit",
 
     "welcome_message" : "Welcome to the ",
     "welcome_description" : "Audio-streaming platform for listening the music in high quality. Listen music in app or directly from your browser",
@@ -77,16 +83,42 @@
 
     "modal_delete_title" : "Deleting",
     "modal_message_track" : "Are you sure you want to delete selected tracks?",
-    
+
     "profile_menu_profile" : "Profile",
     "profile_menu_admin" : "Admin",
     "profile_menu_studio" : "Studio",
     "profile_menu_logout" : "Log out",
 
+    "profile_show_more_playlists" : "Show more",
+
+    "playlist_label" : "List of your playlists",
+    "playlist_label_author" : "List of playlists by ",
+    "playlist_create_button" : "Create playlist",
+
+    "playlist_name_placeholder" : "Name of playlist",
+    "playlist_picture_load_placeholder" : "Upload the playlist thumbnail 5MB. In format .png, .jpg, .jpeg",
+    "playlist_create_label" : "Playlist creation",
+    "playlist_description_placeholders" : "Playlist descripition",
+
     "admin_stats" : "Platform statistic",
     "admin_stats_users_count" : "Users amount",
     "admin_stats_artists_count" : "Artists amount",
     "admin_stats_songs_count" : "Songs amount",
+
+    "admin_report_list" : "List of reports",
+    "admin_report_more" : "More",
+
+    "admin_report_description" : "Report descripiton",
+    "admin_report_information" : "Report information",
+    "admin_report_author" : "Report sent by",
+    "admin_no_reports" : "No reports, good job :)",
+
+    "admin_report_inactive_button" : "Make inactive",
+
+    "admin_user_list" : "List of users",
+    "admin_artist_list" : "List of artists",
+    "admin_song_list" : "List of songs",
+    "admin_user_search_login" : "Search by username",
 
     "studio_stats" : "Statistics",
     "studio_stats_plays" : "Plays",
@@ -123,6 +155,16 @@
     "studio_createcard_createform_error_less" : "Username should be less than 40 symbols",
     "studio_createcard_createform_error_banner" : "Banner is required",
     "studio_createcard_createform_error_genre" : "Please select the main genre",
+
+    "report_form_title" : "Report the artist profile",
+    "report_form_description" : "Description of the report",
+    "report_reasons" : [
+        "Hateful content",
+        "Sexually explicit content",
+        "Copyright abuse"
+    ],
+    "report_selector_reason" : "Select the reason of report",
+    "report_form_button" : "Report",
 
     "genres_list" : [
         "",

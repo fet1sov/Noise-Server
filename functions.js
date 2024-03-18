@@ -24,13 +24,25 @@ function logMessage(tag, message, type)
 }
 
 exports.getLocaleByIP = (ip) => {
+    console.log(ip);
     let region = geoip.lookup(ip);
 
     let localeContent = "";
     let localeJSON = "";
 
-    localeContent = fs.readFileSync(`${__dirname}/views/locales/ru-RU.json`, 'utf8');
-    localeJSON = JSON.parse(localeContent);
+    if (region &&
+    (
+    region.country == "RU"
+    || region.country == "BY"
+    ))
+    {
+        localeContent = fs.readFileSync(`${__dirname}/views/locales/ru-RU.json`, 'utf8');
+        localeJSON = JSON.parse(localeContent);
+    } else {
+        localeContent = fs.readFileSync(`${__dirname}/views/locales/en-US.json`, 'utf8');
+        localeJSON = JSON.parse(localeContent);
+    }
+    
 
     return localeJSON;
 };
@@ -67,7 +79,7 @@ async function authUser(username, password) {
                                 resolve(userData);
                             } else {
                                 resolve(userData);
-                            } 
+                            }
                         });
                     }
                 } else {
@@ -111,7 +123,7 @@ async function registerUser(username, email, password, repeatPassword) {
             return;
         }
 
-        if (!(/^[A-Za-z0-9]*$/.test(username))) 
+        if (!(/^[A-Za-z0-9]*$/.test(username)))
         {
             userData.errorData = 403;
             resolve(userData);
@@ -142,7 +154,7 @@ async function registerUser(username, email, password, repeatPassword) {
 
                         let passMD5 = crypto.createHash('md5').update(password).digest('hex');
 
-                        db.run(`INSERT INTO user VALUES(NULL, '${accessToken}', '${username}', '${passMD5}', '${email.trim()}', '0', '0')`);                       
+                        db.run(`INSERT INTO user VALUES(NULL, '${accessToken}', '${username}', '${passMD5}', '${email.trim()}', '0', '0')`);
                         resolve(userData);
                         return;
                     }
@@ -238,7 +250,7 @@ async function registerNewArtist(username, description, genreId, belongId, banne
                     resolve(artistData);
                 }
             }
-        });       
+        });
     });
 }
 
@@ -280,7 +292,7 @@ async function updateArtistInfo(username, description, genreId, belongId, banner
 
             db.run(`UPDATE artist SET username='${username}', description='${description}', genre='${genreId}' WHERE id=${row.id}`);
             resolve(row);
-        });        
+        });
     });
 };
 
@@ -335,7 +347,7 @@ async function getProfileByUsername(username) {
             artistData: null,
             userData: null,
             playlistData: null
-        } 
+        }
 
         if (!username.startsWith("id"))
         {
@@ -348,7 +360,7 @@ async function getProfileByUsername(username) {
                         if (typeof artistRow != "undefined")
                         {
                             userData.artistData = artistRow;
-                        } 
+                        }
 
                         db.all(`SELECT * FROM playlist WHERE user_id='${row.id}'`, function(err, playListRows) {
                             if (typeof playListRows != "undefined")
@@ -388,23 +400,26 @@ async function getProfileByUsername(username) {
                 }
             });
         }
-        
+
     });
 }
 
 module.exports.getProfileByUsername = getProfileByUsername;
 
-async function getRecomendationInfo() {
+async function getRecomendationInfo(user_id) {
     return new Promise(function(resolve, reject)
     {
         db.all(`SELECT * FROM artist ORDER BY id DESC LIMIT 5`, function(err, newArtists) {
             db.all('SELECT `song`.*, `artist`.`username` FROM `song` INNER JOIN `artist` ON `song`.`artist_id` = `artist`.`id` ORDER BY `song`.`plays` DESC LIMIT 5', function(err, songsList) {
-                let recomendData = {
-                    newArtists: newArtists,
-                    songsList: songsList
-                };
-
-                resolve(recomendData);
+                    db.all(`SELECT * FROM playlist WHERE user_id = '${user_id}' LIMIT 5`, function(err, playlist) {
+                        let recomendData = {
+                            newArtists: newArtists,
+                            songsList: songsList,
+                            playlistList: playlist
+                        };
+        
+                        resolve(recomendData);
+                    });
             });
         });
     });
@@ -536,14 +551,14 @@ async function uploadSoundTrack(artistId, name, thumbnailFile, songFile, genreId
                             if (err) {
                                 console.log(`FAILED TO UPLOAD BANNER FILE: ${err}`);
                             } else {
-                                
+
                             }
                         });
                     } catch {
 
                     }
                 }
-                
+
                 if (songFile)
                 {
                     const songFileExtension = songFile.mimetype.split("/")[1];
@@ -560,14 +575,14 @@ async function uploadSoundTrack(artistId, name, thumbnailFile, songFile, genreId
                             if (err) {
                                 console.log(`FAILED TO UPLOAD SONG FILE: ${err}`);
                             } else {
-                                
+
                             }
                         });
                     } catch {
 
                     }
                 }
-                
+
                 resolve(this.lastID);
             }
         });
@@ -605,7 +620,7 @@ async function updateSongById(songId, name, genreId, fileList) {
                             if (err) {
                                 console.log(`FAILED TO UPLOAD BANNER FILE: ${err}`);
                             } else {
-                                
+
                             }
                         });
                     } catch {
@@ -639,7 +654,7 @@ async function incrementPlaysCount(songId) {
             {
                 let songPlays = row.plays + 1;
                 db.run(`UPDATE song SET plays='${songPlays}' WHERE id='${songId}' `, function (error) {
-                    
+
                 });
             }
 
@@ -663,7 +678,7 @@ async function proceedSearchByTerm(searchTerm) {
                             playlistList: playlistList,
                             profilesList: profilesList,
                         }
-    
+
                         resolve(searchResult);
                     });
                 });
@@ -703,26 +718,210 @@ async function deleteSongList(authorId, songList) {
 
 module.exports.deleteSongList = deleteSongList;
 
+async function createPlaylist(authorId, playlistName, playlistDescription, playlistImg) {
+    return new Promise(function(resolve, reject)
+    {
+        db.run(`INSERT INTO playlist (user_id, songs_id, name, description) VALUES(${authorId}, '', '${playlistName}', '${playlistDescription}')`, function (error) {
+            if (error)
+            {
+                console.log(`FAILED TO DELETE SOUND TRACK(-s): ${error}`);
+            } else {
+                if (playlistImg)
+                {
+                    const uploadedFileExtension = playlistImg.mimetype.split("/")[1];
+
+                    let uploadPath = "";
+                    if (uploadedFileExtension === "png"
+                        || uploadedFileExtension === "jpeg"
+                        || uploadedFileExtension === "webp") {
+                        uploadPath = __dirname
+                            + "/public/playlistThumbs/" + this.lastID + ".png";
+                    }
+
+                    if (fs.existsSync(uploadPath)) {
+                        fs.unlink(uploadPath, () => { });
+                    }
+
+                    try {
+                        playlistImg.mv(uploadPath, function (err) {
+                            if (err) {
+                                console.log(`FAILED TO UPLOAD BANNER FILE: ${err}`);
+                            } else {
+
+                            }
+                        });
+                    } catch {
+
+                    }
+                }
+
+                resolve(this.lastID);
+            }
+        });
+    });
+}
+
+module.exports.createPlaylist = createPlaylist;
+
 async function getAdminInfo() {
     return new Promise(function(resolve, reject)
     {
         let adminInfo = {
             userList: [],
             artistList: [],
-            songList: []
+            songList: [],
+            reportList: [],
         }
 
         db.all(`SELECT * FROM user`, function(err, userList) {
             db.all(`SELECT * FROM artist`, function(err, artistList) {
                 db.all(`SELECT * FROM song`, function(err, songList) {
-                    adminInfo.userList = userList;
-                    adminInfo.artistList = artistList;
-                    adminInfo.songList = songList;
-                    resolve(adminInfo);
+                    db.all(`SELECT report.*, artist.username AS artist_name, user.login AS user_name FROM report INNER JOIN artist ON report.suspect_id = artist.id INNER JOIN user ON report.author_id = user.id WHERE active = '1'`, function(err, reportList) {
+                        adminInfo.userList = userList;
+                        adminInfo.artistList = artistList;
+                        adminInfo.songList = songList;
+                        adminInfo.reportList = reportList;
+                        resolve(adminInfo);
+                    });
                 });
             });
-        }); 
+        });
     });
 }
 
 module.exports.getAdminInfo = getAdminInfo;
+
+async function getReportInfoById(report_id) {
+    return new Promise(function(resolve, reject)
+    {
+        db.get(`SELECT report.*, artist.username AS artist_name, user.login AS user_name FROM report INNER JOIN artist ON report.suspect_id = artist.id INNER JOIN user ON report.author_id = user.id WHERE report.id = '${report_id}'`, function(err, reportList) {
+            resolve(reportList);
+        });
+    });
+}
+
+module.exports.getReportInfoById = getReportInfoById;
+
+async function getUserList() {
+    return new Promise(function(resolve, reject)
+    {
+        db.all(`SELECT * FROM user`, function(err, userList) {
+            resolve(userList);
+        });
+    });
+}
+
+module.exports.getUserList = getUserList;
+
+async function getUsersListForPagination(usersPerPage, currentPage) {
+    return new Promise(function(resolve, reject)
+    {
+        db.all(`SELECT * FROM user LIMIT ${usersPerPage} OFFSET ${currentPage * usersPerPage}`, function(err, userList) {
+            resolve(userList);
+        });
+    });
+}
+
+module.exports.getUsersListForPagination = getUsersListForPagination;
+
+async function searchUserByLogin(search_term, usersPerPage, currentPage) {
+    return new Promise(function(resolve, reject)
+    {
+        db.all(`SELECT * FROM user WHERE user.login LIKE '${search_term}%' LIMIT ${usersPerPage} OFFSET ${(currentPage - 1) * usersPerPage}`, function(err, userList) {
+            resolve(userList);
+        });
+    });
+}
+
+module.exports.searchUserByLogin = searchUserByLogin;
+
+async function fetchPlaylists(user_id) {
+    return new Promise(function(resolve, reject)
+    {
+        db.all(`SELECT * FROM playlist WHERE user_id = '${user_id}'`, function(err, userList) {
+            resolve(userList);
+        });
+    });
+}
+
+module.exports.fetchPlaylists = fetchPlaylists;
+
+async function fetchPlaylistsForPagination(user_id, playlistPerPage, currentPage) {
+    return new Promise(function(resolve, reject)
+    {
+        db.all(`SELECT * FROM playlist WHERE user_id = '${user_id}' LIMIT ${playlistPerPage} OFFSET ${(currentPage - 1) * playlistPerPage}`, function(err, userList) {
+            resolve(userList);
+        });
+    });
+}
+
+module.exports.fetchPlaylistsForPagination = fetchPlaylistsForPagination;
+
+async function setReportInactive(report_id) {
+    return new Promise(function(resolve, reject)
+    {
+        db.run(`UPDATE report SET active='0' WHERE report.id = '${report_id}'`, (error) => {
+            if (error)
+            {
+                resolve(false);
+            } else {
+                resolve(true);
+            }
+        });
+    });
+}
+
+module.exports.setReportInactive = setReportInactive;
+
+async function addSongToPlaylist(userId, playlistId, songAddId) {
+    return new Promise(function(resolve, reject)
+    {
+        db.get(`SELECT playlist.*, user.id AS author_id, user.login AS author_username FROM playlist INNER JOIN user ON playlist.user_id = user.id WHERE playlist.id='${playlistId}'`, function(err, row) {
+            if (typeof row != "undefined")
+            {
+                if (userId == row.user_id)
+                {
+                    let songList = [];
+
+                    if (row.songs_id.length)
+                    {
+                        songList = row.songs_id.split("|");
+                    }
+
+                    if (!songList.includes(songAddId))
+                    {
+                        songList.push(songAddId);
+                        songList = songList.join("|");
+
+                        db.run(`UPDATE playlist SET songs_id='${songList}' WHERE playlist.id='${row.id}'`);
+                        resolve(true);
+                    } else {
+                        resolve(true);
+                    }
+                } else {
+                    resolve(null);
+                }
+            } else {
+                resolve(null);
+            }
+        });
+    });
+}
+
+module.exports.addSongToPlaylist = addSongToPlaylist;
+
+async function reportTheArtist(author_id, suspect_id, reason, description) {
+    return new Promise(function(resolve, reject)
+    {
+        db.run(`INSERT INTO report(author_id, suspect_id, reason, description) VALUES('${author_id}', '${suspect_id}', '${reason}', '${description}')`, (error) => {
+            if (error)
+            {
+                resolve(false);
+            } else {
+                resolve(true);
+            }
+        });
+    });
+}
+
+module.exports.reportTheArtist = reportTheArtist;

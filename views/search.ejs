@@ -26,14 +26,14 @@
         <% } else { %>
             <% if (searchResult.songList.length) { %>
             <div class="search-block">
-                <div class="block-title"><%- locale.search_tracks %></div>
+                <div class="block-title"><%= locale.search_tracks %></div>
                 <ul class="blocks-list">
                     <% searchResult.songList.forEach(song => { %>
                         <li>
                             <%- `<a href="../song/${song.id}">` %>
                                 <%- `<img class="artist-banner" src="../thumbnails/${song.id}.png">` %>
-                                <%- song.trimmed_name %>
-                                <div class="artist-genre-info"><%- song.artist_name %></div>
+                                <%= song.trimmed_name %>
+                                <div class="artist-genre-info"><%= song.artist_name %></div>
                             </a>
                         </li>
                     <% }); %>
@@ -43,14 +43,14 @@
             
             <% if (searchResult.artistList.length) { %>
             <div class="search-block">
-                <div class="block-title"><%- locale.search_artists %></div>
+                <div class="block-title"><%= locale.search_artists %></div>
                 <ul class="blocks-list">
                     <% searchResult.artistList.forEach(artist => { %>
                         <li>
                             <%- `<a href="../artist/${artist.id}">` %>
                                 <%- `<img class="artist-banner" src="../banner/${artist.id}.png">` %>
-                                <%- artist.trimmed_name %>
-                                <div class="artist-genre-info"><%- locale.genres_list[artist.genre] %></div>
+                                <%= artist.trimmed_name %>
+                                <div class="artist-genre-info"><%= locale.genres_list[artist.genre] %></div>
                             </a>
                         </li>
                     <% }); %>
@@ -60,13 +60,13 @@
 
             <% if (searchResult.playlistList.length) { %>
             <div class="search-block">
-                <div class="block-title"><%- locale.search_playlists %></div>
+                <div class="block-title"><%= locale.search_playlists %></div>
                 <ul class="blocks-list">
                     <% searchResult.playlistList.forEach(playlist => { %>
                         <li>
                             <%- `<a href="../playlist/${playlist.id}">` %>
-                                <%- `<img class="artist-banner" src="../playlistThumbs/${playlist.id}.png">` %>
-                                <%- playlist.name %>
+                                <%- `<img class="artist-banner" src="../playlistThumbs/${playlist.id}">` %>
+                                <%= playlist.name %>
                             </a>
                         </li>
                     <% }); %>
@@ -81,7 +81,7 @@
                     <% searchResult.profilesList.forEach(profile => { %>
                         <li>
                             <%- `<a href="../profile/id${profile.id}">` %>
-                                <%- profile.login %>
+                                <%= profile.login %>
                             </a>
                         </li>
                     <% }); %>

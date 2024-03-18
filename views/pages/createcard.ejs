@@ -26,18 +26,18 @@
                     <i></i>
                 </div>
             </div>
-            <div class="title-message"><%- locale.studio_createcard_title %></div>
-            <div class="description-message"><%- locale.studio_createcard_description %></div>
-            <button id="create-artist" class="button green"><%- locale.studio_createcard_createcard %></button>
-            <a href="../index" class="description-message white"><%- locale.studio_createcard_comeback %></a>
+            <div class="title-message"><%= locale.studio_createcard_title %></div>
+            <div class="description-message"><%= locale.studio_createcard_description %></div>
+            <button id="create-artist" class="button green"><%= locale.studio_createcard_createcard %></button>
+            <a href="../index" class="description-message white"><%= locale.studio_createcard_comeback %></a>
         </div>
     <% } %>
     
     <main id="main-form" style="<% if (typeof artistData != "undefined") { %><%- "display: flex;" %><% } else { %><%- "display: none;" %><% } %>">
         <form class="create-card-form" action="../studio" method="post" enctype="multipart/form-data">
-            <div class="title-message"><%- locale.studio_createcard_createform_title %></div>
+            <div class="title-message"><%= locale.studio_createcard_createform_title %></div>
 
-            <input name="username" type="text" placeholder="<%- locale.studio_createcard_createform_username %>" value="<% if (typeof artistData != "undefined") { %><%- artistData.username %><% } %>" required>
+            <input name="username" type="text" placeholder="<%= locale.studio_createcard_createform_username %>" value="<% if (typeof artistData != "undefined") { %><%= artistData.username %><% } %>" required>
 
             <div id="bannerDropArea">
                 <label id="bannerLabel" for="bannerImg" class="drag-n-drop-area">
@@ -52,11 +52,11 @@
                 <input id="bannerImg" name="bannerImg" type="file" accept="image/png, image/gif, image/jpeg">
             </div>
 
-            <textarea name="description" type="text" placeholder="<%- locale.studio_createcard_createform_description %>"><% if (typeof artistData != "undefined") { %><%- artistData.description %><% } %></textarea>
+            <textarea name="description" type="text" placeholder="<%= locale.studio_createcard_createform_description %>"><% if (typeof artistData != "undefined") { %><%= artistData.description %><% } %></textarea>
             
-            <select name="genre" selected="<% if (typeof artistData != "undefined") { %><%- artistData.genre %><% } %>" required>
+            <select name="genre" selected="<% if (typeof artistData != "undefined") { %><%= artistData.genre %><% } %>" required>
                 <% if (typeof artistData == "undefined") { %>
-                    <option value="" disabled selected hidden><%- locale.studio_createcard_createform_genre %></option>
+                    <option value="" disabled selected hidden><%= locale.studio_createcard_createform_genre %></option>
                 <% } %>
 
                 <% genres.forEach(genre => { %>
@@ -72,24 +72,25 @@
                 <% }); %>
             </select>
             
-            <button id="create-artist" class="button green"><%- locale.studio_createcard_createcard %></button>
+            <button id="create-artist" class="button green"><%= locale.studio_createcard_createcard %></button>
+            <a href="../index" class="description-message white"><%= locale.studio_createcard_comeback %></a>
 
             <div class="form-error-text">
                 <% if (typeof errorData !== "undefined") { %>
                     <% if (errorData === 1) { %>
-                        <%- locale.studio_createcard_createform_error_more %>
+                        <%= locale.studio_createcard_createform_error_more %>
                     <% } %>
 
                     <% if (errorData === 2) { %>
-                        <%- locale.studio_createcard_createform_error_less %>
+                        <%= locale.studio_createcard_createform_error_less %>
                     <% } %>
 
                     <% if (errorData === 3) { %>
-                        <%- locale.studio_createcard_createform_error_banner %>
+                        <%= locale.studio_createcard_createform_error_banner %>
                     <% } %>
 
                     <% if (errorData === 4) { %>
-                        <%- locale.studio_createcard_createform_error_genre %>
+                        <%= locale.studio_createcard_createform_error_genre %>
                     <% } %>
                 <% } %>
             </div>

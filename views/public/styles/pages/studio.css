@@ -21,6 +21,8 @@ hr {
 
 .studio-navigation-bar-list {
     display: flex;
+    height: 100%;
+
     flex-direction: column;
 }
 
@@ -40,7 +42,18 @@ hr {
     fill: var(--primary-text-color);
 }
 
+.navigation-icon ellipse {
+    margin: 0 auto;
+    transition: 0.5s all;
+
+    fill: var(--primary-text-color);
+}
+
 .navigation-icon:hover path {
+    fill: var(--accent-color);
+}
+
+.navigation-icon:hover ellipse {
     fill: var(--accent-color);
 }
 
@@ -181,6 +194,7 @@ hr {
     justify-content: space-between;
 
     align-items: center;
+    vertical-align: middle;
 
     user-select: none;
 
@@ -224,7 +238,7 @@ hr {
     background-color: var(--form-color);
     border-radius: 10px;
 
-    margin-bottom: 30px;
+    margin-bottom: 70px;
 
     animation: appearAnimation-Y 1s both;
 }

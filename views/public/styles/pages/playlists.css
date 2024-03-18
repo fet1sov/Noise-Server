@@ -1,0 +1,27 @@
+.playlists-list {
+    margin: 100px 5% 5% 5%;
+    width: 100%;
+}
+
+.playlist-name {
+    color: var(--primary-text-color);
+    font-size: var(--tiny-font-size);
+}
+
+.playlist-description {
+    color: var(--secondary-text-color);
+    font-size: var(--tiny-font-size);
+}
+
+.playlist-form-centered {
+    margin: 100px auto;
+}
+
+@media (max-width: 750px) {
+    .playlists-list {
+        margin: 0;
+        margin-top: 100px;
+
+        width: 100%;
+    }
+}

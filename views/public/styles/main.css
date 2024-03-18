@@ -1,9 +1,10 @@
 :root {
     --primary-color: #101010;
     --secondary-color: #202020;
-    --secondary-color-glass: rgba(23, 23, 23, 0.6); 
+    --secondary-color-glass: rgba(23, 23, 23, 0.4);
+    --secondary-color-glass-transparent: rgba(23, 23, 23, 0.2);
 
-    --text-box-color-glass: rgba(53, 53, 53, 1); 
+    --text-box-color-glass: rgba(53, 53, 53, 1);
 
     --form-color: #252525;
     --text-box-color: #353535;
@@ -49,6 +50,11 @@ iframe {
   animation: appearAnimation-Y 1s both;
 
   z-index: 1;
+}
+
+.collumn {
+  display: flex;
+  flex-direction: column;
 }
 
 .modal-active {
@@ -97,6 +103,10 @@ iframe {
   color: var(--primary-text-color);
   font-size: var(--tiny-font-size);
   margin-top: 10px;
+}
+
+.error-text-info {
+  color: var(--secondary-text-color);
 }
 
 .modal-close {
@@ -288,6 +298,32 @@ body {
   justify-content: space-between;
 }
 
+.player-thumb {
+  position: relative;
+}
+
+.player-equalizer {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+
+  margin-left: auto;
+  margin-right: auto;
+
+  border-radius: 10px;
+  background-color: var(--secondary-color-glass-transparent);
+
+  right: 0;
+  left: 0;
+}
+
+.player-controls-row-with-space {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+}
+
 .player-label {
   color: var(--primary-text-color);
 
@@ -327,7 +363,7 @@ body {
 
 .player-icon:hover svg {
   fill: var(--secondary-text-color);
-  
+
   width: 32px;
   height: 32px;
 }
@@ -397,7 +433,7 @@ body {
 }
 
 #player-close {
-  display: none;
+  display: block;
 }
 
 .song-thumbnail {
@@ -520,7 +556,7 @@ body {
 }
 
 .profile-a {
-  display: flex; 
+  display: flex;
   align-items: center;
 }
 
@@ -537,8 +573,8 @@ body {
 }
 
 .profile-menu-item svg {
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   fill: var(--primary-text-color);
 }
 
@@ -559,19 +595,52 @@ body {
   hyphens: auto;
 }
 
+.red {
+  background-color: #d20606;
+
+  margin-top: 20px;
+
+  animation: appearAnimation-Y 2s both;
+  animation-delay: 1s;
+  box-shadow: 0 0 40px #d20606;
+}
+
+.red:hover {
+  background-color: #910606;
+  box-shadow: 0 0 40px #910606;
+}
+
+.small-square-rounded {
+  width: 128px;
+  height: 128px;
+
+  border-radius: 10px;
+}
+
+.big-rounded-square {
+  width: 256px;
+  height: 256px;
+
+  border-radius: 30px;
+}
+
 .search {
   width: 350px;
 
   color: var(--primary-text-color);
 
   background-color: transparent;
-  
+
   border-radius: 10px;
   padding: 15px;
 }
 
 .search::-webkit-input-placeholder {
   color: var(--primary-text-color);
+}
+
+.no-animation {
+  animation: none;
 }
 
 .equalizer {
@@ -695,10 +764,6 @@ body {
   .modal-active {
     top: calc(50% - 150px);
     left: 50%;
-  }
-
-  #player-close {
-    display: block;
   }
 }
 

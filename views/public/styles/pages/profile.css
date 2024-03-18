@@ -66,6 +66,15 @@ main {
     animation: appearAnimation 1.5s both;
 }
 
+.small-item {
+    color: var(--secondary-text-color);
+}
+
+.playlist-list {
+    display: flex;
+    flex-direction: row;
+}
+
 .playlist-list li {
     width: 150px;
     height: 200px;

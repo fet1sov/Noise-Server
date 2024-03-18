@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
 
+    <%- `<meta property="og:site_name" content="Noise">` %>
+    <%- `<meta property="og:title" content="${locale.main_title}">` %>
+    <%- `<meta property="og:url" content="${host}">` %>
+    <%- `<meta property="og:image" content="${host}/brand/noise-unfurl-square.png">` %>
+    <%- `<meta property="og:description" content="${locale.main_description}">` %>
+    <%- `<meta name="theme-color" content="${locale.theme_color}">` %>
+
     <%- include('elems/styles.ejs', {}); %>
 
     <link rel="stylesheet" href="styles/index.css"/>

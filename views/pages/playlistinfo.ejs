@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title><%- playlistInfo.playlist.name %> | <%- title %></title>
+    <title><%= playlistInfo.playlist.name %> | <%= title %></title>
 
     <%- include('../elems/styles.ejs', {}); %>
 
@@ -18,10 +18,10 @@
 
             <div class="playlist-information">
                 <div>
-                    <div class="playlist-info-block-track"><%- locale.playlist_name %></div>
-                    <div class="playlist-info-title"><%- playlistInfo.playlist.name %></div>
+                    <div class="playlist-info-block-track"><%= locale.playlist_name %></div>
+                    <div class="playlist-info-title"><%= playlistInfo.playlist.name %></div>
 
-                    <div class="playlist-info-description"><%- playlistInfo.playlist.description %></div>
+                    <div class="playlist-info-description"><%= playlistInfo.playlist.description %></div>
                 </div>
 
                 <div>
@@ -33,9 +33,9 @@
         </div>
 
         <div class="playlist-info-block-title"><%- locale.playlist_author %></div>
-        <a class="playlist-info-author" href="../profile/id<%- playlistInfo.playlist.user_id %>">
+        <a class="playlist-info-author" href="../profile/id<%= playlistInfo.playlist.user_id %>">
             <div class="author-info-block">
-                <div class="playlist-info-author-title"><%- playlistInfo.playlist.author_username %></div>
+                <div class="playlist-info-author-title"><%= playlistInfo.playlist.author_username %></div>
             </div>
         </a>
 

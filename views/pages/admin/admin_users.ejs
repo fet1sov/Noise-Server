@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+
+    <%- include('../../elems/styles.ejs', {}); %>
+
+    <link rel="stylesheet" href="../../../../styles/pages/admin.css"/>
+    <link rel="stylesheet" href="../../../../styles/pages/studio.css"/>
+</head>
+<body>
+    <%- include('../../elems/preloader.ejs', {}); %>
+
+    <main class="admin-studio">
+        <div class="label"><%- locale.admin_user_list %></div>
+        <div class="studio-block transparent">
+            
+            <form action="../../../admin/users" method="get">
+                <input type="search" name="term" placeholder="<%- locale.admin_user_search_login %>">
+            </form>
+
+            <ul class="studio-songs-list">
+                <% userList.forEach(user => { %>
+                    <li data-id="<%- user.id %>">
+                        <div class="small-information">
+                            <%- `<a href="../../../../profile/id${user.id}">` %>
+                                <div class="collumn">
+                                    <div class="report-description"><%- user.login %></div>
+                                    <%- `<div class="report-artist" style="color: ${locale.profile_roles[user.role_id].color}">${locale.profile_roles[user.role_id].name}</div>` %>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="small-information">
+                            <%- `<a  class="button yellow no-animation" href="../../admin/users/${user.id}">${locale.edit}</a>` %>
+                        </div>
+                    </li>
+                <% }); %>
+            </ul>
+
+            <% if (maxPages > 1) { %>
+                <div class="pagination-list-block">
+                    <ul class="pagination-list">    
+                        <% for(let i = 0; i < maxPages; i++) { %>
+                            <% if (i == page) { %>
+                                <%- `<li><a class="current">${(i + 1)}</a></li>` %>
+                            <% } else { %>
+                                <%- `<li><a href="?page=${i + 1}">${(i + 1)}</a></li>` %>
+                            <% } %>
+                        <% } %>
+                    </ul>
+                </div>
+            <% } %>
+        </div>
+    </main>
+
+    <%- include('admin_navigation.ejs', {}); %>
+</body>
