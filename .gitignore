@@ -1,2 +1,8 @@
 database.db
 node_modules/*
+
+# User files pathes
+public/banner/*
+public/playlistThumbs/*
+public/songs/*
+public/thumbnails/*
