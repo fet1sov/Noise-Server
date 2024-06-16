@@ -91,6 +91,7 @@
                 <div class="label"><%- locale.admin_report_list %></div>
 
                 <% let reportsPerPage = 3 %>
+                <% console.log(adminData.reportList) %>
                 <% let maxPages = Math.ceil(adminData.reportList.length / reportsPerPage); %>
 
                 <% if (adminData.reportList.length) { %>

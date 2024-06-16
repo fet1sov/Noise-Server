@@ -25,10 +25,21 @@
 
     "edit" : "Редактировать",
 
-    "welcome_message" : "Добро пожаловать в ",
-    "welcome_description" : "Аудио-стриминговая платформа для прослушивания музыки в высоком качестве. Слушайте музыку в нашем приложении или же прямо из браузера",
-    "welcome_download_button" : "Установить",
-    "welcome_web_button" : "Открыть в браузере",
+    "welcome_message" : "Слушай музыку чтобы поддержать своё настроение",
+    "welcome_description" : "Музыка это язык который поймёт любой человек. Она способна рушить языковой барьер между нами",
+    "welcome_web_button_more": "МНОЖЕСТВО ТРЕКОВ",
+    "welcome_web_button_share": "ПОДЕЛИСЬ СВОИМИ",
+    "welcome_download_button" : "УСТАНОВИТЬ",
+    "welcome_web_button" : "СЛУШАТЬ СЕЙЧАС",
+
+    "welcome_listen_music": "СЛУШАЙ МУЗЫКУ",
+
+    "welcome_connect_button": "ПРИСОЕДИНИТЬСЯ",
+
+    "welcome_community_message": "Присоединийся к сообществу <b style=\"color: var(--accent-color)\">артистов со всего мира</b> <br>Загружай свои треки без посредников в виде дистрибьюторов<br>Будь услышанным",
+
+    "welcome_statistic_block_artists": "Различных артистов на ваш вкус и цвет", 
+    "welcome_statistic_block_tracks": "В каталоге треков которые пополняются каждый день", 
 
     "delete" : "Удалить",
     "cancel" : "Отмена",

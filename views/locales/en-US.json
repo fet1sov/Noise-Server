@@ -25,10 +25,21 @@
 
     "edit" : "Edit",
 
-    "welcome_message" : "Welcome to the ",
-    "welcome_description" : "Audio-streaming platform for listening the music in high quality. Listen music in app or directly from your browser",
-    "welcome_download_button" : "Install",
-    "welcome_web_button" : "Open in browser",
+    "welcome_message" : "Listening to music to keep keep your mood",
+    "welcome_description" : "Music is a language that anyone can understand. It able to break down the language barrier between us",
+    "welcome_web_button_more": "MANY TRACKS",
+    "welcome_web_button_share": "SHARE YOURS",
+    "welcome_download_button" : "INSTALL APP",
+    "welcome_web_button" : "EXPLORE NOW",
+
+    "welcome_listen_music": "LISTEN MUSIC",
+
+    "welcome_community_message": "Join community <b style=\"color: var(--accent-color)\">with artists from whole world</b> <br>Upload tracks without third-party<br>Be heard",
+
+    "welcome_connect_button": "CONNECT",
+
+    "welcome_statistic_block_artists": "Various artists on your taste", 
+    "welcome_statistic_block_tracks": "In the catalog of tracks that are updated every day",
 
     "delete" : "Delete",
     "cancel" : "Cancel",

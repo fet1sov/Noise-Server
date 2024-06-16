@@ -39,7 +39,7 @@ exports.getLocaleByIP = (ip) => {
         localeContent = fs.readFileSync(`${__dirname}/views/locales/ru-RU.json`, 'utf8');
         localeJSON = JSON.parse(localeContent);
     } else {
-        localeContent = fs.readFileSync(`${__dirname}/views/locales/en-US.json`, 'utf8');
+        localeContent = fs.readFileSync(`${__dirname}/views/locales/ru-RU.json`, 'utf8');
         localeJSON = JSON.parse(localeContent);
     }
     
@@ -166,7 +166,6 @@ async function registerUser(username, email, password, repeatPassword) {
 };
 
 module.exports.registerUser = registerUser;
-
 
 async function registerNewArtist(username, description, genreId, belongId, bannerFile = null) {
     return new Promise(function(resolve, reject)
