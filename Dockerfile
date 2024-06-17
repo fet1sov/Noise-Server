@@ -4,6 +4,8 @@
 FROM node:18-alpine as builder
 RUN npm cache clean –force
 
+EXPOSE 80
+
 WORKDIR /usr/app
 COPY ./ /usr/app
 RUN npm install
