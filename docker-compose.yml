@@ -1,10 +1,16 @@
 version: "3"
 services:
-  webserver:
-    build: ./
+  nginx: 
+    image: nginx:latest
+    container_name: melon-nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
     ports:
       - 80:80
       - 443:443
+    restart: always
+    
+  webserver:
+    build: ./
     container_name: noise-webapp
     restart: always
-    network_mode: host
