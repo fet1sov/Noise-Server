@@ -2,7 +2,7 @@ version: "3"
 services:
   nginx: 
     image: nginx:latest
-    container_name: melon-nginx
+    container_name: noise-nginx
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
     ports:
