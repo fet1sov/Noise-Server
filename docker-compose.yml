@@ -3,7 +3,8 @@ services:
   webserver:
     build: ./
     ports:
-      - "80:8080"
+      - 80:80
+      - 443:443
     container_name: noise-webapp
     restart: always
     network_mode: host
