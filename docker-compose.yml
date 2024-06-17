@@ -1,0 +1,6 @@
+version: "3"
+services:
+  webserver:
+    build: ./
+    container_name: noise-webapp
+    restart: always
