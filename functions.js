@@ -635,6 +635,70 @@ async function updateSongById(songId, name, genreId, fileList) {
 
 module.exports.updateSongById = updateSongById;
 
+async function updatePlaylistInfo(playlistId, playlistInfo, fileList) {
+    return new Promise(function(resolve, reject)
+    {
+        db.get(`SELECT * FROM playlist WHERE id='${playlistId}'`, function(err, row) {
+            if (typeof row != "undefined")
+            {
+                if (row.user_id == playlistInfo.user_holder) {
+                    db.run(`UPDATE playlist SET name = '${playlistInfo.playlistName}', description = '${playlistInfo.playlistDescription}' WHERE id='${playlistId}' `, function (error) {
+                        if (fileList)
+                        {
+                            const uploadedFileExtension = fileList.playlistImg.mimetype.split("/")[1];
+
+                            let uploadPath = "";
+                            if (uploadedFileExtension === "png"
+                                || uploadedFileExtension === "jpeg"
+                                || uploadedFileExtension === "webp") {
+                                uploadPath = __dirname
+                                    + "/public/playlistThumbs/" + playlistId + ".png";
+                            }
+
+                            if (fs.existsSync(uploadPath)) {
+                                fs.unlink(uploadPath, () => { });
+                            }
+
+                            try {
+                                fileList.playlistImg.mv(uploadPath, function (err) {
+                                    if (err) {
+                                        console.log(`FAILED TO UPLOAD BANNER FILE: ${err}`);
+                                    } else {
+                                        resolve(playlistId);
+                                    }
+                                });
+                            } catch {
+
+                            }
+                        } else {
+                            resolve(playlistId);
+                        }
+                    });
+                } else {
+                    resolve(null);
+                }
+            }
+        });
+    });
+};
+
+module.exports.updatePlaylistInfo = updatePlaylistInfo;
+
+async function deletePlaylist(playlistInfo) {
+    return new Promise(function(resolve, reject) 
+    {
+        db.run(`DELETE FROM playlist WHERE id IN (${playlistInfo.playlists.split(",").join(", ")})`, function (error) {
+            if (error) {
+                console.log(`FAILED TO DELETE SOUND TRACK(-s): ${error}`);
+            } else {
+                resolve(true);
+            }
+        });
+    });
+};
+
+module.exports.deletePlaylist = deletePlaylist;
+
 async function getSongsForPaginationArtist(artistId, songsPerPage, page) {
     return new Promise(function(resolve, reject)
     {
@@ -811,6 +875,55 @@ async function getUserList() {
 }
 
 module.exports.getUserList = getUserList;
+
+async function getUserInfoById(userId) {
+    return new Promise(function(resolve, reject)
+    {
+        db.get(`SELECT * FROM user WHERE id='${userId}'`, function(err, userInfo) {
+            db.all(`SELECT * FROM role`, function(err, roleList) {
+                let rolesList = { 
+                    userInfo: userInfo,
+                    roleList: roleList
+                };
+                resolve(rolesList);
+            });
+        });
+    });
+}
+
+module.exports.getUserInfoById = getUserInfoById;
+
+async function updateUserInfo(userId, userInfo) {
+    return new Promise(function(resolve, reject)
+    {
+        db.run(`UPDATE user SET login='${userInfo.login}', email='${userInfo.email}', role_id='${userInfo.role_id}' WHERE id='${userId}'`, function(err, userInfo) {
+            resolve(null);
+        });
+    });
+}
+
+module.exports.updateUserInfo = updateUserInfo;
+
+async function deleteSongFromPlaylist(playlistId, songId) {
+    return new Promise(function(resolve, reject)
+    {
+        db.get(`SELECT * FROM playlist WHERE id='${playlistId}'`, function(err, playlistInfo) {
+            let songsList = playlistInfo.songs_id.split("|");
+            
+            const index = songsList.indexOf(songId);
+            if (index > -1) {
+                songsList.splice(index, 1);
+            }
+
+            db.run(`UPDATE playlist SET songs_id='${songsList.join("|")}' WHERE id='${playlistId}'`, function(err, playlistInfo) {
+                resolve(null);
+            });
+        });
+        
+    });
+}
+
+module.exports.deleteSongFromPlaylist = deleteSongFromPlaylist;
 
 async function getUsersListForPagination(usersPerPage, currentPage) {
     return new Promise(function(resolve, reject)

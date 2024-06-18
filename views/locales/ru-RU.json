@@ -63,6 +63,9 @@
 
     "auth_login" : "Авторизация",
     "auth_register" : "Регистрация",
+
+    "auth_back_button": "Назад на главную",
+
     "username_label" : "Имя пользователя",
     "email_label" : "Электронная почта",
     "password_label" : "Пароль",
@@ -93,11 +96,14 @@
 
     "playlist_label" : "Список ваших плейлистов",
     "playlist_label_author" : "Список плейлистов ",
+
     "playlist_create_button" : "Создать плейлист",
+    "playlist_edit_button" : "Редактировать плейлист",
 
     "playlist_name_placeholder" : "Название плейлиста",
     "playlist_picture_load_placeholder" : "Загрузите обложку плейлиста до 5MB. В формате .png, .jpg",
     "playlist_create_label" : "Создание плейлиста",
+    "playlist_edit_label" : "Редактирование плейлиста",
     "playlist_description_placeholder" : "Описание плейлиста",
 
     "admin_stats" : "Статистика площадки",
@@ -120,6 +126,15 @@
     "admin_song_list" : "Список композиций",
     "admin_user_search_login" : "Поиск по имени пользователя",
 
+    "admin_user_info_edit": "Редактирование пользователей",
+    "admin_users_name": "Карточка пользователя",
+
+    "admin_user_username": "Имя пользователя",
+    "admin_user_email": "Электронная почта",
+    "admin_user_role_unselected": "Пользователь",
+
+    "admin_user_edit_button": "Редактировать пользователя",
+
     "artist" : "Исполнитель",
     "artist_song_list" : "Список треков",
     "artist_not_songs_found" : "Исполнитель не загрузил ни одного трека",
@@ -130,6 +145,8 @@
 
     "modal_delete_title" : "Удаление",
     "modal_message_track" : "Вы уверены что хотите удалить выбранные треки?",
+
+    "modal_message_playlist" : "Вы уверены что хотите удалить выбранные плейлисты?",
 
     "studio_stats" : "Статистика",
     "studio_stats_plays" : "Прослушивания",

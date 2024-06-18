@@ -34,6 +34,7 @@
   font-weight: bold;
   font-style: bold;
 }
+
 ul {
     list-style: none;
 }
@@ -58,6 +59,23 @@ iframe {
 
   display: flex;
   align-items: center;
+}
+
+.link-href-button {
+  color: var(--primary-text-color);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  margin-bottom: 20px;
+}
+
+.link-href-button svg {
+  margin-right: 5px;
+}
+
+.link-href-button a:visited {
+  color: inherit;
 }
 
 .modal-background {

@@ -2,7 +2,8 @@
             <ul class="studio-songs-list">
                 <% for(let i = 0; i < playlistList.length; i++) { %>
                             <li class="playlist-list-item" data-id="<%= playlistList[i].id %>">
-                                <div class="small-information">
+                                <div class="small-information"> 
+                                    <input type="checkbox" class="song-selector" name="playlist" data-id="<%= playlistList[i].id %>" data-playlist="true">
                                     <%- `<img src="../../../playlistThumbs/${playlistList[i].id}" class="small-square-rounded">` %>
                                             <div>
                                                 <% if (!noAction) { %>

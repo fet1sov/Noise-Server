@@ -63,6 +63,9 @@
 
     "auth_login" : "Log In",
     "auth_register" : "Register",
+
+    "auth_back_button": "Back on main",
+
     "username_label" : "Username",
     "email_label" : "E-mail address",
     "password_label" : "Password",
@@ -95,6 +98,8 @@
     "modal_delete_title" : "Deleting",
     "modal_message_track" : "Are you sure you want to delete selected tracks?",
 
+    "modal_message_playlist" : "Are you sure you want to delete selected?",
+
     "profile_menu_profile" : "Profile",
     "profile_menu_admin" : "Admin",
     "profile_menu_studio" : "Studio",
@@ -104,11 +109,16 @@
 
     "playlist_label" : "List of your playlists",
     "playlist_label_author" : "List of playlists by ",
+
     "playlist_create_button" : "Create playlist",
+    "playlist_edit_button" : "Edit playlist",
 
     "playlist_name_placeholder" : "Name of playlist",
     "playlist_picture_load_placeholder" : "Upload the playlist thumbnail 5MB. In format .png, .jpg, .jpeg",
+
     "playlist_create_label" : "Playlist creation",
+    "playlist_edit_label" : "Edit playlist",
+
     "playlist_description_placeholders" : "Playlist descripition",
 
     "admin_stats" : "Platform statistic",
@@ -130,6 +140,15 @@
     "admin_artist_list" : "List of artists",
     "admin_song_list" : "List of songs",
     "admin_user_search_login" : "Search by username",
+
+    "admin_user_info_edit": "Edit user info",
+    "admin_users_name": "User card",
+
+    "admin_user_username": "Username",
+    "admin_user_email": "Email",
+    "admin_user_role_unselected": "User",
+
+    "admin_user_edit_button": "Edit user",
 
     "studio_stats" : "Statistics",
     "studio_stats_plays" : "Plays",

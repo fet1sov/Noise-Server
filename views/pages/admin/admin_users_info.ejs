@@ -9,15 +9,32 @@
 
     <link rel="stylesheet" href="../../../../styles/pages/admin.css"/>
     <link rel="stylesheet" href="../../../../styles/pages/studio.css"/>
+    <link rel="stylesheet" href="../../../../styles/pages/createcard.css"/>
 </head>
 <body>
     <%- include('../../elems/preloader.ejs', {}); %>
 
-    <main class="admin-studio">
-        <div class="label"><%- locale.admin_user_list %></div>
-        <div class="studio-block transparent">
-        
-        </div>
+    <main class="admin-studio" style="margin: 0 !important;">
+        <div class="label"><%- locale.admin_user_info_edit %></div>
+        <form style="margin-top: 20px;" class="create-card-form" action="../../../../admin/users/<%- userAdminData.id %>" method="post" enctype="multipart/form-data">
+            <div class="title-message"><%= locale.admin_users_name %></div>
+
+            <input name="login" type="text" placeholder="<%= locale.admin_user_username %>" value="<% if (typeof userAdminData != "undefined") { %><%= userAdminData.login %><% } %>" required>
+            <input name="email" type="text" placeholder="<%= locale.admin_user_email %>" value="<% if (typeof userAdminData != "undefined") { %><%= userAdminData.email %><% } %>" required>
+
+            <select name="role_id">
+                <option value="0"><%= locale.admin_user_role_unselected %></option>
+                <% roleData.forEach(role => { %>
+                    <% if (role.id == userAdminData.role_id) { console.log(role.id + " " + userAdminData.role_id) %>
+                        <%- `<option style="color: ${locale.profile_roles[role.role_id].color};" value="${role.role_id}" selected>${locale.profile_roles[role.role_id].name}</option>` %>
+                    <% } else { %>
+                        <%- `<option style="color: ${locale.profile_roles[role.role_id].color};" value="${role.role_id}">${locale.profile_roles[role.role_id].name}</option>` %>
+                    <% } %>
+                <% }); %>
+            </select>
+
+            <button class="button yellow"><%= locale.admin_user_edit_button %></button>
+        </form>
     </main>
 
     <%- include('admin_navigation.ejs', {}); %>

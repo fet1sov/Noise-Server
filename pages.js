@@ -8,7 +8,7 @@ const router = express.Router(),
 const session = require('express-session');
 
 const path = require('path');
-const { getLocaleByIP, searchUserByLogin, createPlaylist, addSongToPlaylist, fetchPlaylists, fetchPlaylistsForPagination, getUsersListForPagination, getUserList, setReportInactive, getReportInfoById, reportTheArtist, getAdminInfo, getPlaylistInfoById, proceedSearchByTerm, getSongsForPaginationArtist, incrementPlaysCount, updateSongById, deleteSongList, uploadSoundTrack, getProfileByUsername, updateArtistInfo, getSongInfoById, getRecomendationInfo, getArtistDataByBelongId, getArtistDataById, authUser, registerUser, getListOfGenres, registerNewArtist } =
+const { getLocaleByIP, deleteSongFromPlaylist, updateUserInfo, getUserInfoById, deletePlaylist, updatePlaylistInfo, searchUserByLogin, createPlaylist, addSongToPlaylist, fetchPlaylists, fetchPlaylistsForPagination, getUsersListForPagination, getUserList, setReportInactive, getReportInfoById, reportTheArtist, getAdminInfo, getPlaylistInfoById, proceedSearchByTerm, getSongsForPaginationArtist, incrementPlaysCount, updateSongById, deleteSongList, uploadSoundTrack, getProfileByUsername, updateArtistInfo, getSongInfoById, getRecomendationInfo, getArtistDataByBelongId, getArtistDataById, authUser, registerUser, getListOfGenres, registerNewArtist } =
 require('./functions');
 const cookieParser = require('cookie-parser');
 
@@ -345,6 +345,17 @@ router.post('/playlist/addtrack', function(request, response) {
     }
 });
 
+router.get('/playlist/delete/:playlist_id', function(request, response) {
+    if (request.session.user)
+    {
+        deleteSongFromPlaylist(request.params.playlist_id, request.query.songid).then(function() {
+            response.redirect(`../../playlist/${request.params.playlist_id}`);
+        });
+    } else {
+        response.redirect("../../index");
+    }
+});
+
 router.get('/playlists/create', function(request, response) {
     if (request.session.user)
     {
@@ -391,6 +402,62 @@ router.get('/playlist/:playlist_id', function(request, response) {
         });
     });
 });
+
+router.get('/playlist/edit/:playlist_id', function(request, response) {
+    request.session.historyUrl = request.originalUrl;
+
+    if (request.session.user)
+    {
+        getPlaylistInfoById(request.params.playlist_id).then(function(playlistInfo) {
+            if (request.session.user.data.id == parseInt(playlistInfo.playlist.user_id))
+            {
+                response.status(200);
+                response.render('pages/playlist/user_playlist_edit_form', {
+                    title: 'Noise',
+                    locale: getLocaleByIP(request.socket.remoteAddress),
+                    userData: request.session.user ? request.session.user.data : null,
+                    playlistInfo: playlistInfo
+                });
+            } else {
+                response.redirect(`/index`);
+            }
+            
+        });
+    } else {
+        response.redirect(`/index`);
+    }
+});
+
+router.post('/playlist/edit/:playlist_id', function(request, response) {
+    request.session.historyUrl = request.originalUrl;
+
+    if (request.session.user)
+    {
+        let playlistInfo = request.body;
+        playlistInfo.user_holder = request.session.user.data.id;
+
+        updatePlaylistInfo(request.params.playlist_id, playlistInfo, request.files).then(function(playlistId) {
+            response.redirect(`/playlist/${playlistId}`);
+        });
+    } else {
+        response.redirect(`/index`);
+    }
+});
+
+router.post('/playlist/delete', function(request, response) {
+    if (request.session.user)
+    {
+        let playlistInfo = request.body;
+        playlistInfo.user_holder = request.session.user.data.id;
+
+        deletePlaylist(playlistInfo).then(function() {
+            response.redirect(`/profile/${request.session.user.data.login}`);
+        });
+    } else {
+        response.redirect(`/index`);
+    }
+});
+
 
 router.get('/search', function (request, response) {
     request.session.historyUrl = request.originalUrl;
@@ -681,6 +748,81 @@ router.get('/admin/users', function(request, response) {
             }
         } else {
             response.redirect("../admin/");
+        }
+    } else {
+        response.redirect("../index");
+    }
+});
+
+router.get('/admin/users/:user_id', function(request, response) {
+    if (request.session.user)
+    {
+        if (request.session.user.data.admin)
+        {
+            getUserInfoById(request.params.user_id).then(function(userInfo) {
+                response.status(200);
+                response.render('pages/admin/admin_users_info', {
+                    title: 'Noise',
+                    locale: getLocaleByIP(request.socket.remoteAddress),
+                    userData: request.session.user ? request.session.user.data : null,
+
+                    userAdminData: userInfo.userInfo,
+                    roleData: userInfo.roleList,
+                });
+            });
+        } else {
+            response.redirect("../admin/");
+        }
+    } else {
+        response.redirect("../index");
+    }
+});
+
+router.post('/admin/users/:user_id', function(request, response) {
+    if (request.session.user)
+    {
+        if (request.session.user.data.admin)
+        {
+            console.log(request.body);
+            updateUserInfo(request.params.user_id, request.body).then(function() {
+                response.redirect("../../admin/users");
+            });
+        } else {
+            response.redirect("../admin/");
+        }
+    } else {
+        response.redirect("../index");
+    }
+});
+
+router.get('/admin/songs', function(request, response) {
+    if (request.session.user)
+    {
+        if (request.session.user.data.admin)
+        {
+            getAdminInfo().then(function (adminData) {
+                let reportsPerPage = 3;
+                let maxPages = Math.ceil(adminData.reportList.length / reportsPerPage);
+
+                let currentPage = 1;
+
+                if (request.query.page && request.query.page < maxPages + 1) {
+                    currentPage = request.query.page;
+                }
+
+                response.status(200);
+                response.render('pages/admin/admin', {
+                    title: 'Noise',
+                    locale: getLocaleByIP(request.socket.remoteAddress),
+                    userData: request.session.user ? request.session.user.data : null,
+                    adminData: adminData,
+                    section: request.params.section,
+
+                    page: currentPage - 1,
+                });
+            });
+        } else {
+            response.redirect("../index");
         }
     } else {
         response.redirect("../index");

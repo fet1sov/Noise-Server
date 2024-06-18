@@ -37,7 +37,13 @@ window.addEventListener("DOMContentLoaded", (event) => {
                         document.getElementById("add-button").style.display = "none";
                         let editButton = document.getElementById("edit-button");
                         document.getElementById("edit-button").style.display = "flex";
-                        editButton.setAttribute("href", `../studio/content/edit/${selector.dataset.id}`)
+
+                        if (selector.dataset.playlist)
+                        {
+                            editButton.setAttribute("href", `../../playlist/edit/${selector.dataset.id}`);
+                        } else {
+                            editButton.setAttribute("href", `../studio/content/edit/${selector.dataset.id}`);
+                        }
                         document.getElementById("delete-button").style.display = "flex";
                     } else {
                         document.getElementById("add-button").style.display = "none";
